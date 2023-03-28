@@ -1,40 +1,4 @@
-// const list = {
-//   interactive: {
-//     action: {
-//       button: "Action",
-//       sections: [
-//         {
-//           rows: [
-//             {
-//               id: "unique-row-identifier-here",
-//               title: "row-title-content-here",
-//               description: "row-description-content-here",
-//             },
-//             {
-//               id: "unique-row-identifier-here-2",
-//               title: "row-title-content-here-2",
-//               description: "row-description-content-here-2",
-//             },
-//             {
-//               id: "unique-row-identifier-here-3",
-//               title: "row-title-content-here-3",
-//               description: "row-description-content-here-3",
-//             },
-//             {
-//               id: "unique-row-identifier-here-4",
-//               title: "row-title-content-here-4",
-//               description: "row-description-content-here-4",
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     body: {
-//       text: "This is the body of the message",
-//     },
-//     type: "list",
-//   },
-// };
+const visaSequence = require("./src/constant");
 
 function respondToList(data) {
   switch (data.title) {
@@ -43,17 +7,6 @@ function respondToList(data) {
         "0-btn-1": "Open Visa form",
         // "0-btn-2": "Continue Here",
       };
-
-    // case "1":
-    //   return {
-    //     "1-btn-1": "Open Passport form",
-    //     "1-btn-2": "Continue Here",
-    //   };
-    // case "2":
-    //   return {
-    //     "2-btn-1": "Visit Website",
-    //     "2-btn-2": "Continue Here",
-    //   };
     default:
       return "Please select any other option!";
   }
@@ -61,10 +14,10 @@ function respondToList(data) {
 
 function generateText(type, data) {
   switch (type) {
-    case "greeting":
+    case visaSequence[0]:
       return [
-        "Hello Welcome to OIS appoitment booking services !",
-        { "get-list-btn": "Get List" },
+        "Hi, Welcome to OIS appointment booking system. Please select the category",
+        { "get-list-btn": "Category List" },
       ];
     case "list":
       const dataArr =
