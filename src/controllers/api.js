@@ -88,7 +88,7 @@ const setDbObj = async (msg, messageData, userExist, data) => {
     message: msg.data.text,
     reply_with: messageData,
     data: JSON.stringify(msg.data),
-    tmp_data: tempData,
+    tmp_data: JSON.stringify(tempData),
   };
   const res = await saveResponseData({ ...dataObj });
   console.log(res, "resresres save db ==>");
