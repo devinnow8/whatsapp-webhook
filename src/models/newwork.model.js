@@ -24,7 +24,7 @@ const newWork = new SCHEMA(
     },
     tmp_data: {
       type: Object,
-      default: "",
+      default: {},
     },
   },
   {
