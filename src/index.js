@@ -43,8 +43,18 @@ const responseBot = async (app) => {
               data: JSON.stringify(msg.data),
               tmp_data: tempDataaa,
             };
-            const res = await saveResponseData({ ...dataObjjj });
-            console.log(res, "resresres save db ==> 333");
+            const resss = await saveResponseData({ ...dataObjjj });
+            if(resss){
+              const nextMessage = visaSequence[visaSequence.indexOf(userExist.type) + 1]
+              console.log(nextMessage,'nextMessage==>');
+              await bot.sendText(
+                msg.from,
+                nextMessage === "dob"
+                  ? `${nextMessage} eg:(1996-07-21)`
+                  : nextMessage
+              );
+            }
+            console.log(resss, "resresres save db ==> 333");
           }
         }
         if (!userExist) {
