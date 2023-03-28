@@ -106,8 +106,14 @@ const responseTable = new SCHEMA(
       type: String,
       default: "",
     },
-    id_number,
-    id_type,
+    id_number: {
+      type: String,
+      default: "",
+    },
+    id_type: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
