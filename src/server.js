@@ -9,9 +9,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+// const httpServer = createServer(app);
+
 dbConnect();
+console.log(`app listening on port `);
 
 app.listen(8080, () => {
   responseBot(app);
   console.log(`app listening on port `);
 });
+
+module.exports = app;
