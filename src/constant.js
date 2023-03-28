@@ -1,4 +1,4 @@
-export default visaSequence = [
+const visaSequence = [
   "Welcome_Message",
   "select_category",
   "Application_id",
@@ -7,3 +7,7 @@ export default visaSequence = [
   "Date_Time",
   "Confirm",
 ];
+
+module.exports = {
+  visaSequence,
+};
