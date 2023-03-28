@@ -1,11 +1,7 @@
 const { createBot } = require("whatsapp-cloud-api");
 const { generateText } = require("../generateText");
 const axios = require("axios");
-const {
-  getResponseData,
-  saveResponseData,
-  setDbObj,
-} = require("./controllers/api");
+const { getResponseData, saveResponseData } = require("./controllers/api");
 const { visaSequence } = require("./constant");
 
 const responseBot = async (app) => {
@@ -26,7 +22,6 @@ const responseBot = async (app) => {
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
-      console.log(userExist, "userExistuserExist==>");
       try {
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
@@ -35,6 +30,7 @@ const responseBot = async (app) => {
               selected_category: msg.data.title,
               selected_category_id: msg.data.id,
             };
+            console.log(userExist, "userExistuserExist==> 333");
             let dataObj = {
               phone_number: msg.from,
               type:
@@ -47,12 +43,13 @@ const responseBot = async (app) => {
               tmp_data: tempData,
             };
             const res = await saveResponseData({ ...dataObj });
-            console.log(res, "resresres save db ==> 111");
+            console.log(res, "resresres save db ==> 333");
           }
         }
         if (!userExist) {
           const [messageData, resObj] = generateText(visaSequence[0]);
           await bot.sendReplyButtons(msg.from, messageData, resObj);
+          console.log(userExist, "userExistuserExist==> 111");
           let tempData = { ...userExist.tmp_data };
           let dataObj = {
             phone_number: msg.from,
@@ -66,7 +63,7 @@ const responseBot = async (app) => {
             tmp_data: tempData,
           };
           const res = await saveResponseData({ ...dataObj });
-          console.log(res, "resresres save db ==> 222");
+          console.log(res, "resresres save db ==> 111");
         } else {
           if (userExist.type === "Welcome_Message") {
             try {
@@ -81,6 +78,7 @@ const responseBot = async (app) => {
                   "This is a list of services we provide. Please select one from the list.",
                   generateText("list", data)
                 );
+                console.log(userExist, "userExistuserExist==> 222");
                 let tempData = { ...userExist.tmp_data };
                 let dataObj = {
                   phone_number: msg.from,
@@ -95,7 +93,7 @@ const responseBot = async (app) => {
                   tmp_data: tempData,
                 };
                 const res = await saveResponseData({ ...dataObj });
-                console.log(res, "resresres save db ==> 333");
+                console.log(res, "resresres save db ==> 222");
               }
             } catch (err) {
               console.log(err, "err");
