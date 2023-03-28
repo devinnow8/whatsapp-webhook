@@ -26,14 +26,14 @@ const responseBot = async (app) => {
       try {
         if(msg.type === 'button_reply'){
           if(msg.data.id === 'get_Details'){
-            const {selected_category, application_id, dob} = userExist.tmp_data
+            const {selected_category, application_id} = userExist.tmp_data
             console.log(userExist,'userrrr===>');
             try{
               const detailRes = await axios.post(
                 process.env.API_END_POINT + "/application-detail",
                 {
                   applicationId: application_id,
-                  dob: dob,
+                  dob: userExist.tmp_data.dob,
                   serviceType: selected_category,
                 }
               );
