@@ -22,6 +22,7 @@ const responseBot = async (app) => {
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
+      console.log(visaSequence[visaSequence.indexOf(userExist.type) + 1],'visaSequence[visaSequence.indexOf(userExist.type) + 1]');
       try {
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
