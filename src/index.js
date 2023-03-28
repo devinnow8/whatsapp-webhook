@@ -73,12 +73,6 @@ const responseBot = async (app) => {
               );
               const data = await res.data;
               if (data) {
-                await bot.sendList(
-                  msg.from,
-                  "Select",
-                  "This is a list of services we provide. Please select one from the list.",
-                  generateText("list", data)
-                );
                 console.log(userExist, "userExistuserExist==> 222");
                 let tempData = { ...userExist.tmp_data };
                 let dataObj = {
@@ -95,6 +89,14 @@ const responseBot = async (app) => {
                 };
                 const res = await saveResponseData({ ...dataObj });
                 console.log(res, "resresres save db ==> 222");
+              if(res){
+                await bot.sendList(
+                  msg.from,
+                  "Select",
+                  "This is a list of services we provide. Please select one from the list.",
+                  generateText("list", data)
+                );
+              }
               }
             } catch (err) {
               console.log(err, "err");
