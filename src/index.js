@@ -26,13 +26,13 @@ const responseBot = async (app) => {
       try {
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
-            let tempData = {
+            let tempDataaa = {
               ...userExist.tmp_data,
               selected_category: msg.data.title,
               selected_category_id: msg.data.id,
             };
             console.log(userExist, "userExistuserExist==> 333");
-            let dataObj = {
+            let dataObjjj = {
               phone_number: msg.from,
               type:
                 userExist.type !== ""
@@ -41,9 +41,9 @@ const responseBot = async (app) => {
               message: "selected category",
               reply_with: "selected category",
               data: JSON.stringify(msg.data),
-              tmp_data: tempData,
+              tmp_data: tempDataaa,
             };
-            const res = await saveResponseData({ ...dataObj });
+            const res = await saveResponseData({ ...dataObjjj });
             console.log(res, "resresres save db ==> 333");
           }
         }
@@ -74,8 +74,8 @@ const responseBot = async (app) => {
               const data = await res.data;
               if (data) {
                 console.log(userExist, "userExistuserExist==> 222");
-                let tempData = { ...userExist.tmp_data };
-                let dataObj = {
+                let tempDataa = { ...userExist.tmp_data };
+                let dataObjj = {
                   phone_number: msg.from,
                   type:
                     userExist.type !== ""
@@ -85,9 +85,9 @@ const responseBot = async (app) => {
                     "This is a list of services we provide. Please select one from the list.",
                   reply_with: "",
                   data: JSON.stringify(msg.data),
-                  tmp_data: tempData,
+                  tmp_data: tempDataa,
                 };
-                const res = await saveResponseData({ ...dataObj });
+                const res = await saveResponseData({ ...dataObjj });
                 console.log(res, "resresres save db ==> 222");
               if(res){
                 await bot.sendList(
