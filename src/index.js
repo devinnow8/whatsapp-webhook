@@ -10,6 +10,7 @@ const { visaSequence } = require("./constant");
 
 const responseBot = async (app) => {
   try {
+    let userExist;
     const from = process.env.PHONE_NUMBER_ID;
     const token = process.env.TOKEN;
     const webhookVerifyToken = process.env.webhookVerifyToken;
@@ -23,14 +24,14 @@ const responseBot = async (app) => {
     });
 
     // Listen to ALL incoming messages
+    console.log(userExist, "userExistuserExist==>");
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
-      let userExist = await getResponseData(msg.from);
-      console.log(userExist, "userExistuserExist==>");
+      // userExist = await getResponseData(msg.from);
       try {
         const [messageData, resObj] = generateText(visaSequence[0]);
         await bot.sendReplyButtons(msg.from, messageData, resObj);
-        await setDbObj(msg, messageData, userExist);
+        userExist = await setDbObj(msg, messageData, userExist);
       } catch (err) {
         console.log(err);
       }
