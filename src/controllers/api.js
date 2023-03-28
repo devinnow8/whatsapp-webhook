@@ -86,7 +86,7 @@ const setDbObj = async (msg, messageData, userExist) => {
     tmp_data: userExist.tmp_data,
   };
   const res = await saveResponseData({ ...dataObj });
-  return await getResponseData(res.phone_number);
+  console.log(res, "resresres save db ==>");
 };
 module.exports = {
   getResponseData,
