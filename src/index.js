@@ -30,17 +30,43 @@ const responseBot = async (app) => {
       try {
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
-            let data = {
+            let tempData = {
+              ...userExist.tmp_data,
               selected_category: msg.data.title,
               selected_category_id: msg.data.id,
             };
-            await setDbObj(msg, messageData, userExist, data);
+            let dataObj = {
+              phone_number: msg.from,
+              type:
+                userExist.type !== ""
+                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                  : visaSequence[0],
+              message: "selected category",
+              reply_with: "selected category",
+              data: JSON.stringify(msg.data),
+              tmp_data: tempData,
+            };
+            const res = await saveResponseData({ ...dataObj });
+            console.log(res, "resresres save db ==>");
           }
         }
         if (!userExist) {
           const [messageData, resObj] = generateText(visaSequence[0]);
           await bot.sendReplyButtons(msg.from, messageData, resObj);
-          await setDbObj(msg, messageData, userExist);
+          let tempData = { ...userExist.tmp_data, asdf: "haf" };
+          let dataObj = {
+            phone_number: msg.from,
+            type:
+              userExist.type !== ""
+                ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                : visaSequence[0],
+            message: msg.data.text,
+            reply_with: messageData,
+            data: JSON.stringify(msg.data),
+            tmp_data: tempData,
+          };
+          const res = await saveResponseData({ ...dataObj });
+          console.log(res, "resresres save db ==>");
         } else {
           if (userExist.type === "Welcome_Message") {
             try {
@@ -55,11 +81,21 @@ const responseBot = async (app) => {
                   "This is a list of services we provide. Please select one from the list.",
                   generateText("list", data)
                 );
-                await setDbObj(
-                  msg,
-                  "This is a list of services we provide. Please select one from the list.",
-                  userExist
-                );
+                let tempData = { ...userExist.tmp_data, asdf: "haf" };
+                let dataObj = {
+                  phone_number: msg.from,
+                  type:
+                    userExist.type !== ""
+                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                      : visaSequence[0],
+                  message:
+                    "This is a list of services we provide. Please select one from the list.",
+                  reply_with: "",
+                  data: JSON.stringify(msg.data),
+                  tmp_data: tempData,
+                };
+                const res = await saveResponseData({ ...dataObj });
+                console.log(res, "resresres save db ==>");
               }
             } catch (err) {
               console.log(err, "err");

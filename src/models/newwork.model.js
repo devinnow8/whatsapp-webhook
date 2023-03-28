@@ -23,7 +23,7 @@ const newWork = new SCHEMA(
       default: "",
     },
     tmp_data: {
-      type: String,
+      type: Object,
       default: "",
     },
   },
