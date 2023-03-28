@@ -28,6 +28,15 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       console.log(userExist, "userExistuserExist==>");
       try {
+        if (msg.type === "list_reply") {
+          if (userExist.type === "select_category") {
+            let data = {
+              selected_category: msg.data.title,
+              selected_category_id: msg.data.id,
+            };
+            await setDbObj(msg, messageData, userExist, data);
+          }
+        }
         if (!userExist) {
           const [messageData, resObj] = generateText(visaSequence[0]);
           await bot.sendReplyButtons(msg.from, messageData, resObj);
@@ -45,6 +54,11 @@ const responseBot = async (app) => {
                   "Select",
                   "This is a list of services we provide. Please select one from the list.",
                   generateText("list", data)
+                );
+                await setDbObj(
+                  msg,
+                  "This is a list of services we provide. Please select one from the list.",
+                  userExist
                 );
               }
             } catch (err) {

@@ -76,14 +76,19 @@ const saveResponseData = async (req, res) => {
   }
 };
 
-const setDbObj = async (msg, messageData, userExist) => {
+const setDbObj = async (msg, messageData, userExist, data) => {
+  let tempData = { ...userExist.tmp_data, ...data };
+  console.log(tempData, "tempData==>");
   let dataObj = {
     phone_number: msg.from,
-    type: visaSequence[0],
+    type:
+      userExist.type !== ""
+        ? visaSequence[visaSequence.indexOf(userExist.next_response_type) + 1]
+        : visaSequence[0],
     message: msg.data.text,
     reply_with: messageData,
-    // data: JSON.stringify([messageData, resObj]),
-    tmp_data: userExist.tmp_data,
+    data: JSON.stringify(msg.data),
+    tmp_data: tempData,
   };
   const res = await saveResponseData({ ...dataObj });
   console.log(res, "resresres save db ==>");
