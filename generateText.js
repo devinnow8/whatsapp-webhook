@@ -23,6 +23,10 @@ function generateText(type, data) {
       return {
         get_Details: "get Details",
       };
+      case "get_center":
+        return{
+          get_center: 'Get Center'
+        }
     case "list":
       const dataArr =
         data.length > 0 &&

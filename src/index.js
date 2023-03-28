@@ -26,7 +26,84 @@ const responseBot = async (app) => {
       try {
         if(msg.type === 'button_reply'){
           if(msg.data.id === 'get_Details'){
+            const {selected_category, application_id, dob} = userExist.tmp_data
             console.log(userExist,'userrrr===>');
+            try{
+              const detailRes = await axios.post(
+                process.env.API_END_POINT + "/application-detail",
+                {
+                  applicationId: application_id,
+                  dob: dob,
+                  serviceType: selected_category,
+                }
+              );
+              const data = await detailRes.data;
+              const {
+                appointmentId,
+                appointmentDate,
+                appointmentTime,
+                applicantFullName,
+                status,
+                price,
+                currency,
+                phone_number,
+                email,
+                applicationId,
+                name,
+                country,
+                category,
+                dob,
+                service_type,
+              } = data;
+              if(!appointmentId){
+                const newObj = {
+                  applicationId,
+                  name,
+                  country,
+                  category,
+                  dob,
+                  email,
+                  phone_number,
+                  service_type,
+                };
+                let msgs = ''
+                Object.keys(newObj).forEach((item) => {
+                  msgs = `${item}: ${newObj[item]}`
+                 
+                });
+                setTimeout(() => {
+                  // bot.sendText(msg.from, msgs);
+                   bot.sendReplyButtons(
+                    msg.from,
+                    msgs,
+                    generateText('get_center', msg.data)
+                  );
+                }, 700);
+
+              }else{
+                // booked work
+              }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+          if(msg.data.id === 'get_center'){
+            try{
+              const res = await axios.get(
+                process.env.API_END_POINT + "/center-list"
+              );
+              const data = await res.data;
+              if (data) {
+                await bot.sendList(
+                  msg.from,
+                  "Select",
+                  "This is a list of centers. Please select one from the list.",
+                  generateText("center_list", data)
+                );
+              }
+            } catch (err){
+              console.log(err);
+            }
           }
         }
         if (msg.type === "list_reply") {
@@ -124,7 +201,7 @@ const responseBot = async (app) => {
             if(ressss){
               await bot.sendText(
                 msg.from,
-                visaSequence[visaSequence.indexOf(userExist.type) + 1] === "dob"
+                visaSequence[visaSequence.indexOf(userExist.type) + 1] === "DOB"
                   ? `${visaSequence[visaSequence.indexOf(userExist.type) + 1]} eg:(1996-07-21)`
                   : visaSequence[visaSequence.indexOf(userExist.type) + 1]
               );
@@ -145,7 +222,6 @@ const responseBot = async (app) => {
             };
             const resssss = await saveResponseData({ ...dataObjjjjj });
             if(resssss){
-
               await bot.sendReplyButtons(
                 msg.from,
                 "Get Details",
