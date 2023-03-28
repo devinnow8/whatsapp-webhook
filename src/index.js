@@ -9,8 +9,6 @@ const {
 const visaSequence = require("./constant");
 
 const responseBot = async (app) => {
-  let userExist = await getResponseData(msg.from);
-  console.log(userExist, "userExistuserExist==>");
   try {
     const from = process.env.PHONE_NUMBER_ID;
     const token = process.env.TOKEN;
@@ -27,6 +25,8 @@ const responseBot = async (app) => {
     // Listen to ALL incoming messages
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
+      let userExist = await getResponseData(msg.from);
+      console.log(userExist, "userExistuserExist==>");
       try {
         const [messageData, resObj] = generateText(visaSequence[0]);
         await bot.sendReplyButtons(msg.from, messageData, resObj);
