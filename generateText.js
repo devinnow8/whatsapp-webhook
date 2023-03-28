@@ -1,4 +1,4 @@
-const visaSequence = require("./src/constant");
+const { visaSequence } = require("./src/constant");
 
 function respondToList(data) {
   switch (data.title) {

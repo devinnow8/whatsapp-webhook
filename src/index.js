@@ -6,7 +6,7 @@ const {
   saveResponseData,
   setDbObj,
 } = require("./controllers/api");
-const visaSequence = require("./constant");
+const { visaSequence } = require("./constant");
 
 const responseBot = async (app) => {
   try {

@@ -1,6 +1,6 @@
 const responseTable = require("../models/response.model");
 const newWork = require("../models/newwork.model");
-const visaSequence = require("../constant");
+const { visaSequence } = require("../constant");
 
 // const getResponseData = async (req, res, next) => {
 //   try {
