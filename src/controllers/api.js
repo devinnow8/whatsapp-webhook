@@ -65,7 +65,7 @@ const saveResponseData = async (req, res) => {
       }
       return newResponseTable;
     } else {
-      userExist = await responseTable.findOneAndUpdate(
+      userExist = await newWork.findOneAndUpdate(
         { phone_number: req.phone_number },
         req
       );

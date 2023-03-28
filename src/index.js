@@ -47,13 +47,13 @@ const responseBot = async (app) => {
               tmp_data: tempData,
             };
             const res = await saveResponseData({ ...dataObj });
-            console.log(res, "resresres save db ==>");
+            console.log(res, "resresres save db ==> 111");
           }
         }
         if (!userExist) {
           const [messageData, resObj] = generateText(visaSequence[0]);
           await bot.sendReplyButtons(msg.from, messageData, resObj);
-          let tempData = { ...userExist.tmp_data, asdf: "haf" };
+          let tempData = { ...userExist.tmp_data };
           let dataObj = {
             phone_number: msg.from,
             type:
@@ -66,7 +66,7 @@ const responseBot = async (app) => {
             tmp_data: tempData,
           };
           const res = await saveResponseData({ ...dataObj });
-          console.log(res, "resresres save db ==>");
+          console.log(res, "resresres save db ==> 222");
         } else {
           if (userExist.type === "Welcome_Message") {
             try {
@@ -81,7 +81,7 @@ const responseBot = async (app) => {
                   "This is a list of services we provide. Please select one from the list.",
                   generateText("list", data)
                 );
-                let tempData = { ...userExist.tmp_data, asdf: "haf" };
+                let tempData = { ...userExist.tmp_data };
                 let dataObj = {
                   phone_number: msg.from,
                   type:
@@ -95,7 +95,7 @@ const responseBot = async (app) => {
                   tmp_data: tempData,
                 };
                 const res = await saveResponseData({ ...dataObj });
-                console.log(res, "resresres save db ==>");
+                console.log(res, "resresres save db ==> 333");
               }
             } catch (err) {
               console.log(err, "err");
