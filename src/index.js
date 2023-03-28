@@ -150,7 +150,6 @@ const responseBot = async (app) => {
                 center_id: msg.data.id,
                 selected_date: dateAndTime[0],
                 selected_time: dateAndTime[1] + " " + dateAndTime[2],
-                selected_day: dateAndTime[3],
               };
               // console.log(msg, "msg.datamsg.data==>", userExist);
               const res = await saveResponseData({ ...dataObjcenter });

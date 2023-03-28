@@ -81,7 +81,7 @@ function generateText(type, data) {
         data.map((item) => {
           return {
             id: item.id,
-            title: item.day + " " + item.fromTime + " " + item.day,
+            title: item.day + " " + item.fromTime,
           };
         });
       return {
