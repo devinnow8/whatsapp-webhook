@@ -28,9 +28,30 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       console.log(userExist, "userExistuserExist==>");
       try {
-        const [messageData, resObj] = generateText(visaSequence[0]);
-        await bot.sendReplyButtons(msg.from, messageData, resObj);
-        await setDbObj(msg, messageData, userExist);
+        if (!userExist) {
+          const [messageData, resObj] = generateText(visaSequence[0]);
+          await bot.sendReplyButtons(msg.from, messageData, resObj);
+          await setDbObj(msg, messageData, userExist);
+        } else {
+          if (userExist.type === "Welcome_Message") {
+            try {
+              const res = await axios.get(
+                process.env.API_END_POINT + "/category-list"
+              );
+              const data = await res.data;
+              if (data) {
+                await bot.sendList(
+                  msg.from,
+                  "Select",
+                  "This is a list of services we provide. Please select one from the list.",
+                  generateText("list", data)
+                );
+              }
+            } catch (err) {
+              console.log(err, "err");
+            }
+          }
+        }
       } catch (err) {
         console.log(err);
       }
