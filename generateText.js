@@ -19,6 +19,10 @@ function generateText(type, data) {
         "Hi, Welcome to OIS appointment booking system. Please select the category",
         { "get-list-btn": "Category List" },
       ];
+      case "get_Details":
+      return {
+        get_Details: "get Details",
+      };
     case "list":
       const dataArr =
         data.length > 0 &&
@@ -50,10 +54,7 @@ function generateText(type, data) {
         confirm: "Confirm & Continue",
         // "0-btn-2": "Continue Here",
       };
-    case "get_Details":
-      return {
-        get_Details: "get Details",
-      };
+    
     case "book_appointment":
       return {
         book_appointment: "Book Appointment",
