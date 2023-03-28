@@ -112,6 +112,10 @@ const responseBot = async (app) => {
               console.log(err, "err");
             }
           }
+          if (userExist.type === "Application_id") {
+            console.log(msg,'msg----> Application_id');
+
+          }
         }
       } catch (err) {
         console.log(err);
