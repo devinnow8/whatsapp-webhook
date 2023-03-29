@@ -68,19 +68,38 @@ const responseBot = async (app) => {
                   email,
                   phone_number,
                   service_type,
+                  status,
+                  price,
+                  currency,
                 };
-                let msgs = "";
-                Object.keys(newObj).forEach((item) => {
-                  msgs = `${item}: ${newObj[item]}`;
-                });
-                setTimeout(() => {
-                  // bot.sendText(msg.from, msgs);
-                  bot.sendReplyButtons(
-                    msg.from,
-                    msgs,
-                    generateText("get_center", msg.data)
-                  );
-                }, 700);
+
+                let temp_Data = { ...userExist.tmp_data, newObj };
+                let data_Obj = {
+                  phone_number: msg.from,
+                  type:
+                    userExist.type !== ""
+                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                      : visaSequence[0],
+                  message: msg.data.text,
+                  reply_with: messageData,
+                  data: JSON.stringify(msg.data),
+                  tmp_data: temp_Data,
+                };
+                const res = await saveResponseData({ ...data_Obj });
+                if (res) {
+                  let msgs = "";
+                  Object.keys(newObj).forEach((item) => {
+                    msgs = `${item}: ${newObj[item]}`;
+                  });
+                  setTimeout(() => {
+                    // bot.sendText(msg.from, msgs);
+                    bot.sendReplyButtons(
+                      msg.from,
+                      msgs,
+                      generateText("get_center", msg.data)
+                    );
+                  }, 700);
+                }
               } else {
                 // booked work
               }
@@ -124,6 +143,42 @@ const responseBot = async (app) => {
                   generateText("list_date", filterdData)
                 );
               }
+            } catch (err) {
+              console.log(err);
+            }
+          }
+          if (msg.data.id === "book_appointment") {
+            try {
+              let apiObj = [
+                {
+                  application_id: userExist.tmp_data.appointmentId,
+                  appointment_date: userExist.tmp_data.selected_date,
+                  appointment_time: userExist.tmp_data.selected_time,
+                  appointment_day: userExist.tmp_data.selected_day,
+                  applicant_fullname: userExist.tmp_data.name,
+                  category: userExist.tmp_data.selected_category,
+                  country: userExist.tmp_data.country,
+                  service_type: userExist.tmp_data.service_type,
+                  id_number: userExist.tmp_data.id_number,
+                  currency: userExist.tmp_data.currency,
+                  id_type: userExist.tmp_data.id_type,
+                  dob: userExist.tmp_data.dob,
+                  email: userExist.tmp_data.email,
+                  phone_number: userExist.tmp_data.phone,
+                  price: userExist.tmp_data.price,
+                },
+              ];
+              console.log(userExist, "dataObjcenter==>", dataObjcenter);
+              const detailRes = await axios.post(
+                process.env.API_END_POINT +
+                  `center/${userExist.tmp_data.center_id}/appointment`,
+                {
+                  apiObj,
+                }
+              );
+
+              console.log(detailRes, "datadatadata===--->");
+              const data = await detailRes.data;
             } catch (err) {
               console.log(err);
             }
@@ -179,6 +234,34 @@ const responseBot = async (app) => {
                 msg.from,
                 "Please choose the available slot 10 slots (date time) and more button",
                 generateText("get_DateAndTime", msg.data)
+              );
+            }
+          }
+          if (userExist.type === "Date_Time") {
+            let dateAndTime = msg.data.title.split(" ");
+            let data_obj = {
+              ...userExist.tmp_data,
+              selected_date: dateAndTime[0],
+              selected_time: dateAndTime[1],
+            };
+            let objjData = {
+              phone_number: msg.from,
+              type:
+                userExist.type !== ""
+                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                  : visaSequence[0],
+              message: msg.data.text,
+              reply_with: "confrm",
+              data: JSON.stringify(msg.data),
+              tmp_data: data_obj,
+            };
+            const response = await saveResponseData({ ...objjData });
+            console.log(response, "responseresponse==>");
+            if (response) {
+              await bot.sendReplyButtons(
+                msg.from,
+                "Book appointment",
+                generateText("book_appointment", msg.data)
               );
             }
           }

@@ -50,6 +50,10 @@ function generateText(type, data) {
       return {
         Services: [...dataList],
       };
+    case "book_appointment":
+      return {
+        book_appointment: "Book Appointment",
+      };
 
     case "list_reply":
       return respondToList(data);
@@ -61,10 +65,6 @@ function generateText(type, data) {
         // "0-btn-2": "Continue Here",
       };
 
-    case "book_appointment":
-      return {
-        book_appointment: "Book Appointment",
-      };
     case "center_list":
       const dataArrCenter =
         data.length > 0 &&
