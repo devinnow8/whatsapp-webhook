@@ -116,55 +116,13 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
       );
       console.log(detailRes, "detailResdetailRes===>>>");
       const data = await detailRes.data;
-      const {
-        appointmentId,
-        status,
-        price,
-        currency,
-        phone_number,
-        email,
-        applicationId,
-        name,
-        country,
-        category,
-        dob,
-        service_type,
-      } = data;
-      if (!appointmentId) {
-        const newObj = {
-          applicationId,
-          name,
-          country,
-          category,
-          dob,
-          email,
-          phone_number,
-          service_type,
-          status,
-          price,
-          currency,
-        };
-
-        let temp_Data = { ...userExist.tmp_data, ...newObj };
-        let data_Obj = {
-          phone_number: msg.from,
-          type: "Center",
-          message: msg.data.text,
-          reply_with: "get details",
-          data: JSON.stringify(msg.data),
-          tmp_data: temp_Data,
-        };
-        const res = await saveResponseData({ ...data_Obj });
-        if (res) {
-          await getCenterList(msg, bot);
-        }
-      } else {
+      if(data.include('Application not found')){
         let tempDataaa = { ...userExist.tmp_data };
         let dataaObjj = {
           phone_number: msg.from,
           type: "select_category",
           message:
-            "An appointment has been already booked with your appointment Id. Check for Details Below.",
+            "Application not found",
           reply_with: "",
           data: JSON.stringify(msg.data),
           tmp_data: tempDataaa,
@@ -173,9 +131,72 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
         if (res) {
           bot.sendText(
             msg.from,
-            `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-            { preview_url: true }
+            `Application not found`
           );
+        }
+
+      }else{
+        const {
+          appointmentId,
+          status,
+          price,
+          currency,
+          phone_number,
+          email,
+          applicationId,
+          name,
+          country,
+          category,
+          dob,
+          service_type,
+        } = data;
+        if (!appointmentId) {
+          const newObj = {
+            applicationId,
+            name,
+            country,
+            category,
+            dob,
+            email,
+            phone_number,
+            service_type,
+            status,
+            price,
+            currency,
+          };
+  
+          let temp_Data = { ...userExist.tmp_data, ...newObj };
+          let data_Obj = {
+            phone_number: msg.from,
+            type: "Center",
+            message: msg.data.text,
+            reply_with: "get details",
+            data: JSON.stringify(msg.data),
+            tmp_data: temp_Data,
+          };
+          const res = await saveResponseData({ ...data_Obj });
+          if (res) {
+            await getCenterList(msg, bot);
+          }
+        } else {
+          let tempDataaa = { ...userExist.tmp_data };
+          let dataaObjj = {
+            phone_number: msg.from,
+            type: "select_category",
+            message:
+              "An appointment has been already booked with your appointment Id. Check for Details Below.",
+            reply_with: "",
+            data: JSON.stringify(msg.data),
+            tmp_data: tempDataaa,
+          };
+          const res = await saveResponseData({ ...dataaObjj });
+          if (res) {
+            bot.sendText(
+              msg.from,
+              `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+              { preview_url: true }
+            );
+          }
         }
       }
     } catch (err) {
