@@ -208,7 +208,7 @@ const responseBot = async (app) => {
               const detailRes = await axios.post(
                 process.env.API_END_POINT +
                   `/center/${userExist.tmp_data.center_id}/appointment`,
-                ...apiObj
+                apiObj
               );
 
               console.log(detailRes, "datadatadata===--->");
