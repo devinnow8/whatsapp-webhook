@@ -69,12 +69,12 @@ const responseBot = async (app) => {
                 };
                 const resss = await saveResponseData({ ...dataObjjjj });
                 if (resss) {
+                  await deleteUser(msg.from);
                   bot.sendText(
                     msg.from,
                     `Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here: https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
                     { preview_url: true }
                   );
-                  deleteUser(msg.from);
                 }
               }
             } catch (err) {
