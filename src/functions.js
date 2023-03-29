@@ -115,7 +115,6 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
         }
       );
       const data = await detailRes.data;
-      console.log(data, "detailResdetailRes===>>>");
         const {
           appointmentId,
           status,
@@ -179,7 +178,6 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           }
         }
     } catch (err) {
-      console.log(userExist,'userExistuserExist--->>>');
       let tempDataaa = { ...userExist.tmp_data };
       let dataaObjj = {
         phone_number: msg.from,

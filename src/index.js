@@ -39,7 +39,6 @@ const responseBot = async (app) => {
           await getcategory(msg, userExist, bot);
         } else {
           let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
-          console.log(hours, "hourshourshours==>");
           if (hours > 0) {
             await deleteUser(msg.from);
             await getcategory(msg, userExist, bot);
