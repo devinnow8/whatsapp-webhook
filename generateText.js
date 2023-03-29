@@ -1,11 +1,11 @@
 function generateText(type, data) {
   switch (type) {
+    // case "Welcome_Message":
+    //   return [
+    //     "Hi, Welcome to OIS appointment booking system. Please select the category",
+    //     { "get-list-btn": "Category List" },
+    //   ];
     case "Welcome_Message":
-      return [
-        "Hi, Welcome to OIS appointment booking system. Please select the category",
-        { "get-list-btn": "Category List" },
-      ];
-    case "list":
       const dataArr =
         data.length > 0 &&
         data.map((item) => {

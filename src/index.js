@@ -28,6 +28,40 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       try {
         if (msg.type === "button_reply") {
+          if (msg.data.id === "Welcome_Message") {
+            try {
+              const res = await axios.get(
+                process.env.API_END_POINT + "/category-list"
+              );
+              const data = await res.data;
+              if (data) {
+                let tempDataa = { ...userExist.tmp_data };
+                let dataObjj = {
+                  phone_number: msg.from,
+                  type:
+                    userExist.type !== ""
+                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                      : visaSequence[0],
+                  message:
+                    "Hi, Welcome to OIS appointment booking system. Please select the category",
+                  reply_with: "",
+                  data: JSON.stringify(msg.data),
+                  tmp_data: tempDataa,
+                };
+                const res = await saveResponseData({ ...dataObjj });
+                if (res) {
+                  await bot.sendList(
+                    msg.from,
+                    "Select",
+                    "Hi, Welcome to OIS appointment booking system. Please select the category",
+                    generateText("Welcome_Message", data)
+                  );
+                }
+              }
+            } catch (err) {
+              console.log(err, "err");
+            }
+          }
           if (msg.data.id === "book_appointment") {
             try {
               let apiObj = [
@@ -213,40 +247,40 @@ const responseBot = async (app) => {
           };
           const res = await saveResponseData({ ...dataObj });
         } else {
-          if (userExist.type === "Welcome_Message") {
-            try {
-              const res = await axios.get(
-                process.env.API_END_POINT + "/category-list"
-              );
-              const data = await res.data;
-              if (data) {
-                let tempDataa = { ...userExist.tmp_data };
-                let dataObjj = {
-                  phone_number: msg.from,
-                  type:
-                    userExist.type !== ""
-                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                      : visaSequence[0],
-                  message:
-                    "This is a list of services we provide. Please select one from the list.",
-                  reply_with: "",
-                  data: JSON.stringify(msg.data),
-                  tmp_data: tempDataa,
-                };
-                const res = await saveResponseData({ ...dataObjj });
-                if (res) {
-                  await bot.sendList(
-                    msg.from,
-                    "Select",
-                    "This is a list of services we provide. Please select one from the list.",
-                    generateText("list", data)
-                  );
-                }
-              }
-            } catch (err) {
-              console.log(err, "err");
-            }
-          }
+          // if (userExist.type === "Welcome_Message") {
+          //   try {
+          //     const res = await axios.get(
+          //       process.env.API_END_POINT + "/category-list"
+          //     );
+          //     const data = await res.data;
+          //     if (data) {
+          //       let tempDataa = { ...userExist.tmp_data };
+          //       let dataObjj = {
+          //         phone_number: msg.from,
+          //         type:
+          //           userExist.type !== ""
+          //             ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+          //             : visaSequence[0],
+          //         message:
+          //           "This is a list of services we provide. Please select one from the list.",
+          //         reply_with: "",
+          //         data: JSON.stringify(msg.data),
+          //         tmp_data: tempDataa,
+          //       };
+          //       const res = await saveResponseData({ ...dataObjj });
+          //       if (res) {
+          //         await bot.sendList(
+          //           msg.from,
+          //           "Select",
+          //           "This is a list of services we provide. Please select one from the list.",
+          //           generateText("list", data)
+          //         );
+          //       }
+          //     }
+          //   } catch (err) {
+          //     console.log(err, "err");
+          //   }
+          // }
           if (userExist.type === "Application_id") {
             let tempDataaaa = {
               ...userExist.tmp_data,
