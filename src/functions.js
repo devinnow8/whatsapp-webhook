@@ -155,22 +155,7 @@ const getApplicationDetailAndcenter = async (msg, userExist) => {
         };
         const res = await saveResponseData({ ...data_Obj });
         if (res) {
-          try {
-            const res = await axios.get(
-              process.env.API_END_POINT + "/center-list"
-            );
-            const data = await res.data;
-            if (data) {
-              await bot.sendList(
-                msg.from,
-                "Select",
-                "This is a list of centers. Please select one from the list.",
-                generateText("center_list", data)
-              );
-            }
-          } catch (err) {
-            console.log(err);
-          }
+          await getCenterList(msg);
         }
       } else {
         let tempDataaa = { ...userExist.tmp_data };
@@ -318,6 +303,22 @@ const allReadyBooked = async (msg, userExist) => {
   }
 };
 
+const getCenterList = async (msg) => {
+  try {
+    const res = await axios.get(process.env.API_END_POINT + "/center-list");
+    const data = await res.data;
+    if (data) {
+      await bot.sendList(
+        msg.from,
+        "Select",
+        "This is a list of centers. Please select one from the list.",
+        generateText("center_list", data)
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = {
   getcategory,
   getApplicationId,

@@ -30,8 +30,6 @@ const responseBot = async (app) => {
       return Math.abs(Math.round(diff));
     };
 
-    // functions
-
     // Listen to ALL incoming messages
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
