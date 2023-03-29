@@ -142,46 +142,46 @@ const responseBot = async (app) => {
           //     console.log(err);
           //   }
           // }
-          if (msg.data.id === "get_center") {
-            // try {
-            //   const res = await axios.get(
-            //     process.env.API_END_POINT + "/center-list"
-            //   );
-            //   const data = await res.data;
-            //   if (data) {
-            //     await bot.sendList(
-            //       msg.from,
-            //       "Select",
-            //       "This is a list of centers. Please select one from the list.",
-            //       generateText("center_list", data)
-            //     );
-            //   }
-            // } catch (err) {
-            //   console.log(err);
-            // }
-          }
-          if (msg.data.id === "get_DateAndTime") {
-            try {
-              const detailRes = await axios.get(
-                process.env.API_END_POINT +
-                  `/center/${userExist.tmp_data.center_id}/appointment-slot`
-              );
-              console.log(detailRes, "detailResdetailRes==>>>");
-              const data = await detailRes.data;
-              const filterdData =
-                data && data.filter((item) => item.type === "date");
-              if (filterdData) {
-                await bot.sendList(
-                  msg.from,
-                  "Select",
-                  "This is a list of Date and time. Please select one from the list.",
-                  generateText("list_date", filterdData)
-                );
-              }
-            } catch (err) {
-              console.log(err);
-            }
-          }
+          // if (msg.data.id === "get_center") {
+          //   try {
+          //     const res = await axios.get(
+          //       process.env.API_END_POINT + "/center-list"
+          //     );
+          //     const data = await res.data;
+          //     if (data) {
+          //       await bot.sendList(
+          //         msg.from,
+          //         "Select",
+          //         "This is a list of centers. Please select one from the list.",
+          //         generateText("center_list", data)
+          //       );
+          //     }
+          //   } catch (err) {
+          //     console.log(err);
+          //   }
+          // }
+          // if (msg.data.id === "get_DateAndTime") {
+          //   try {
+          //     const detailRes = await axios.get(
+          //       process.env.API_END_POINT +
+          //         `/center/${userExist.tmp_data.center_id}/appointment-slot`
+          //     );
+          //     console.log(detailRes, "detailResdetailRes==>>>");
+          //     const data = await detailRes.data;
+          //     const filterdData =
+          //       data && data.filter((item) => item.type === "date");
+          //     if (filterdData) {
+          //       await bot.sendList(
+          //         msg.from,
+          //         "Select",
+          //         "This is a list of Date and time. Please select one from the list.",
+          //         generateText("list_date", filterdData)
+          //       );
+          //     }
+          //   } catch (err) {
+          //     console.log(err);
+          //   }
+          // }
           if (msg.data.id === "book_appointment") {
             try {
               let apiObj = [
@@ -223,10 +223,15 @@ const responseBot = async (app) => {
                 };
                 const resss = await saveResponseData({ ...dataObjjjj });
                 if (resss) {
-                  bot.sendReplyButtons(
+                  // bot.sendReplyButtons(
+                  //   msg.from,
+                  //   "Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here:",
+                  //   generateText("get_slip", msg.data)
+                  // );
+                  bot.sendText(
                     msg.from,
-                    "Download booking slip",
-                    generateText("get_slip", msg.data)
+                    `Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here: https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
+                    { preview_url: true }
                   );
                 }
               }
@@ -307,11 +312,31 @@ const responseBot = async (app) => {
             const response = await saveResponseData({ ...objData });
             console.log(response, "responseresponse==>");
             if (response) {
-              await bot.sendReplyButtons(
-                msg.from,
-                "Please choose the available slot 10 slots (date time) and more button",
-                generateText("get_DateAndTime", msg.data)
-              );
+              // await bot.sendReplyButtons(
+              //   msg.from,
+              //   "Please choose the available slot 10 slots (date time) and more button",
+              //   generateText("get_DateAndTime", msg.data)
+              // );
+              try {
+                const detailRes = await axios.get(
+                  process.env.API_END_POINT +
+                    `/center/${userExist.tmp_data.center_id}/appointment-slot`
+                );
+                console.log(detailRes, "detailResdetailRes==>>>");
+                const data = await detailRes.data;
+                const filterdData =
+                  data && data.filter((item) => item.type === "date");
+                if (filterdData) {
+                  await bot.sendList(
+                    msg.from,
+                    "Select",
+                    "This is a list of Date and time. Please select one from the list.",
+                    generateText("list_date", filterdData)
+                  );
+                }
+              } catch (err) {
+                console.log(err);
+              }
             }
           }
           if (userExist.type === "Date_Time") {
@@ -536,8 +561,7 @@ const responseBot = async (app) => {
                   };
                   bot.sendText(
                     msg.from,
-                    "An appointment has been already booked with your appointment Id. Check for Details Below.",
-                    `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+                    `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
                     { preview_url: true }
                   );
                   // setTimeout(() => {
