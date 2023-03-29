@@ -3,7 +3,6 @@ const visaSequence = [
   "select_category",
   "Application_id",
   "DOB",
-  "get_Details",
   "Center",
   "Date_Time",
   "Confirm",
