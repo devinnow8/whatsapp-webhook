@@ -143,22 +143,22 @@ const responseBot = async (app) => {
           //   }
           // }
           if (msg.data.id === "get_center") {
-            try {
-              const res = await axios.get(
-                process.env.API_END_POINT + "/center-list"
-              );
-              const data = await res.data;
-              if (data) {
-                await bot.sendList(
-                  msg.from,
-                  "Select",
-                  "This is a list of centers. Please select one from the list.",
-                  generateText("center_list", data)
-                );
-              }
-            } catch (err) {
-              console.log(err);
-            }
+            // try {
+            //   const res = await axios.get(
+            //     process.env.API_END_POINT + "/center-list"
+            //   );
+            //   const data = await res.data;
+            //   if (data) {
+            //     await bot.sendList(
+            //       msg.from,
+            //       "Select",
+            //       "This is a list of centers. Please select one from the list.",
+            //       generateText("center_list", data)
+            //     );
+            //   }
+            // } catch (err) {
+            //   console.log(err);
+            // }
           }
           if (msg.data.id === "get_DateAndTime") {
             try {
@@ -495,18 +495,32 @@ const responseBot = async (app) => {
                   };
                   const res = await saveResponseData({ ...data_Obj });
                   if (res) {
-                    let msgs = "";
-                    Object.keys(newObj).forEach((item) => {
-                      msgs = `${item}: ${newObj[item]}`;
-                    });
                     setTimeout(() => {
-                      // bot.sendText(msg.from, msgs);
-                      bot.sendReplyButtons(
-                        msg.from,
-                        msgs,
-                        generateText("get_center", msg.data)
-                      );
+                      Object.keys(newObj).forEach((item) => {
+                        bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+                      });
                     }, 700);
+                    // bot.sendReplyButtons(
+                    //   msg.from,
+                    //   msgs,
+                    //   generateText("get_center", msg.data)
+                    // );
+                    try {
+                      const res = await axios.get(
+                        process.env.API_END_POINT + "/center-list"
+                      );
+                      const data = await res.data;
+                      if (data) {
+                        await bot.sendList(
+                          msg.from,
+                          "Select",
+                          "This is a list of centers. Please select one from the list.",
+                          generateText("center_list", data)
+                        );
+                      }
+                    } catch (err) {
+                      console.log(err);
+                    }
                   }
                 } else {
                   const newObj = {
