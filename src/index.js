@@ -151,7 +151,7 @@ const responseBot = async (app) => {
             try {
               let apiObj = [
                 {
-                  application_id: userExist.tmp_data.appointmentId || "",
+                  application_id: userExist.tmp_data.applicationId || "",
                   appointment_date: userExist.tmp_data.selected_date || "",
                   appointment_time: userExist.tmp_data.selected_time || "",
                   appointment_day: userExist.tmp_data.selected_day || "",
@@ -172,7 +172,7 @@ const responseBot = async (app) => {
                 process.env.API_END_POINT +
                   `center/${userExist.tmp_data.center_id}/appointment`,
                 {
-                  apiObj,
+                  ...apiObj,
                 }
               );
 
@@ -241,7 +241,7 @@ const responseBot = async (app) => {
             let data_obj = {
               ...userExist.tmp_data,
               selected_date: dateAndTime[0],
-              selected_time: dateAndTime[1],
+              selected_time: dateAndTime[1] + " " + dateAndTime[2],
             };
             let objjData = {
               phone_number: msg.from,
