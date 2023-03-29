@@ -101,7 +101,44 @@ const responseBot = async (app) => {
                   }, 700);
                 }
               } else {
-                // booked work
+                const newObj = {
+                  appointmentId,
+                  appointmentDate,
+                  appointmentTime,
+                  applicantFullName,
+                  status,
+                  price,
+                  currency,
+                  phone_number,
+                  email,
+                };
+                bot.sendText(
+                  msg.from,
+                  "An appointment has been already booked with your appointment Id. Check for Details Below."
+                );
+                setTimeout(() => {
+                  Object.keys(newObj).forEach((item) => {
+                    bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+                  });
+                }, 700);
+                let tempDataaa = { ...userExist.tmp_data };
+                let dataaObjj = {
+                  phone_number: msg.from,
+                  type: "select_category",
+                  message:
+                    "An appointment has been already booked with your appointment Id. Check for Details Below.",
+                  reply_with: "",
+                  data: JSON.stringify(msg.data),
+                  tmp_data: tempDataaa,
+                };
+                const res = await saveResponseData({ ...dataaObjj });
+                if (res) {
+                  bot.sendReplyButtons(
+                    msg.from,
+                    "Confirm",
+                    generateText("confirm", {})
+                  );
+                }
               }
             } catch (err) {
               console.log(err);
@@ -149,25 +186,23 @@ const responseBot = async (app) => {
           }
           if (msg.data.id === "book_appointment") {
             try {
-              let apiObj = [
-                {
-                  application_id: userExist.tmp_data.applicationId || "",
-                  appointment_date: userExist.tmp_data.selected_date || "",
-                  appointment_time: userExist.tmp_data.selected_time || "",
-                  appointment_day: userExist.tmp_data.selected_day || "",
-                  applicant_fullname: userExist.tmp_data.name || "",
-                  category: userExist.tmp_data.selected_category || "",
-                  country: userExist.tmp_data.country || "",
-                  service_type: userExist.tmp_data.service_type || "",
-                  id_number: userExist.tmp_data.id_number || "",
-                  currency: userExist.tmp_data.currency || "",
-                  id_type: userExist.tmp_data.id_type || "",
-                  dob: userExist.tmp_data.dob || "",
-                  email: userExist.tmp_data.email || "",
-                  phone_number: userExist.tmp_data.phone || "",
-                  price: userExist.tmp_data.price || "",
-                },
-              ];
+              let apiObj = {
+                application_id: userExist.tmp_data.applicationId || "",
+                appointment_date: userExist.tmp_data.selected_date || "",
+                appointment_time: userExist.tmp_data.selected_time || "",
+                appointment_day: userExist.tmp_data.selected_day || "",
+                applicant_fullname: userExist.tmp_data.name || "",
+                category: userExist.tmp_data.selected_category || "",
+                country: userExist.tmp_data.country || "",
+                service_type: userExist.tmp_data.service_type || "",
+                id_number: userExist.tmp_data.id_number || "",
+                currency: userExist.tmp_data.currency || "",
+                id_type: userExist.tmp_data.id_type || "",
+                dob: userExist.tmp_data.dob || "",
+                email: userExist.tmp_data.email || "",
+                phone_number: userExist.tmp_data.phone || "",
+                price: userExist.tmp_data.price || "",
+              };
               const detailRes = await axios.post(
                 process.env.API_END_POINT +
                   `center/${userExist.tmp_data.center_id}/appointment`,
