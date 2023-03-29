@@ -116,26 +116,6 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       console.log(data, "detailResdetailRes===>>>");
-      if(data.includes('Application not found')){
-        let tempDataaa = { ...userExist.tmp_data };
-        let dataaObjj = {
-          phone_number: msg.from,
-          type: "select_category",
-          message:
-            "Application not found",
-          reply_with: "",
-          data: JSON.stringify(msg.data),
-          tmp_data: tempDataaa,
-        };
-        const res = await saveResponseData({ ...dataaObjj });
-        if (res) {
-          bot.sendText(
-            msg.from,
-            `Application not found`
-          );
-        }
-
-      }else{
         const {
           appointmentId,
           status,
@@ -198,9 +178,24 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
             );
           }
         }
-      }
     } catch (err) {
-      console.log(err.response.data,'errrrrrr====>>>>');
+      let tempDataaa = { ...userExist.tmp_data };
+      let dataaObjj = {
+        phone_number: msg.from,
+        type: "select_category",
+        message:
+          "Application not found",
+        reply_with: "",
+        data: JSON.stringify(msg.data),
+        tmp_data: tempDataaa,
+      };
+      const res = await saveResponseData({ ...dataaObjj });
+      if (res) {
+        bot.sendText(
+          msg.from,
+          `Application not found`
+        );
+      }
     }
   }
 };
