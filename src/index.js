@@ -217,6 +217,26 @@ const responseBot = async (app) => {
               console.log(err);
             }
           }
+          if (msg.data.id === "confirm") {
+            let dataObjjj = {
+              phone_number: msg.from,
+              type:
+                userExist.type !== ""
+                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                  : visaSequence[0],
+              message: "selected category",
+              reply_with: "selected category",
+              data: JSON.stringify(msg.data),
+              tmp_data: { ...userExist.tmp_data },
+            };
+            const resss = await saveResponseData({ ...dataObjjj });
+            if (resss) {
+              await bot.sendText(
+                msg.from,
+                visaSequence[visaSequence.indexOf(userExist.type) + 1]
+              );
+            }
+          }
         }
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
