@@ -186,23 +186,25 @@ const responseBot = async (app) => {
           }
           if (msg.data.id === "book_appointment") {
             try {
-              let apiObj = {
-                application_id: userExist.tmp_data.applicationId || "",
-                appointment_date: userExist.tmp_data.selected_date || "",
-                appointment_time: userExist.tmp_data.selected_time || "",
-                appointment_day: userExist.tmp_data.selected_day || "",
-                applicant_fullname: userExist.tmp_data.name || "",
-                category: userExist.tmp_data.selected_category || "",
-                country: userExist.tmp_data.country || "",
-                service_type: userExist.tmp_data.service_type || "",
-                id_number: userExist.tmp_data.id_number || "",
-                currency: userExist.tmp_data.currency || "",
-                id_type: userExist.tmp_data.id_type || "",
-                dob: userExist.tmp_data.dob || "",
-                email: userExist.tmp_data.email || "",
-                phone_number: userExist.tmp_data.phone || "",
-                price: userExist.tmp_data.price || "",
-              };
+              let apiObj = [
+                {
+                  application_id: userExist.tmp_data.applicationId || "",
+                  appointment_date: userExist.tmp_data.selected_date || "",
+                  appointment_time: userExist.tmp_data.selected_time || "",
+                  appointment_day: userExist.tmp_data.selected_day || "",
+                  applicant_fullname: userExist.tmp_data.name || "",
+                  category: userExist.tmp_data.selected_category || "",
+                  country: userExist.tmp_data.country || "",
+                  service_type: userExist.tmp_data.service_type || "",
+                  id_number: userExist.tmp_data.id_number || "",
+                  currency: userExist.tmp_data.currency || "",
+                  id_type: userExist.tmp_data.id_type || "",
+                  dob: userExist.tmp_data.dob || "",
+                  email: userExist.tmp_data.email || "",
+                  phone_number: userExist.tmp_data.phone || "",
+                  price: userExist.tmp_data.price || "",
+                },
+              ];
               const detailRes = await axios.post(
                 process.env.API_END_POINT +
                   `/center/${userExist.tmp_data.center_id}/appointment`,
@@ -213,6 +215,27 @@ const responseBot = async (app) => {
 
               console.log(detailRes, "datadatadata===--->");
               const data = await detailRes.data;
+              if (data) {
+                let dataObjjjj = {
+                  phone_number: msg.from,
+                  type: "Booking_slip",
+                  message: "Booking slip",
+                  reply_with: "Booking_slip",
+                  data: JSON.stringify(msg.data),
+                  tmp_data: {
+                    ...userExist.tmp_data,
+                    Booking_slip: `${process.env.API_END_POINT}//appointment-pdf/${data.appointment_ids[0]}`,
+                  },
+                };
+                const resss = await saveResponseData({ ...dataObjjjj });
+                if (resss) {
+                  bot.sendReplyButtons(
+                    msg.from,
+                    "Download booking slip",
+                    generateText("get_slip", msg.data)
+                  );
+                }
+              }
             } catch (err) {
               console.log(err);
             }
@@ -236,6 +259,12 @@ const responseBot = async (app) => {
                 visaSequence[visaSequence.indexOf(userExist.type) + 1]
               );
             }
+          }
+          if (msg.data.id === "get_slip") {
+            let url = userExist.tmp_data.Booking_slip;
+            await bot.sendText(msg.from, url, {
+              preview_url: true,
+            });
           }
         }
         if (msg.type === "list_reply") {

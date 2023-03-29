@@ -74,6 +74,10 @@ function generateText(type, data) {
       return {
         Services: [...dataArrCenter],
       };
+    case "get_slip":
+      return {
+        get_slip: "Download",
+      };
 
     case "selected_date":
       return { selected_date: "Book appointment" };
