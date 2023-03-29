@@ -200,7 +200,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.log(err,'errrrrrr====>>>>');
     }
   }
 };
