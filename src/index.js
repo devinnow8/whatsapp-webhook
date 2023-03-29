@@ -158,7 +158,10 @@ const responseBot = async (app) => {
             if (resss) {
               await bot.sendText(
                 msg.from,
-                visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                visaSequence[visaSequence.indexOf(userExist.type) + 1] ===
+                  "Application_id"
+                  ? "Please enter your Application Id. If you have not filled the application yet, please click on the link attached."
+                  : visaSequence[visaSequence.indexOf(userExist.type) + 1]
               );
             }
           }
@@ -302,9 +305,7 @@ const responseBot = async (app) => {
               await bot.sendText(
                 msg.from,
                 visaSequence[visaSequence.indexOf(userExist.type) + 1] === "DOB"
-                  ? `${
-                      visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                    } eg:(1996-07-21)`
+                  ? "Please enter your date of birth in form of yyyy-mm-dd (for example if your date of birth is 22 may 1990 then enter it like: 1990-05-22)"
                   : visaSequence[visaSequence.indexOf(userExist.type) + 1]
               );
             }
