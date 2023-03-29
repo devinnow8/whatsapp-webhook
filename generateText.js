@@ -1,34 +1,10 @@
-const { visaSequence } = require("./src/constant");
-
-function respondToList(data) {
-  switch (data.title) {
-    case "visa":
-      return {
-        "0-btn-1": "Open Visa form",
-        // "0-btn-2": "Continue Here",
-      };
-    default:
-      return "Please select any other option!";
-  }
-}
-
 function generateText(type, data) {
   switch (type) {
-    case visaSequence[0]:
+    case "Welcome_Message":
       return [
         "Hi, Welcome to OIS appointment booking system. Please select the category",
         { "get-list-btn": "Category List" },
       ];
-    case "get_Details":
-      return {
-        get_Details: "get Details",
-      };
-    case "get_center":
-      return {
-        get_center: "Get Center",
-      };
-    case "get_DateAndTime":
-      return { get_DateAndTime: "select date and time" };
     case "list":
       const dataArr =
         data.length > 0 &&
@@ -54,15 +30,9 @@ function generateText(type, data) {
       return {
         book_appointment: "Book Appointment",
       };
-
-    case "list_reply":
-      return respondToList(data);
-    case "button_reply":
-      return respondToList(data);
     case "confirm":
       return {
         confirm: "Confirm & Continue",
-        // "0-btn-2": "Continue Here",
       };
 
     case "center_list":
@@ -74,14 +44,6 @@ function generateText(type, data) {
       return {
         Services: [...dataArrCenter],
       };
-    case "get_slip":
-      return {
-        get_slip: "Download",
-      };
-
-    case "selected_date":
-      return { selected_date: "Book appointment" };
-
     default:
       return "Apologies We don't accept this type of message as of now.";
   }
