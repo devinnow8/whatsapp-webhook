@@ -34,10 +34,7 @@ const responseBot = async (app) => {
       let tempData = { ...userExist.tmp_data };
       let dataObj = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "Welcome_Message",
         message: msg.data.text,
         reply_with:
           "Hi, Welcome to OIS appointment booking system. Please select the category",
@@ -54,10 +51,7 @@ const responseBot = async (app) => {
           let tempDataa = { ...userExist.tmp_data };
           let dataObjj = {
             phone_number: msg.from,
-            type:
-              userExist.type !== ""
-                ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                : visaSequence[0],
+            type: "select_category",
             message:
               "Hi, Welcome to OIS appointment booking system. Please select the category",
             reply_with: "",
@@ -85,10 +79,7 @@ const responseBot = async (app) => {
       };
       let dataObjjj = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "Application_id",
         message: "selected category",
         reply_with: "selected category",
         data: JSON.stringify(msg.data),
@@ -113,10 +104,7 @@ const responseBot = async (app) => {
       };
       let dataObjjjj = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "DOB",
         message: msg.data.text,
         reply_with: "dob",
         data: JSON.stringify(msg.data),
@@ -137,10 +125,7 @@ const responseBot = async (app) => {
       let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
       let dataObjjjjj = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "Center",
         message: msg.data.text,
         reply_with: "dob",
         data: JSON.stringify(msg.data),
@@ -191,10 +176,7 @@ const responseBot = async (app) => {
             let temp_Data = { ...userExist.tmp_data, ...newObj };
             let data_Obj = {
               phone_number: msg.from,
-              type:
-                userExist.type !== ""
-                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                  : visaSequence[0],
+              type: "Center",
               message: msg.data.text,
               reply_with: "get details",
               data: JSON.stringify(msg.data),
@@ -252,10 +234,7 @@ const responseBot = async (app) => {
       };
       let objData = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "Date_Time",
         message: msg.data.text,
         reply_with: "select center",
         data: JSON.stringify(msg.data),
@@ -294,10 +273,7 @@ const responseBot = async (app) => {
       };
       let objjData = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "Confirm",
         message: msg.data.text,
         reply_with: "confrm",
         data: JSON.stringify(msg.data),
@@ -364,10 +340,7 @@ const responseBot = async (app) => {
     const allReadyBooked = async (msg, userExist) => {
       let dataObjjj = {
         phone_number: msg.from,
-        type:
-          userExist.type !== ""
-            ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-            : visaSequence[0],
+        type: "select_category",
         message: "selected category",
         reply_with: "selected category",
         data: JSON.stringify(msg.data),
