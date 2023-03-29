@@ -22,128 +22,126 @@ const responseBot = async (app) => {
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
-      console.log(
-        visaSequence[visaSequence.indexOf(userExist.type) + 1],
-        "visaSequence[visaSequence.indexOf(userExist.type) + 1]"
-      );
       try {
         if (msg.type === "button_reply") {
-          if (msg.data.id === "get_Details") {
-            const { selected_category, application_id } = userExist.tmp_data;
-            console.log(userExist, "userrrr===>");
-            try {
-              const detailRes = await axios.post(
-                process.env.API_END_POINT + "/application-detail",
-                {
-                  applicationId: application_id,
-                  dob: userExist.tmp_data.dob,
-                  serviceType: selected_category,
-                }
-              );
-              const data = await detailRes.data;
-              const {
-                appointmentId,
-                appointmentDate,
-                appointmentTime,
-                applicantFullName,
-                status,
-                price,
-                currency,
-                phone_number,
-                email,
-                applicationId,
-                name,
-                country,
-                category,
-                dob,
-                service_type,
-              } = data;
-              if (!appointmentId) {
-                const newObj = {
-                  applicationId,
-                  name,
-                  country,
-                  category,
-                  dob,
-                  email,
-                  phone_number,
-                  service_type,
-                  status,
-                  price,
-                  currency,
-                };
+          // if (msg.data.id === "get_Details") {
+          //   const { selected_category, application_id } = userExist.tmp_data;
+          //   console.log(userExist, "userrrr===>");
+          //   try {
+          //     const detailRes = await axios.post(
+          //       process.env.API_END_POINT + "/application-detail",
+          //       {
+          //         applicationId: application_id,
+          //         dob: userExist.tmp_data.dob,
+          //         serviceType: selected_category,
+          //       }
+          //     );
+          //     const data = await detailRes.data;
+          //     const {
+          //       appointmentId,
+          //       appointmentDate,
+          //       appointmentTime,
+          //       applicantFullName,
+          //       status,
+          //       price,
+          //       currency,
+          //       phone_number,
+          //       email,
+          //       applicationId,
+          //       name,
+          //       country,
+          //       category,
+          //       dob,
+          //       service_type,
+          //     } = data;
+          //     if (!appointmentId) {
+          //       const newObj = {
+          //         applicationId,
+          //         name,
+          //         country,
+          //         category,
+          //         dob,
+          //         email,
+          //         phone_number,
+          //         service_type,
+          //         status,
+          //         price,
+          //         currency,
+          //       };
 
-                let temp_Data = { ...userExist.tmp_data, ...newObj };
-                let data_Obj = {
-                  phone_number: msg.from,
-                  type:
-                    userExist.type !== ""
-                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                      : visaSequence[0],
-                  message: msg.data.text,
-                  reply_with: "get details",
-                  data: JSON.stringify(msg.data),
-                  tmp_data: temp_Data,
-                };
-                const res = await saveResponseData({ ...data_Obj });
-                if (res) {
-                  let msgs = "";
-                  Object.keys(newObj).forEach((item) => {
-                    msgs = `${item}: ${newObj[item]}`;
-                  });
-                  setTimeout(() => {
-                    // bot.sendText(msg.from, msgs);
-                    bot.sendReplyButtons(
-                      msg.from,
-                      msgs,
-                      generateText("get_center", msg.data)
-                    );
-                  }, 700);
-                }
-              } else {
-                const newObj = {
-                  appointmentId,
-                  appointmentDate,
-                  appointmentTime,
-                  applicantFullName,
-                  status,
-                  price,
-                  currency,
-                  phone_number,
-                  email,
-                };
-                bot.sendText(
-                  msg.from,
-                  "An appointment has been already booked with your appointment Id. Check for Details Below."
-                );
-                setTimeout(() => {
-                  Object.keys(newObj).forEach((item) => {
-                    bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-                  });
-                }, 700);
-                let tempDataaa = { ...userExist.tmp_data };
-                let dataaObjj = {
-                  phone_number: msg.from,
-                  type: "select_category",
-                  message:
-                    "An appointment has been already booked with your appointment Id. Check for Details Below.",
-                  reply_with: "",
-                  data: JSON.stringify(msg.data),
-                  tmp_data: tempDataaa,
-                };
-                const res = await saveResponseData({ ...dataaObjj });
-                if (res) {
-                  bot.sendReplyButtons(
-                    msg.from,
-                    "Confirm",
-                    generateText("confirm", {})
-                  );
-                }
-              }
-            } catch (err) {
-              console.log(err);
-            }
-          }
+          //       let temp_Data = { ...userExist.tmp_data, ...newObj };
+          //       let data_Obj = {
+          //         phone_number: msg.from,
+          //         type:
+          //           userExist.type !== ""
+          //             ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+          //             : visaSequence[0],
+          //         message: msg.data.text,
+          //         reply_with: "get details",
+          //         data: JSON.stringify(msg.data),
+          //         tmp_data: temp_Data,
+          //       };
+          //       const res = await saveResponseData({ ...data_Obj });
+          //       if (res) {
+          //         let msgs = "";
+          //         Object.keys(newObj).forEach((item) => {
+          //           msgs = `${item}: ${newObj[item]}`;
+          //         });
+          //         setTimeout(() => {
+          //           // bot.sendText(msg.from, msgs);
+          //           bot.sendReplyButtons(
+          //             msg.from,
+          //             msgs,
+          //             generateText("get_center", msg.data)
+          //           );
+          //         }, 700);
+          //       }
+          //     } else {
+          //       const newObj = {
+          //         appointmentId,
+          //         appointmentDate,
+          //         appointmentTime,
+          //         applicantFullName,
+          //         status,
+          //         price,
+          //         currency,
+          //         phone_number,
+          //         email,
+          //       };
+          //       bot.sendText(
+          //         msg.from,
+          //         "An appointment has been already booked with your appointment Id. Check for Details Below.",
+          //         `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+          //         {preview_url:true}
+          //       );
+          //       // setTimeout(() => {
+          //       //   Object.keys(newObj).forEach((item) => {
+          //       //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+          //       //   });
+          //       // }, 700);
+          //       let tempDataaa = { ...userExist.tmp_data };
+          //       let dataaObjj = {
+          //         phone_number: msg.from,
+          //         type: "Welcome_Message",
+          //         message:
+          //           "An appointment has been already booked with your appointment Id. Check for Details Below.",
+          //         reply_with: "",
+          //         data: JSON.stringify(msg.data),
+          //         tmp_data: tempDataaa,
+          //       };
+          //       const res = await saveResponseData({ ...dataaObjj });
+          //       // if (res) {
+          //       //   bot.sendReplyButtons(
+          //       //     msg.from,
+          //       //     "Confirm",
+          //       //     generateText("confirm", {})
+          //       //   );
+          //       // }
+          //     }
+          //   } catch (err) {
+          //     console.log(err);
+          //   }
+          // }
           if (msg.data.id === "get_center") {
             try {
               const res = await axios.get(
@@ -210,8 +208,6 @@ const responseBot = async (app) => {
                   `/center/${userExist.tmp_data.center_id}/appointment`,
                 apiObj
               );
-
-              console.log(detailRes, "datadatadata===--->");
               const data = await detailRes.data;
               if (data) {
                 let dataObjjjj = {
@@ -222,7 +218,7 @@ const responseBot = async (app) => {
                   data: JSON.stringify(msg.data),
                   tmp_data: {
                     ...userExist.tmp_data,
-                    Booking_slip: `${process.env.API_END_POINT}//appointment-pdf/${data.appointment_ids[0]}`,
+                    Booking_slip: `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
                   },
                 };
                 const resss = await saveResponseData({ ...dataObjjjj });
@@ -441,11 +437,122 @@ const responseBot = async (app) => {
             };
             const resssss = await saveResponseData({ ...dataObjjjjj });
             if (resssss) {
-              await bot.sendReplyButtons(
-                msg.from,
-                "Get Details",
-                generateText("get_Details", msg.data)
-              );
+              const { selected_category, application_id } = userExist.tmp_data;
+              console.log(userExist, "userrrr===>");
+              try {
+                const detailRes = await axios.post(
+                  process.env.API_END_POINT + "/application-detail",
+                  {
+                    applicationId: application_id,
+                    dob: msg.data.text,
+                    serviceType: selected_category,
+                  }
+                );
+                const data = await detailRes.data;
+                const {
+                  appointmentId,
+                  appointmentDate,
+                  appointmentTime,
+                  applicantFullName,
+                  status,
+                  price,
+                  currency,
+                  phone_number,
+                  email,
+                  applicationId,
+                  name,
+                  country,
+                  category,
+                  dob,
+                  service_type,
+                } = data;
+                if (!appointmentId) {
+                  const newObj = {
+                    applicationId,
+                    name,
+                    country,
+                    category,
+                    dob,
+                    email,
+                    phone_number,
+                    service_type,
+                    status,
+                    price,
+                    currency,
+                  };
+
+                  let temp_Data = { ...userExist.tmp_data, ...newObj };
+                  let data_Obj = {
+                    phone_number: msg.from,
+                    type:
+                      userExist.type !== ""
+                        ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                        : visaSequence[0],
+                    message: msg.data.text,
+                    reply_with: "get details",
+                    data: JSON.stringify(msg.data),
+                    tmp_data: temp_Data,
+                  };
+                  const res = await saveResponseData({ ...data_Obj });
+                  if (res) {
+                    let msgs = "";
+                    Object.keys(newObj).forEach((item) => {
+                      msgs = `${item}: ${newObj[item]}`;
+                    });
+                    setTimeout(() => {
+                      // bot.sendText(msg.from, msgs);
+                      bot.sendReplyButtons(
+                        msg.from,
+                        msgs,
+                        generateText("get_center", msg.data)
+                      );
+                    }, 700);
+                  }
+                } else {
+                  const newObj = {
+                    appointmentId,
+                    appointmentDate,
+                    appointmentTime,
+                    applicantFullName,
+                    status,
+                    price,
+                    currency,
+                    phone_number,
+                    email,
+                  };
+                  bot.sendText(
+                    msg.from,
+                    "An appointment has been already booked with your appointment Id. Check for Details Below.",
+                    `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+                    { preview_url: true }
+                  );
+                  // setTimeout(() => {
+                  //   Object.keys(newObj).forEach((item) => {
+                  //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+                  //   });
+                  // }, 700);
+                  let tempDataaa = { ...userExist.tmp_data };
+                  let dataaObjj = {
+                    phone_number: msg.from,
+                    type: "Welcome_Message",
+                    message:
+                      "An appointment has been already booked with your appointment Id. Check for Details Below.",
+                    reply_with: "",
+                    data: JSON.stringify(msg.data),
+                    tmp_data: tempDataaa,
+                  };
+                  const res = await saveResponseData({ ...dataaObjj });
+                  // if (res) {
+                  //   bot.sendReplyButtons(
+                  //     msg.from,
+                  //     "Confirm",
+                  //     generateText("confirm", {})
+                  //   );
+                  // }
+                }
+              } catch (err) {
+                console.log(err);
+              }
             }
           }
         }
