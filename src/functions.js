@@ -3,7 +3,7 @@ const { visaSequence } = require("./constant");
 const { generateText } = require("../generateText");
 const axios = require("axios");
 
-const getcategory = async (msg, userExist) => {
+const getcategory = async (msg, userExist, bot) => {
   let tempData = { ...userExist.tmp_data };
   let dataObj = {
     phone_number: msg.from,
@@ -42,7 +42,7 @@ const getcategory = async (msg, userExist) => {
   }
 };
 
-const getApplicationId = async (msg, userExist) => {
+const getApplicationId = async (msg, userExist, bot) => {
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: msg.data.title,
@@ -68,7 +68,7 @@ const getApplicationId = async (msg, userExist) => {
   }
 };
 
-const getDob = async (msg, userExist) => {
+const getDob = async (msg, userExist, bot) => {
   let tempDataaaa = {
     ...userExist.tmp_data,
     application_id: msg.data.text,
@@ -92,7 +92,7 @@ const getDob = async (msg, userExist) => {
   }
 };
 
-const getApplicationDetailAndcenter = async (msg, userExist) => {
+const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
   let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
   let dataObjjjjj = {
     phone_number: msg.from,
@@ -155,7 +155,7 @@ const getApplicationDetailAndcenter = async (msg, userExist) => {
         };
         const res = await saveResponseData({ ...data_Obj });
         if (res) {
-          await getCenterList(msg);
+          await getCenterList(msg, bot);
         }
       } else {
         let tempDataaa = { ...userExist.tmp_data };
@@ -182,7 +182,7 @@ const getApplicationDetailAndcenter = async (msg, userExist) => {
     }
   }
 };
-const getSlots = async (msg, userExist) => {
+const getSlots = async (msg, userExist, bot) => {
   let tmpData = {
     ...userExist.tmp_data,
     center_id: msg.data.id,
@@ -218,7 +218,7 @@ const getSlots = async (msg, userExist) => {
   }
 };
 
-const bookAppointment = async (msg, userExist) => {
+const bookAppointment = async (msg, userExist, bot) => {
   let dateAndTime = msg.data.title.split(" ");
   let data_obj = {
     ...userExist.tmp_data,
@@ -285,7 +285,7 @@ const bookAppointment = async (msg, userExist) => {
   }
 };
 
-const allReadyBooked = async (msg, userExist) => {
+const allReadyBooked = async (msg, userExist, bot) => {
   let dataObjjj = {
     phone_number: msg.from,
     type: "select_category",
@@ -303,7 +303,7 @@ const allReadyBooked = async (msg, userExist) => {
   }
 };
 
-const getCenterList = async (msg) => {
+const getCenterList = async (msg, bot) => {
   try {
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;

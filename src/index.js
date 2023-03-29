@@ -36,7 +36,7 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       try {
         if (!userExist) {
-          getcategory(msg, userExist);
+          getcategory(msg, userExist, bot);
         } else {
           let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
           console.log(hours, "hourshourshours==>");
@@ -47,22 +47,22 @@ const responseBot = async (app) => {
               msg.type === "list_reply" &&
               userExist.type === "select_category"
             ) {
-              await getApplicationId(msg, userExist);
+              await getApplicationId(msg, userExist, bot);
             }
             if (userExist.type === "Application_id") {
-              await getDob(msg, userExist);
+              await getDob(msg, userExist, bot);
             }
             if (userExist.type === "DOB") {
-              await getApplicationDetailAndcenter(msg, userExist);
+              await getApplicationDetailAndcenter(msg, userExist, bot);
             }
             if (msg.type === "list_reply" && userExist.type === "Center") {
-              await getSlots(msg, userExist);
+              await getSlots(msg, userExist, bot);
             }
             if (msg.type === "list_reply" && userExist.type === "Date_Time") {
-              await bookAppointment(msg, userExist);
+              await bookAppointment(msg, userExist, bot);
             }
             if (msg.type === "button_reply" && msg.data.id === "confirm") {
-              await allReadyBooked(msg, userExist);
+              await allReadyBooked(msg, userExist, bot);
             }
           }
         }
