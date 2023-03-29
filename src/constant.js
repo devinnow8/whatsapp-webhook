@@ -6,6 +6,7 @@ const visaSequence = [
   "Center",
   "Date_Time",
   "Confirm",
+  "Booking_slip",
 ];
 
 module.exports = {
