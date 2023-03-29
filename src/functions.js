@@ -114,9 +114,9 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           serviceType: selected_category,
         }
       );
-      console.log(detailRes, "detailResdetailRes===>>>");
       const data = await detailRes.data;
-      if(data.include('Application not found')){
+      console.log(data, "detailResdetailRes===>>>");
+      if(data.includes('Application not found')){
         let tempDataaa = { ...userExist.tmp_data };
         let dataaObjj = {
           phone_number: msg.from,
