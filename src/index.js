@@ -22,13 +22,16 @@ const responseBot = async (app) => {
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
-      console.log(visaSequence[visaSequence.indexOf(userExist.type) + 1],'visaSequence[visaSequence.indexOf(userExist.type) + 1]');
+      console.log(
+        visaSequence[visaSequence.indexOf(userExist.type) + 1],
+        "visaSequence[visaSequence.indexOf(userExist.type) + 1]"
+      );
       try {
-        if(msg.type === 'button_reply'){
-          if(msg.data.id === 'get_Details'){
-            const {selected_category, application_id} = userExist.tmp_data
-            console.log(userExist,'userrrr===>');
-            try{
+        if (msg.type === "button_reply") {
+          if (msg.data.id === "get_Details") {
+            const { selected_category, application_id } = userExist.tmp_data;
+            console.log(userExist, "userrrr===>");
+            try {
               const detailRes = await axios.post(
                 process.env.API_END_POINT + "/application-detail",
                 {
@@ -55,7 +58,7 @@ const responseBot = async (app) => {
                 dob,
                 service_type,
               } = data;
-              if(!appointmentId){
+              if (!appointmentId) {
                 const newObj = {
                   applicationId,
                   name,
@@ -66,29 +69,27 @@ const responseBot = async (app) => {
                   phone_number,
                   service_type,
                 };
-                let msgs = ''
+                let msgs = "";
                 Object.keys(newObj).forEach((item) => {
-                  msgs = `${item}: ${newObj[item]}`
-                 
+                  msgs = `${item}: ${newObj[item]}`;
                 });
                 setTimeout(() => {
                   // bot.sendText(msg.from, msgs);
-                   bot.sendReplyButtons(
+                  bot.sendReplyButtons(
                     msg.from,
                     msgs,
-                    generateText('get_center', msg.data)
+                    generateText("get_center", msg.data)
                   );
                 }, 700);
-
-              }else{
+              } else {
                 // booked work
               }
             } catch (err) {
               console.log(err);
             }
           }
-          if(msg.data.id === 'get_center'){
-            try{
+          if (msg.data.id === "get_center") {
+            try {
               const res = await axios.get(
                 process.env.API_END_POINT + "/center-list"
               );
@@ -101,7 +102,29 @@ const responseBot = async (app) => {
                   generateText("center_list", data)
                 );
               }
-            } catch (err){
+            } catch (err) {
+              console.log(err);
+            }
+          }
+          if (msg.data.id === "get_DateAndTime") {
+            try {
+              const detailRes = await axios.get(
+                process.env.API_END_POINT +
+                  `/center/${userExist.tmp_data.center_id}/appointment-slot`
+              );
+              console.log(detailRes, "detailResdetailRes==>>>");
+              const data = await detailRes.data;
+              const filterdData =
+                data && data.filter((item) => item.type === "date");
+              if (filterdData) {
+                await bot.sendList(
+                  msg.from,
+                  "Select",
+                  "This is a list of Date and time. Please select one from the list.",
+                  generateText("list_date", filterdData)
+                );
+              }
+            } catch (err) {
               console.log(err);
             }
           }
@@ -125,10 +148,37 @@ const responseBot = async (app) => {
               tmp_data: tempDataaa,
             };
             const resss = await saveResponseData({ ...dataObjjj });
-            if(resss){
+            if (resss) {
               await bot.sendText(
                 msg.from,
                 visaSequence[visaSequence.indexOf(userExist.type) + 1]
+              );
+            }
+          }
+          if (userExist.type === "Center") {
+            let tmpData = {
+              ...userExist.tmp_data,
+              center_id: msg.data.id,
+              center_name: msg.data.title,
+            };
+            let objData = {
+              phone_number: msg.from,
+              type:
+                userExist.type !== ""
+                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                  : visaSequence[0],
+              message: msg.data.text,
+              reply_with: messageData,
+              data: JSON.stringify(msg.data),
+              tmp_data: tmpData,
+            };
+            const response = await saveResponseData({ ...objData });
+            console.log(response, "responseresponse==>");
+            if (response) {
+              await bot.sendReplyButtons(
+                msg.from,
+                "Please choose the available slot 10 slots (date time) and more button",
+                generateText("get_DateAndTime", msg.data)
               );
             }
           }
@@ -171,21 +221,24 @@ const responseBot = async (app) => {
                   tmp_data: tempDataa,
                 };
                 const res = await saveResponseData({ ...dataObjj });
-              if(res){
-                await bot.sendList(
-                  msg.from,
-                  "Select",
-                  "This is a list of services we provide. Please select one from the list.",
-                  generateText("list", data)
-                );
-              }
+                if (res) {
+                  await bot.sendList(
+                    msg.from,
+                    "Select",
+                    "This is a list of services we provide. Please select one from the list.",
+                    generateText("list", data)
+                  );
+                }
               }
             } catch (err) {
               console.log(err, "err");
             }
           }
           if (userExist.type === "Application_id") {
-            let tempDataaaa = { ...userExist.tmp_data, application_id: msg.data.text };
+            let tempDataaaa = {
+              ...userExist.tmp_data,
+              application_id: msg.data.text,
+            };
             let dataObjjjj = {
               phone_number: msg.from,
               type:
@@ -193,21 +246,23 @@ const responseBot = async (app) => {
                   ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
                   : visaSequence[0],
               message: msg.data.text,
-              reply_with: 'dob',
+              reply_with: "dob",
               data: JSON.stringify(msg.data),
               tmp_data: tempDataaaa,
             };
             const ressss = await saveResponseData({ ...dataObjjjj });
-            if(ressss){
+            if (ressss) {
               await bot.sendText(
                 msg.from,
                 visaSequence[visaSequence.indexOf(userExist.type) + 1] === "DOB"
-                  ? `${visaSequence[visaSequence.indexOf(userExist.type) + 1]} eg:(1996-07-21)`
+                  ? `${
+                      visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                    } eg:(1996-07-21)`
                   : visaSequence[visaSequence.indexOf(userExist.type) + 1]
               );
             }
           }
-          if(userExist.type === "DOB"){
+          if (userExist.type === "DOB") {
             let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
             let dataObjjjjj = {
               phone_number: msg.from,
@@ -216,16 +271,16 @@ const responseBot = async (app) => {
                   ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
                   : visaSequence[0],
               message: msg.data.text,
-              reply_with: 'dob',
+              reply_with: "dob",
               data: JSON.stringify(msg.data),
               tmp_data: tempDataaaaa,
             };
             const resssss = await saveResponseData({ ...dataObjjjjj });
-            if(resssss){
+            if (resssss) {
               await bot.sendReplyButtons(
                 msg.from,
                 "Get Details",
-                generateText('get_Details', msg.data)
+                generateText("get_Details", msg.data)
               );
             }
           }

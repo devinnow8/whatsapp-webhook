@@ -19,14 +19,16 @@ function generateText(type, data) {
         "Hi, Welcome to OIS appointment booking system. Please select the category",
         { "get-list-btn": "Category List" },
       ];
-      case "get_Details":
+    case "get_Details":
       return {
         get_Details: "get Details",
       };
-      case "get_center":
-        return{
-          get_center: 'Get Center'
-        }
+    case "get_center":
+      return {
+        get_center: "Get Center",
+      };
+    case "get_DateAndTime":
+      return { get_DateAndTime: "select date and time" };
     case "list":
       const dataArr =
         data.length > 0 &&
@@ -58,7 +60,7 @@ function generateText(type, data) {
         confirm: "Confirm & Continue",
         // "0-btn-2": "Continue Here",
       };
-    
+
     case "book_appointment":
       return {
         book_appointment: "Book Appointment",
@@ -72,8 +74,7 @@ function generateText(type, data) {
       return {
         Services: [...dataArrCenter],
       };
-    case "select_date":
-      return { select_date: "select date and time" };
+
     case "selected_date":
       return { selected_date: "Book appointment" };
 
