@@ -179,6 +179,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           }
         }
     } catch (err) {
+      console.log(userExist,'userExistuserExist--->>>');
       let tempDataaa = { ...userExist.tmp_data };
       let dataaObjj = {
         phone_number: msg.from,
@@ -187,7 +188,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           "Application not found",
         reply_with: "",
         data: JSON.stringify(msg.data),
-        tmp_data: tempDataaa,
+        // tmp_data: tempDataaa,
       };
       const res = await saveResponseData({ ...dataaObjj });
       if (res) {
