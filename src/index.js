@@ -31,6 +31,7 @@ const responseBot = async (app) => {
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
+      console.log(userExist, "userExistuserExistuserExist==>>>11");
       try {
         if (msg.type === "button_reply") {
           if (msg.data.id === "book_appointment") {
