@@ -1,7 +1,11 @@
 const { createBot } = require("whatsapp-cloud-api");
 const { generateText } = require("../generateText");
 const axios = require("axios");
-const { getResponseData, saveResponseData } = require("./controllers/api");
+const {
+  getResponseData,
+  saveResponseData,
+  deleteUser,
+} = require("./controllers/api");
 const { visaSequence } = require("./constant");
 
 const responseBot = async (app) => {
@@ -24,164 +28,6 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       try {
         if (msg.type === "button_reply") {
-          // if (msg.data.id === "get_Details") {
-          //   const { selected_category, application_id } = userExist.tmp_data;
-          //   console.log(userExist, "userrrr===>");
-          //   try {
-          //     const detailRes = await axios.post(
-          //       process.env.API_END_POINT + "/application-detail",
-          //       {
-          //         applicationId: application_id,
-          //         dob: userExist.tmp_data.dob,
-          //         serviceType: selected_category,
-          //       }
-          //     );
-          //     const data = await detailRes.data;
-          //     const {
-          //       appointmentId,
-          //       appointmentDate,
-          //       appointmentTime,
-          //       applicantFullName,
-          //       status,
-          //       price,
-          //       currency,
-          //       phone_number,
-          //       email,
-          //       applicationId,
-          //       name,
-          //       country,
-          //       category,
-          //       dob,
-          //       service_type,
-          //     } = data;
-          //     if (!appointmentId) {
-          //       const newObj = {
-          //         applicationId,
-          //         name,
-          //         country,
-          //         category,
-          //         dob,
-          //         email,
-          //         phone_number,
-          //         service_type,
-          //         status,
-          //         price,
-          //         currency,
-          //       };
-
-          //       let temp_Data = { ...userExist.tmp_data, ...newObj };
-          //       let data_Obj = {
-          //         phone_number: msg.from,
-          //         type:
-          //           userExist.type !== ""
-          //             ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-          //             : visaSequence[0],
-          //         message: msg.data.text,
-          //         reply_with: "get details",
-          //         data: JSON.stringify(msg.data),
-          //         tmp_data: temp_Data,
-          //       };
-          //       const res = await saveResponseData({ ...data_Obj });
-          //       if (res) {
-          //         let msgs = "";
-          //         Object.keys(newObj).forEach((item) => {
-          //           msgs = `${item}: ${newObj[item]}`;
-          //         });
-          //         setTimeout(() => {
-          //           // bot.sendText(msg.from, msgs);
-          //           bot.sendReplyButtons(
-          //             msg.from,
-          //             msgs,
-          //             generateText("get_center", msg.data)
-          //           );
-          //         }, 700);
-          //       }
-          //     } else {
-          //       const newObj = {
-          //         appointmentId,
-          //         appointmentDate,
-          //         appointmentTime,
-          //         applicantFullName,
-          //         status,
-          //         price,
-          //         currency,
-          //         phone_number,
-          //         email,
-          //       };
-          //       bot.sendText(
-          //         msg.from,
-          //         "An appointment has been already booked with your appointment Id. Check for Details Below.",
-          //         `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-          //         {preview_url:true}
-          //       );
-          //       // setTimeout(() => {
-          //       //   Object.keys(newObj).forEach((item) => {
-          //       //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-          //       //   });
-          //       // }, 700);
-          //       let tempDataaa = { ...userExist.tmp_data };
-          //       let dataaObjj = {
-          //         phone_number: msg.from,
-          //         type: "Welcome_Message",
-          //         message:
-          //           "An appointment has been already booked with your appointment Id. Check for Details Below.",
-          //         reply_with: "",
-          //         data: JSON.stringify(msg.data),
-          //         tmp_data: tempDataaa,
-          //       };
-          //       const res = await saveResponseData({ ...dataaObjj });
-          //       // if (res) {
-          //       //   bot.sendReplyButtons(
-          //       //     msg.from,
-          //       //     "Confirm",
-          //       //     generateText("confirm", {})
-          //       //   );
-          //       // }
-          //     }
-          //   } catch (err) {
-          //     console.log(err);
-          //   }
-          // }
-          // if (msg.data.id === "get_center") {
-          //   try {
-          //     const res = await axios.get(
-          //       process.env.API_END_POINT + "/center-list"
-          //     );
-          //     const data = await res.data;
-          //     if (data) {
-          //       await bot.sendList(
-          //         msg.from,
-          //         "Select",
-          //         "This is a list of centers. Please select one from the list.",
-          //         generateText("center_list", data)
-          //       );
-          //     }
-          //   } catch (err) {
-          //     console.log(err);
-          //   }
-          // }
-          // if (msg.data.id === "get_DateAndTime") {
-          //   try {
-          //     const detailRes = await axios.get(
-          //       process.env.API_END_POINT +
-          //         `/center/${userExist.tmp_data.center_id}/appointment-slot`
-          //     );
-          //     console.log(detailRes, "detailResdetailRes==>>>");
-          //     const data = await detailRes.data;
-          //     const filterdData =
-          //       data && data.filter((item) => item.type === "date");
-          //     if (filterdData) {
-          //       await bot.sendList(
-          //         msg.from,
-          //         "Select",
-          //         "This is a list of Date and time. Please select one from the list.",
-          //         generateText("list_date", filterdData)
-          //       );
-          //     }
-          //   } catch (err) {
-          //     console.log(err);
-          //   }
-          // }
           if (msg.data.id === "book_appointment") {
             try {
               let apiObj = [
@@ -223,16 +69,12 @@ const responseBot = async (app) => {
                 };
                 const resss = await saveResponseData({ ...dataObjjjj });
                 if (resss) {
-                  // bot.sendReplyButtons(
-                  //   msg.from,
-                  //   "Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here:",
-                  //   generateText("get_slip", msg.data)
-                  // );
                   bot.sendText(
                     msg.from,
                     `Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here: https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
                     { preview_url: true }
                   );
+                  deleteUser(msg.from);
                 }
               }
             } catch (err) {
@@ -259,12 +101,6 @@ const responseBot = async (app) => {
               );
             }
           }
-          // if (msg.data.id === "get_slip") {
-          //   let url = userExist.tmp_data.Booking_slip;
-          //   await bot.sendText(msg.from, url, {
-          //     preview_url: true,
-          //   });
-          // }
         }
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
@@ -310,19 +146,12 @@ const responseBot = async (app) => {
               tmp_data: tmpData,
             };
             const response = await saveResponseData({ ...objData });
-            console.log(response, "responseresponse==>");
             if (response) {
-              // await bot.sendReplyButtons(
-              //   msg.from,
-              //   "Please choose the available slot 10 slots (date time) and more button",
-              //   generateText("get_DateAndTime", msg.data)
-              // );
               try {
                 const detailRes = await axios.get(
                   process.env.API_END_POINT +
                     `/center/${msg.data.id}/appointment-slot`
                 );
-                console.log(detailRes, "detailResdetailRes==>>>");
                 const data = await detailRes.data;
                 const filterdData =
                   data && data.filter((item) => item.type === "date");
@@ -358,7 +187,6 @@ const responseBot = async (app) => {
               tmp_data: data_obj,
             };
             const response = await saveResponseData({ ...objjData });
-            console.log(response, "responseresponse==>");
             if (response) {
               await bot.sendReplyButtons(
                 msg.from,
@@ -463,7 +291,6 @@ const responseBot = async (app) => {
             const resssss = await saveResponseData({ ...dataObjjjjj });
             if (resssss) {
               const { selected_category, application_id } = userExist.tmp_data;
-              console.log(userExist, "userrrr===>");
               try {
                 const detailRes = await axios.post(
                   process.env.API_END_POINT + "/application-detail",
@@ -476,9 +303,6 @@ const responseBot = async (app) => {
                 const data = await detailRes.data;
                 const {
                   appointmentId,
-                  appointmentDate,
-                  appointmentTime,
-                  applicantFullName,
                   status,
                   price,
                   currency,
@@ -520,16 +344,6 @@ const responseBot = async (app) => {
                   };
                   const res = await saveResponseData({ ...data_Obj });
                   if (res) {
-                    // setTimeout(() => {
-                    //   Object.keys(newObj).forEach((item) => {
-                    //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-                    //   });
-                    // }, 700);
-                    // bot.sendReplyButtons(
-                    //   msg.from,
-                    //   msgs,
-                    //   generateText("get_center", msg.data)
-                    // );
                     try {
                       const res = await axios.get(
                         process.env.API_END_POINT + "/center-list"
@@ -548,17 +362,6 @@ const responseBot = async (app) => {
                     }
                   }
                 } else {
-                  const newObj = {
-                    appointmentId,
-                    appointmentDate,
-                    appointmentTime,
-                    applicantFullName,
-                    status,
-                    price,
-                    currency,
-                    phone_number,
-                    email,
-                  };
                   let tempDataaa = { ...userExist.tmp_data };
                   let dataaObjj = {
                     phone_number: msg.from,
@@ -577,19 +380,6 @@ const responseBot = async (app) => {
                       { preview_url: true }
                     );
                   }
-                  // setTimeout(() => {
-                  //   Object.keys(newObj).forEach((item) => {
-                  //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-                  //   });
-                  // }, 700);
-
-                  // if (res) {
-                  //   bot.sendReplyButtons(
-                  //     msg.from,
-                  //     "Confirm",
-                  //     generateText("confirm", {})
-                  //   );
-                  // }
                 }
               } catch (err) {
                 console.log(err);

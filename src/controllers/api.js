@@ -75,8 +75,26 @@ const saveResponseData = async (req, res) => {
     return error.message;
   }
 };
+const deleteUser = async (req, res) => {
+  try {
+    let userExist = await getResponseData(req.phone_number);
+    if (userExist) {
+      newWork
+        .deleteOne({ phone_number: { $eq: req.phone_number } })
+        .then(function () {
+          console.log("Data deleted"); // Success
+        })
+        .catch(function (error) {
+          console.log(error); // Failure
+        });
+    }
+  } catch (err) {
+    return err.message;
+  }
+};
 
 module.exports = {
   getResponseData,
   saveResponseData,
+  deleteUser,
 };
