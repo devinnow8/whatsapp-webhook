@@ -22,6 +22,11 @@ const responseBot = async (app) => {
       webhookVerifyToken,
     });
 
+    const diff_hours = (dt2, dt1) => {
+      var diff = (dt2.getTime() - dt1.getTime()) / 1000;
+      diff /= 60 * 60;
+      return Math.abs(Math.round(diff));
+    };
     // Listen to ALL incoming messages
     bot.on("message", async (msg) => {
       console.log(msg, "msgmsg==>");
@@ -216,174 +221,184 @@ const responseBot = async (app) => {
           };
           const res = await saveResponseData({ ...dataObj });
         } else {
-          if (userExist.type === "Welcome_Message") {
-            try {
-              const res = await axios.get(
-                process.env.API_END_POINT + "/category-list"
-              );
-              const data = await res.data;
-              if (data) {
-                let tempDataa = { ...userExist.tmp_data };
-                let dataObjj = {
-                  phone_number: msg.from,
-                  type:
-                    userExist.type !== ""
-                      ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                      : visaSequence[0],
-                  message:
-                    "This is a list of services we provide. Please select one from the list.",
-                  reply_with: "",
-                  data: JSON.stringify(msg.data),
-                  tmp_data: tempDataa,
-                };
-                const res = await saveResponseData({ ...dataObjj });
-                if (res) {
-                  await bot.sendList(
-                    msg.from,
-                    "Select",
-                    "This is a list of services we provide. Please select one from the list.",
-                    generateText("list", data)
-                  );
-                }
-              }
-            } catch (err) {
-              console.log(err, "err");
-            }
-          }
-          if (userExist.type === "Application_id") {
-            let tempDataaaa = {
-              ...userExist.tmp_data,
-              application_id: msg.data.text,
-            };
-            let dataObjjjj = {
-              phone_number: msg.from,
-              type:
-                userExist.type !== ""
-                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                  : visaSequence[0],
-              message: msg.data.text,
-              reply_with: "dob",
-              data: JSON.stringify(msg.data),
-              tmp_data: tempDataaaa,
-            };
-            const ressss = await saveResponseData({ ...dataObjjjj });
-            if (ressss) {
-              await bot.sendText(
-                msg.from,
-                visaSequence[visaSequence.indexOf(userExist.type) + 1] === "DOB"
-                  ? "Please enter your date of birth in form of yyyy-mm-dd (for example if your date of birth is 22 may 1990 then enter it like: 1990-05-22)"
-                  : visaSequence[visaSequence.indexOf(userExist.type) + 1]
-              );
-            }
-          }
-          if (userExist.type === "DOB") {
-            let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
-            let dataObjjjjj = {
-              phone_number: msg.from,
-              type:
-                userExist.type !== ""
-                  ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
-                  : visaSequence[0],
-              message: msg.data.text,
-              reply_with: "dob",
-              data: JSON.stringify(msg.data),
-              tmp_data: tempDataaaaa,
-            };
-            const resssss = await saveResponseData({ ...dataObjjjjj });
-            if (resssss) {
-              const { selected_category, application_id } = userExist.tmp_data;
+          let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
+          console.log(hours, "hourshourshours==>");
+          if (hours > 0) {
+            await deleteUser(msg.from);
+          } else {
+            if (userExist.type === "Welcome_Message") {
               try {
-                const detailRes = await axios.post(
-                  process.env.API_END_POINT + "/application-detail",
-                  {
-                    applicationId: application_id,
-                    dob: msg.data.text,
-                    serviceType: selected_category,
-                  }
+                const res = await axios.get(
+                  process.env.API_END_POINT + "/category-list"
                 );
-                const data = await detailRes.data;
-                const {
-                  appointmentId,
-                  status,
-                  price,
-                  currency,
-                  phone_number,
-                  email,
-                  applicationId,
-                  name,
-                  country,
-                  category,
-                  dob,
-                  service_type,
-                } = data;
-                if (!appointmentId) {
-                  const newObj = {
-                    applicationId,
-                    name,
-                    country,
-                    category,
-                    dob,
-                    email,
-                    phone_number,
-                    service_type,
-                    status,
-                    price,
-                    currency,
-                  };
-
-                  let temp_Data = { ...userExist.tmp_data, ...newObj };
-                  let data_Obj = {
+                const data = await res.data;
+                if (data) {
+                  let tempDataa = { ...userExist.tmp_data };
+                  let dataObjj = {
                     phone_number: msg.from,
                     type:
                       userExist.type !== ""
                         ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
                         : visaSequence[0],
-                    message: msg.data.text,
-                    reply_with: "get details",
-                    data: JSON.stringify(msg.data),
-                    tmp_data: temp_Data,
-                  };
-                  const res = await saveResponseData({ ...data_Obj });
-                  if (res) {
-                    try {
-                      const res = await axios.get(
-                        process.env.API_END_POINT + "/center-list"
-                      );
-                      const data = await res.data;
-                      if (data) {
-                        await bot.sendList(
-                          msg.from,
-                          "Select",
-                          "This is a list of centers. Please select one from the list.",
-                          generateText("center_list", data)
-                        );
-                      }
-                    } catch (err) {
-                      console.log(err);
-                    }
-                  }
-                } else {
-                  let tempDataaa = { ...userExist.tmp_data };
-                  let dataaObjj = {
-                    phone_number: msg.from,
-                    type: "Welcome_Message",
                     message:
-                      "An appointment has been already booked with your appointment Id. Check for Details Below.",
+                      "This is a list of services we provide. Please select one from the list.",
                     reply_with: "",
                     data: JSON.stringify(msg.data),
-                    tmp_data: tempDataaa,
+                    tmp_data: tempDataa,
                   };
-                  const res = await saveResponseData({ ...dataaObjj });
+                  const res = await saveResponseData({ ...dataObjj });
                   if (res) {
-                    bot.sendText(
+                    await bot.sendList(
                       msg.from,
-                      `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-                      { preview_url: true }
+                      "Select",
+                      "This is a list of services we provide. Please select one from the list.",
+                      generateText("list", data)
                     );
                   }
                 }
               } catch (err) {
-                console.log(err);
+                console.log(err, "err");
+              }
+            }
+            if (userExist.type === "Application_id") {
+              let tempDataaaa = {
+                ...userExist.tmp_data,
+                application_id: msg.data.text,
+              };
+              let dataObjjjj = {
+                phone_number: msg.from,
+                type:
+                  userExist.type !== ""
+                    ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                    : visaSequence[0],
+                message: msg.data.text,
+                reply_with: "dob",
+                data: JSON.stringify(msg.data),
+                tmp_data: tempDataaaa,
+              };
+              const ressss = await saveResponseData({ ...dataObjjjj });
+              if (ressss) {
+                await bot.sendText(
+                  msg.from,
+                  visaSequence[visaSequence.indexOf(userExist.type) + 1] ===
+                    "DOB"
+                    ? "Please enter your date of birth in form of yyyy-mm-dd (for example if your date of birth is 22 may 1990 then enter it like: 1990-05-22)"
+                    : visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                );
+              }
+            }
+            if (userExist.type === "DOB") {
+              let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
+              let dataObjjjjj = {
+                phone_number: msg.from,
+                type:
+                  userExist.type !== ""
+                    ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
+                    : visaSequence[0],
+                message: msg.data.text,
+                reply_with: "dob",
+                data: JSON.stringify(msg.data),
+                tmp_data: tempDataaaaa,
+              };
+              const resssss = await saveResponseData({ ...dataObjjjjj });
+              if (resssss) {
+                const { selected_category, application_id } =
+                  userExist.tmp_data;
+                try {
+                  const detailRes = await axios.post(
+                    process.env.API_END_POINT + "/application-detail",
+                    {
+                      applicationId: application_id,
+                      dob: msg.data.text,
+                      serviceType: selected_category,
+                    }
+                  );
+                  const data = await detailRes.data;
+                  const {
+                    appointmentId,
+                    status,
+                    price,
+                    currency,
+                    phone_number,
+                    email,
+                    applicationId,
+                    name,
+                    country,
+                    category,
+                    dob,
+                    service_type,
+                  } = data;
+                  if (!appointmentId) {
+                    const newObj = {
+                      applicationId,
+                      name,
+                      country,
+                      category,
+                      dob,
+                      email,
+                      phone_number,
+                      service_type,
+                      status,
+                      price,
+                      currency,
+                    };
+
+                    let temp_Data = { ...userExist.tmp_data, ...newObj };
+                    let data_Obj = {
+                      phone_number: msg.from,
+                      type:
+                        userExist.type !== ""
+                          ? visaSequence[
+                              visaSequence.indexOf(userExist.type) + 1
+                            ]
+                          : visaSequence[0],
+                      message: msg.data.text,
+                      reply_with: "get details",
+                      data: JSON.stringify(msg.data),
+                      tmp_data: temp_Data,
+                    };
+                    const res = await saveResponseData({ ...data_Obj });
+                    if (res) {
+                      try {
+                        const res = await axios.get(
+                          process.env.API_END_POINT + "/center-list"
+                        );
+                        const data = await res.data;
+                        if (data) {
+                          await bot.sendList(
+                            msg.from,
+                            "Select",
+                            "This is a list of centers. Please select one from the list.",
+                            generateText("center_list", data)
+                          );
+                        }
+                      } catch (err) {
+                        console.log(err);
+                      }
+                    }
+                  } else {
+                    let tempDataaa = { ...userExist.tmp_data };
+                    let dataaObjj = {
+                      phone_number: msg.from,
+                      type: "Welcome_Message",
+                      message:
+                        "An appointment has been already booked with your appointment Id. Check for Details Below.",
+                      reply_with: "",
+                      data: JSON.stringify(msg.data),
+                      tmp_data: tempDataaa,
+                    };
+                    const res = await saveResponseData({ ...dataaObjj });
+                    if (res) {
+                      bot.sendText(
+                        msg.from,
+                        `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+                        { preview_url: true }
+                      );
+                    }
+                  }
+                } catch (err) {
+                  console.log(err);
+                }
               }
             }
           }
