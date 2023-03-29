@@ -114,6 +114,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           serviceType: selected_category,
         }
       );
+      console.log(detailRes, "detailResdetailRes===>>>");
       const data = await detailRes.data;
       const {
         appointmentId,
@@ -161,7 +162,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
         let tempDataaa = { ...userExist.tmp_data };
         let dataaObjj = {
           phone_number: msg.from,
-          type: "Welcome_Message",
+          type: "select_category",
           message:
             "An appointment has been already booked with your appointment Id. Check for Details Below.",
           reply_with: "",

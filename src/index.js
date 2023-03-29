@@ -36,12 +36,13 @@ const responseBot = async (app) => {
       let userExist = await getResponseData(msg.from);
       try {
         if (!userExist) {
-          getcategory(msg, userExist, bot);
+          await getcategory(msg, userExist, bot);
         } else {
           let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
           console.log(hours, "hourshourshours==>");
           if (hours > 0) {
             await deleteUser(msg.from);
+            await getcategory(msg, userExist, bot);
           } else {
             if (
               msg.type === "list_reply" &&
