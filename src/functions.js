@@ -45,8 +45,8 @@ const getcategory = async (msg, userExist, bot) => {
 const getApplicationId = async (msg, userExist, bot) => {
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: msg.data.title,
-    selected_category_id: msg.data.id,
+    selected_category: msg.data.title || userExist.tmp_data.selected_category,
+    selected_category_id: msg.data.id || userExist.tmp_data.selected_category_id,
   };
   let dataObjjj = {
     phone_number: msg.from,
