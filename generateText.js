@@ -7,7 +7,6 @@ function generateText(type, data) {
     //   ];
     case "Welcome_Message":
       const dataArr =
-        data &&
         data.length > 0 &&
         data.map((item) => {
           return { id: item.categoryID, title: item.value };
