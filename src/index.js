@@ -320,7 +320,7 @@ const responseBot = async (app) => {
               try {
                 const detailRes = await axios.get(
                   process.env.API_END_POINT +
-                    `/center/${userExist.tmp_data.center_id}/appointment-slot`
+                    `/center/${msg.data.id}/appointment-slot`
                 );
                 console.log(detailRes, "detailResdetailRes==>>>");
                 const data = await detailRes.data;
@@ -520,11 +520,11 @@ const responseBot = async (app) => {
                   };
                   const res = await saveResponseData({ ...data_Obj });
                   if (res) {
-                    setTimeout(() => {
-                      Object.keys(newObj).forEach((item) => {
-                        bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-                      });
-                    }, 700);
+                    // setTimeout(() => {
+                    //   Object.keys(newObj).forEach((item) => {
+                    //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+                    //   });
+                    // }, 700);
                     // bot.sendReplyButtons(
                     //   msg.from,
                     //   msgs,
@@ -559,16 +559,6 @@ const responseBot = async (app) => {
                     phone_number,
                     email,
                   };
-                  bot.sendText(
-                    msg.from,
-                    `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-                    { preview_url: true }
-                  );
-                  // setTimeout(() => {
-                  //   Object.keys(newObj).forEach((item) => {
-                  //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
-                  //   });
-                  // }, 700);
                   let tempDataaa = { ...userExist.tmp_data };
                   let dataaObjj = {
                     phone_number: msg.from,
@@ -580,6 +570,19 @@ const responseBot = async (app) => {
                     tmp_data: tempDataaa,
                   };
                   const res = await saveResponseData({ ...dataaObjj });
+                  if (res) {
+                    bot.sendText(
+                      msg.from,
+                      `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+                      { preview_url: true }
+                    );
+                  }
+                  // setTimeout(() => {
+                  //   Object.keys(newObj).forEach((item) => {
+                  //     bot.sendText(msg.from, `${item}: ${newObj[item]}`);
+                  //   });
+                  // }, 700);
+
                   // if (res) {
                   //   bot.sendReplyButtons(
                   //     msg.from,
