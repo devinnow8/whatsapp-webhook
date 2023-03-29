@@ -168,7 +168,7 @@ const responseBot = async (app) => {
                   ? visaSequence[visaSequence.indexOf(userExist.type) + 1]
                   : visaSequence[0],
               message: msg.data.text,
-              reply_with: messageData,
+              reply_with: "select center",
               data: JSON.stringify(msg.data),
               tmp_data: tmpData,
             };
