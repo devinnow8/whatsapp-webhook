@@ -259,12 +259,12 @@ const responseBot = async (app) => {
               );
             }
           }
-          if (msg.data.id === "get_slip") {
-            let url = userExist.tmp_data.Booking_slip;
-            await bot.sendText(msg.from, url, {
-              preview_url: true,
-            });
-          }
+          // if (msg.data.id === "get_slip") {
+          //   let url = userExist.tmp_data.Booking_slip;
+          //   await bot.sendText(msg.from, url, {
+          //     preview_url: true,
+          //   });
+          // }
         }
         if (msg.type === "list_reply") {
           if (userExist.type === "select_category") {
