@@ -47,13 +47,19 @@ const responseBot = async (app) => {
               (msg.type === "list_reply" || msg.type === "text") &&
               userExist.type === "select_category"
             ) {
+              console.log(userExist, "userExistuserExist==>");
               await getApplicationId(msg, userExist, bot);
             }
-            if (userExist.type === "Application_id") {
-              console.log(userExist, "userExistuserExistuserExist==>>>");
+            if (
+              userExist.tmp_data.selected_category === "visa" &&
+              userExist.type === "Application_id"
+            ) {
               await getDob(msg, userExist, bot);
             }
-            if (userExist.type === "DOB") {
+            if (
+              userExist.tmp_data.selected_category === "visa" &&
+              userExist.type === "DOB"
+            ) {
               await getApplicationDetailAndcenter(msg, userExist, bot);
             }
             if (msg.type === "list_reply" && userExist.type === "Center") {
