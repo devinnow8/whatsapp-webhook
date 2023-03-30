@@ -411,14 +411,18 @@ const getSlots = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       console.log(data, "data===>>>>11");
-      const filterdData = data && data.filter((item) => item.type === "date");
-      if (filterdData) {
-        await bot.sendList(
-          msg.from,
-          "Select",
-          "This is a list of Date and time. Please select one from the list.",
-          generateText("list_date", filterdData)
-        );
+      if (data.length > 0) {
+        const filterdData = data && data.filter((item) => item.type === "date");
+        if (filterdData) {
+          await bot.sendList(
+            msg.from,
+            "Select",
+            "This is a list of Date and time. Please select one from the list.",
+            generateText("list_date", filterdData)
+          );
+        }
+      } else {
+        await getCenterList(msg, bot);
       }
     } catch (err) {
       console.log(err);
@@ -537,6 +541,7 @@ const ValidateEmail = (email) => {
 };
 const validatePhone = (phone) => {
   const regex = /^\+?[0-9](?:[- ]?[0-9]){6,15}$/;
+  console.log(phone, regex.test(phone), "regex.test(phone)");
   if (!regex.test(phone)) {
     return false;
   } else {
