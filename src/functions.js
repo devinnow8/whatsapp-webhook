@@ -235,136 +235,157 @@ const getPhoneNumber = async (msg, userExist, bot) => {
 };
 const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
   let tempDataaaaa = {};
+  let phoneValidat = false;
   if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
+    phoneValidat = true;
     tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
   } else {
+    phoneValidat = validatePhone(msg.data.text);
     tempDataaaaa = { ...userExist.tmp_data, Phone_No: msg.data.text };
   }
-  let dataObjjjjj = {
-    phone_number: msg.from,
-    type: "Center",
-    message: msg.data.text,
-    reply_with:
-      userExist.tmp_data.selected_category.toLowerCase() === "visa"
-        ? "dob"
-        : "Phone_No",
-    data: JSON.stringify(msg.data),
-    tmp_data: tempDataaaaa,
-  };
-  const resssss = await saveResponseData({ ...dataObjjjjj });
-  if (resssss) {
-    const {
-      selected_category,
-      application_id,
-      Id_Number,
-      id_type,
-      nationality,
-    } = userExist.tmp_data;
-    try {
-      let apiObj = {};
-      if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
-        apiObj = {
-          applicationId: application_id,
-          dob: msg.data.text,
-          serviceType: selected_category,
-        };
-      } else {
-        apiObj = {
-          applicationId: Id_Number,
-          category: selected_category,
-          country: nationality,
-          email: userExist.tmp_data.email,
-          id_number: Id_Number,
-          id_type: id_type,
-          name: userExist.tmp_data.name,
-          nationality: nationality,
-          phone_number: msg.data.text,
-          serviceType: selected_category,
-        };
-      }
-      const detailRes = await axios.post(
-        process.env.API_END_POINT + "/application-detail",
-        {
-          ...apiObj,
-        }
-      );
-      const data = await detailRes.data;
+  if (phoneValidat) {
+    let dataObjjjjj = {
+      phone_number: msg.from,
+      type: "Center",
+      message: msg.data.text,
+      reply_with:
+        userExist.tmp_data.selected_category.toLowerCase() === "visa"
+          ? "dob"
+          : "Phone_No",
+      data: JSON.stringify(msg.data),
+      tmp_data: tempDataaaaa,
+    };
+    const resssss = await saveResponseData({ ...dataObjjjjj });
+    if (resssss) {
       const {
-        appointmentId,
-        status,
-        price,
-        currency,
-        phone_number,
-        email,
-        applicationId,
-        name,
-        country,
-        category,
-        dob,
-        service_type,
-      } = data;
-      if (!appointmentId) {
-        const newObj = {
+        selected_category,
+        application_id,
+        Id_Number,
+        id_type,
+        nationality,
+      } = userExist.tmp_data;
+      try {
+        let apiObj = {};
+        if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
+          apiObj = {
+            applicationId: application_id,
+            dob: msg.data.text,
+            serviceType: selected_category,
+          };
+        } else {
+          apiObj = {
+            applicationId: Id_Number,
+            category: selected_category,
+            country: nationality,
+            email: userExist.tmp_data.email,
+            id_number: Id_Number,
+            id_type: id_type,
+            name: userExist.tmp_data.name,
+            nationality: nationality,
+            phone_number: msg.data.text,
+            serviceType: selected_category,
+          };
+        }
+        const detailRes = await axios.post(
+          process.env.API_END_POINT + "/application-detail",
+          {
+            ...apiObj,
+          }
+        );
+        const data = await detailRes.data;
+        const {
+          appointmentId,
+          status,
+          price,
+          currency,
+          phone_number,
+          email,
           applicationId,
           name,
           country,
           category,
           dob,
-          email,
-          phone_number,
           service_type,
-          status,
-          price,
-          currency,
-        };
+        } = data;
+        if (!appointmentId) {
+          const newObj = {
+            applicationId,
+            name,
+            country,
+            category,
+            dob,
+            email,
+            phone_number,
+            service_type,
+            status,
+            price,
+            currency,
+          };
 
-        let temp_Data = { ...userExist.tmp_data, ...newObj };
-        let data_Obj = {
-          phone_number: msg.from,
-          type: "Center",
-          message: msg.data.text,
-          reply_with: "get details",
-          data: JSON.stringify(msg.data),
-          tmp_data: temp_Data,
-        };
-        const res = await saveResponseData({ ...data_Obj });
-        if (res) {
-          await getCenterList(msg, bot);
+          let temp_Data = { ...userExist.tmp_data, ...newObj };
+          let data_Obj = {
+            phone_number: msg.from,
+            type: "Center",
+            message: msg.data.text,
+            reply_with: "get details",
+            data: JSON.stringify(msg.data),
+            tmp_data: temp_Data,
+          };
+          const res = await saveResponseData({ ...data_Obj });
+          if (res) {
+            await getCenterList(msg, bot);
+          }
+        } else {
+          let tempDataaa = { ...userExist.tmp_data };
+          let dataaObjj = {
+            phone_number: msg.from,
+            type: "select_category",
+            message:
+              "An appointment has been already booked with your appointment Id. Check for Details Below.",
+            reply_with: "",
+            data: JSON.stringify(msg.data),
+            tmp_data: tempDataaa,
+          };
+          const res = await saveResponseData({ ...dataaObjj });
+          if (res) {
+            bot.sendText(
+              msg.from,
+              `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+              { preview_url: true }
+            );
+          }
         }
-      } else {
+      } catch (err) {
         let tempDataaa = { ...userExist.tmp_data };
         let dataaObjj = {
           phone_number: msg.from,
           type: "select_category",
-          message:
-            "An appointment has been already booked with your appointment Id. Check for Details Below.",
+          message: "Application not found",
           reply_with: "",
           data: JSON.stringify(msg.data),
-          tmp_data: tempDataaa,
+          // tmp_data: tempDataaa,
         };
         const res = await saveResponseData({ ...dataaObjj });
         if (res) {
-          bot.sendText(
-            msg.from,
-            `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-            { preview_url: true }
-          );
+          bot.sendText(msg.from, `Application not found`);
         }
       }
-    } catch (err) {
-      let tempDataaa = { ...userExist.tmp_data };
-      let dataaObjj = {
-        phone_number: msg.from,
-        type: "select_category",
-        message: "Application not found",
-        reply_with: "",
-        data: JSON.stringify(msg.data),
-        // tmp_data: tempDataaa,
-      };
-      const res = await saveResponseData({ ...dataaObjj });
-      if (res) {
-        bot.sendText(msg.from, `Application not found`);
-      }
+    }
+  } else {
+    let dataObjjjj = {
+      phone_number: msg.from,
+      type: "Phone_No",
+      message: msg.data.text,
+      reply_with: "Phone_No",
+      data: JSON.stringify(msg.data),
+      // tmp_data: tempDataaaa,
+    };
+    const ressss = await saveResponseData({ ...dataObjjjj });
+    if (ressss) {
+      await bot.sendText(
+        msg.from,
+        "Please enter your Phone number in form of +91 9876543210."
+      );
     }
   }
 };
@@ -512,6 +533,14 @@ const ValidateEmail = (email) => {
     return true;
   } else {
     return false;
+  }
+};
+const validatePhone = (phone) => {
+  const regex = /^\+?[0-9](?:[- ]?[0-9]){6,15}$/;
+  if (!regex.test(phone)) {
+    return false;
+  } else {
+    return true;
   }
 };
 module.exports = {
