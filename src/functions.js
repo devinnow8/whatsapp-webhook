@@ -389,6 +389,7 @@ const getSlots = async (msg, userExist, bot) => {
         process.env.API_END_POINT + `/center/${msg.data.id}/appointment-slot`
       );
       const data = await detailRes.data;
+      console.log(data, "data===>>>>11");
       const filterdData = data && data.filter((item) => item.type === "date");
       if (filterdData) {
         await bot.sendList(
