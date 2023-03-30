@@ -44,12 +44,13 @@ const responseBot = async (app) => {
             await getcategory(msg, userExist, bot);
           } else {
             if (
-              (msg.type === "list_reply" || msg.type === 'text') &&
+              (msg.type === "list_reply" || msg.type === "text") &&
               userExist.type === "select_category"
             ) {
               await getApplicationId(msg, userExist, bot);
             }
             if (userExist.type === "Application_id") {
+              console.log(userExist, "userExistuserExistuserExist==>>>");
               await getDob(msg, userExist, bot);
             }
             if (userExist.type === "DOB") {
