@@ -48,23 +48,30 @@ const responseBot = async (app) => {
               "userExist.tmp_data.selected_categoryuserExist.tmp_data.selected_category"
             );
             if (
-              (msg.type === "list_reply" || msg.type === "text") &&
-              userExist.type === "select_category"
+              msg.type === "list_reply" &&
+              msg.data.title.toLowerCase() === "visa"
             ) {
-              console.log(userExist, "userExistuserExist==>");
-              await getApplicationId(msg, userExist, bot);
-            }
-            if (
-              userExist.tmp_data.selected_category === "visa" &&
-              userExist.type === "Application_id"
-            ) {
-              await getDob(msg, userExist, bot);
-            }
-            if (
-              userExist.tmp_data.selected_category === "visa" &&
-              userExist.type === "DOB"
-            ) {
-              await getApplicationDetailAndcenter(msg, userExist, bot);
+              if (
+                (msg.type === "list_reply" || msg.type === "text") &&
+                userExist.type === "select_category"
+              ) {
+                console.log(userExist, "userExistuserExist==>");
+                await getApplicationId(msg, userExist, bot);
+              }
+              if (
+                userExist.tmp_data.selected_category === "visa" &&
+                userExist.type === "Application_id"
+              ) {
+                await getDob(msg, userExist, bot);
+              }
+              if (
+                userExist.tmp_data.selected_category === "visa" &&
+                userExist.type === "DOB"
+              ) {
+                await getApplicationDetailAndcenter(msg, userExist, bot);
+              }
+            } else {
+              console.log("here===>");
             }
             if (msg.type === "list_reply" && userExist.type === "Center") {
               await getSlots(msg, userExist, bot);
