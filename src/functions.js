@@ -197,21 +197,40 @@ const getEmail = async (msg, userExist, bot) => {
   }
 };
 const getPhoneNumber = async (msg, userExist, bot) => {
-  let tempDataaaa = {
-    ...userExist.tmp_data,
-    email: msg.data.text,
-  };
-  let dataObjjjj = {
-    phone_number: msg.from,
-    type: "Phone_No",
-    message: msg.data.text,
-    reply_with: "Phone_No",
-    data: JSON.stringify(msg.data),
-    tmp_data: tempDataaaa,
-  };
-  const ressss = await saveResponseData({ ...dataObjjjj });
-  if (ressss) {
-    await bot.sendText(msg.from, "Please enter your Phone number.");
+  let email = ValidateEmail(msg.data.text);
+  if (email) {
+    let tempDataaaa = {
+      ...userExist.tmp_data,
+      email: msg.data.text,
+    };
+    let dataObjjjj = {
+      phone_number: msg.from,
+      type: "Phone_No",
+      message: msg.data.text,
+      reply_with: "Phone_No",
+      data: JSON.stringify(msg.data),
+      tmp_data: tempDataaaa,
+    };
+    const ressss = await saveResponseData({ ...dataObjjjj });
+    if (ressss) {
+      await bot.sendText(
+        msg.from,
+        "Please enter your Phone number in form of +91 9876543210."
+      );
+    }
+  } else {
+    let dataObjjjj = {
+      phone_number: msg.from,
+      type: "Email",
+      message: msg.data.text,
+      reply_with: "Email",
+      data: JSON.stringify(msg.data),
+      // tmp_data: tempDataaaa,
+    };
+    const ressss = await saveResponseData({ ...dataObjjjj });
+    if (ressss) {
+      await bot.sendText(msg.from, "Please enter your valid Email id.");
+    }
   }
 };
 const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
@@ -484,6 +503,14 @@ const getCenterList = async (msg, bot) => {
     }
   } catch (err) {
     console.log(err);
+  }
+};
+const ValidateEmail = (email) => {
+  var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (email.match(mailformat)) {
+    return true;
+  } else {
+    return false;
   }
 };
 module.exports = {
