@@ -38,7 +38,6 @@ const responseBot = async (app) => {
 
     // Listen to ALL incoming messages
     bot.on("message", async (msg) => {
-      console.log(msg, "msgmsg==>");
       let userExist = await getResponseData(msg.from);
       try {
         if (!userExist) {
@@ -64,7 +63,6 @@ const responseBot = async (app) => {
                 (msg.type === "list_reply" || msg.type === "text") &&
                 userExist.type === "select_category"
               ) {
-                console.log(userExist, "userExistuserExist==>");
                 await getName(msg, userExist, bot);
               }
             }
