@@ -43,6 +43,10 @@ const responseBot = async (app) => {
             await deleteUser(msg.from);
             await getcategory(msg, userExist, bot);
           } else {
+            console.log(
+              userExist.tmp_data.selected_category,
+              "userExist.tmp_data.selected_categoryuserExist.tmp_data.selected_category"
+            );
             if (
               (msg.type === "list_reply" || msg.type === "text") &&
               userExist.type === "select_category"
