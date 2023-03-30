@@ -422,7 +422,18 @@ const getSlots = async (msg, userExist, bot) => {
           );
         }
       } else {
-        await getCenterList(msg, bot);
+        let data_Obj = {
+          phone_number: msg.from,
+          type: "Center",
+          message: msg.data.text,
+          reply_with: "get details",
+          data: JSON.stringify(msg.data),
+          // tmp_data: temp_Data,
+        };
+        const response = await saveResponseData({ ...data_Obj });
+        if (response) {
+          await getCenterList(msg, bot);
+        }
       }
     } catch (err) {
       console.log(err);
