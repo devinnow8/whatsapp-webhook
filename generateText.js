@@ -26,6 +26,19 @@ function generateText(type, data) {
       return {
         Services: [...dataList],
       };
+    case "list_id_type":
+      const List_id =
+        data.length > 0 &&
+        data.map((item) => {
+          return {
+            id: item.id,
+            title: item.title,
+          };
+        });
+      return {
+        Services: [...List_id],
+      };
+
     case "book_appointment":
       return {
         book_appointment: "Book Appointment",

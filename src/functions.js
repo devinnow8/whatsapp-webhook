@@ -46,7 +46,8 @@ const getApplicationId = async (msg, userExist, bot) => {
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: msg.data.title || userExist.tmp_data.selected_category,
-    selected_category_id: msg.data.id || userExist.tmp_data.selected_category_id,
+    selected_category_id:
+      msg.data.id || userExist.tmp_data.selected_category_id,
   };
   let dataObjjj = {
     phone_number: msg.from,
@@ -92,108 +93,258 @@ const getDob = async (msg, userExist, bot) => {
   }
 };
 
+const getName = async (msg, userExist, bot) => {
+  let tempDataaa = {
+    ...userExist.tmp_data,
+    selected_category: msg.data.title || userExist.tmp_data.selected_category,
+    selected_category_id:
+      msg.data.id || userExist.tmp_data.selected_category_id,
+  };
+  let dataObjjj = {
+    phone_number: msg.from,
+    type: "Name",
+    message: "selected category",
+    reply_with: "selected category",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaa,
+  };
+  const resss = await saveResponseData({ ...dataObjjj });
+  if (resss) {
+    await bot.sendText(msg.from, "Please enter your Name.");
+  }
+};
+const getNationality = async (msg, userExist, bot) => {
+  let tempDataaaa = {
+    ...userExist.tmp_data,
+    name: msg.data.text,
+  };
+  let dataObjjjj = {
+    phone_number: msg.from,
+    type: "Nationality",
+    message: msg.data.text,
+    reply_with: "Nationality",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaaa,
+  };
+  const ressss = await saveResponseData({ ...dataObjjjj });
+  if (ressss) {
+    await bot.sendText(msg.from, "Please enter your Nationality.");
+  }
+};
+const getIdType = async (msg, userExist, bot) => {
+  let tempDataaaa = {
+    ...userExist.tmp_data,
+    nationality: msg.data.text,
+  };
+  let dataObjjjj = {
+    phone_number: msg.from,
+    type: "Id_Type",
+    message: msg.data.text,
+    reply_with: "Id_Type",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaaa,
+  };
+  const ressss = await saveResponseData({ ...dataObjjjj });
+  if (ressss) {
+    let idList = [
+      { id: 1, title: "International passport" },
+      { id: 2, title: "Driving licence" },
+      { id: 3, title: "National id card" },
+    ];
+    await bot.sendList(
+      msg.from,
+      "Select",
+      "This is a list of ID types. Please select one from the list.",
+      generateText("list_id_type", idList)
+    );
+  }
+};
+const getIdNumber = async (msg, userExist, bot) => {
+  let tempDataaaa = {
+    ...userExist.tmp_data,
+    id_type_id: msg.data.id,
+    id_type: msg.data.title,
+  };
+  let dataObjjjj = {
+    phone_number: msg.from,
+    type: "Id_Number",
+    message: msg.data.text,
+    reply_with: "Id_Number",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaaa,
+  };
+  const ressss = await saveResponseData({ ...dataObjjjj });
+  if (ressss) {
+    await bot.sendText(msg.from, "Please enter your ID Number.");
+  }
+};
+const getEmail = async (msg, userExist, bot) => {
+  let tempDataaaa = {
+    ...userExist.tmp_data,
+    Id_Number: msg.data.text,
+  };
+  let dataObjjjj = {
+    phone_number: msg.from,
+    type: "Email",
+    message: msg.data.text,
+    reply_with: "Email",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaaa,
+  };
+  const ressss = await saveResponseData({ ...dataObjjjj });
+  if (ressss) {
+    await bot.sendText(msg.from, "Please enter your Email id.");
+  }
+};
+const getPhoneNumber = async (msg, userExist, bot) => {
+  let tempDataaaa = {
+    ...userExist.tmp_data,
+    email: msg.data.text,
+  };
+  let dataObjjjj = {
+    phone_number: msg.from,
+    type: "Phone_No",
+    message: msg.data.text,
+    reply_with: "Phone_No",
+    data: JSON.stringify(msg.data),
+    tmp_data: tempDataaaa,
+  };
+  const ressss = await saveResponseData({ ...dataObjjjj });
+  if (ressss) {
+    await bot.sendText(msg.from, "Please enter your Phone number.");
+  }
+};
 const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
-  let tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
+  let tempDataaaaa = {};
+  if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
+    tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
+  } else {
+    tempDataaaaa = { ...userExist.tmp_data, Phone_No: msg.data.text };
+  }
   let dataObjjjjj = {
     phone_number: msg.from,
     type: "Center",
     message: msg.data.text,
-    reply_with: "dob",
+    reply_with:
+      userExist.tmp_data.selected_category.toLowerCase() === "visa"
+        ? "dob"
+        : "Phone_No",
     data: JSON.stringify(msg.data),
     tmp_data: tempDataaaaa,
   };
   const resssss = await saveResponseData({ ...dataObjjjjj });
   if (resssss) {
-    const { selected_category, application_id } = userExist.tmp_data;
+    const {
+      selected_category,
+      application_id,
+      Id_Number,
+      id_type,
+      nationality,
+    } = userExist.tmp_data;
     try {
-      const detailRes = await axios.post(
-        process.env.API_END_POINT + "/application-detail",
-        {
+      let apiObj = {};
+      if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
+        apiObj = {
           applicationId: application_id,
           dob: msg.data.text,
           serviceType: selected_category,
+        };
+      } else {
+        apiObj = {
+          applicationId: Id_Number,
+          category: selected_category,
+          country: nationality,
+          email: userExist.tmp_data.email,
+          id_number: Id_Number,
+          id_type: id_type,
+          name: userExist.tmp_data.name,
+          nationality: nationality,
+          phone_number: msg.data.text,
+          serviceType: selected_category,
+        };
+      }
+      const detailRes = await axios.post(
+        process.env.API_END_POINT + "/application-detail",
+        {
+          ...apiObj,
         }
       );
       const data = await detailRes.data;
-        const {
-          appointmentId,
-          status,
-          price,
-          currency,
-          phone_number,
-          email,
+      const {
+        appointmentId,
+        status,
+        price,
+        currency,
+        phone_number,
+        email,
+        applicationId,
+        name,
+        country,
+        category,
+        dob,
+        service_type,
+      } = data;
+      if (!appointmentId) {
+        const newObj = {
           applicationId,
           name,
           country,
           category,
           dob,
+          email,
+          phone_number,
           service_type,
-        } = data;
-        if (!appointmentId) {
-          const newObj = {
-            applicationId,
-            name,
-            country,
-            category,
-            dob,
-            email,
-            phone_number,
-            service_type,
-            status,
-            price,
-            currency,
-          };
-  
-          let temp_Data = { ...userExist.tmp_data, ...newObj };
-          let data_Obj = {
-            phone_number: msg.from,
-            type: "Center",
-            message: msg.data.text,
-            reply_with: "get details",
-            data: JSON.stringify(msg.data),
-            tmp_data: temp_Data,
-          };
-          const res = await saveResponseData({ ...data_Obj });
-          if (res) {
-            await getCenterList(msg, bot);
-          }
-        } else {
-          let tempDataaa = { ...userExist.tmp_data };
-          let dataaObjj = {
-            phone_number: msg.from,
-            type: "select_category",
-            message:
-              "An appointment has been already booked with your appointment Id. Check for Details Below.",
-            reply_with: "",
-            data: JSON.stringify(msg.data),
-            tmp_data: tempDataaa,
-          };
-          const res = await saveResponseData({ ...dataaObjj });
-          if (res) {
-            bot.sendText(
-              msg.from,
-              `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
-              { preview_url: true }
-            );
-          }
+          status,
+          price,
+          currency,
+        };
+
+        let temp_Data = { ...userExist.tmp_data, ...newObj };
+        let data_Obj = {
+          phone_number: msg.from,
+          type: "Center",
+          message: msg.data.text,
+          reply_with: "get details",
+          data: JSON.stringify(msg.data),
+          tmp_data: temp_Data,
+        };
+        const res = await saveResponseData({ ...data_Obj });
+        if (res) {
+          await getCenterList(msg, bot);
         }
+      } else {
+        let tempDataaa = { ...userExist.tmp_data };
+        let dataaObjj = {
+          phone_number: msg.from,
+          type: "select_category",
+          message:
+            "An appointment has been already booked with your appointment Id. Check for Details Below.",
+          reply_with: "",
+          data: JSON.stringify(msg.data),
+          tmp_data: tempDataaa,
+        };
+        const res = await saveResponseData({ ...dataaObjj });
+        if (res) {
+          bot.sendText(
+            msg.from,
+            `An appointment has been already booked with your appointment Id. Check for Details Below. https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${appointmentId}`,
+            { preview_url: true }
+          );
+        }
+      }
     } catch (err) {
       let tempDataaa = { ...userExist.tmp_data };
       let dataaObjj = {
         phone_number: msg.from,
         type: "select_category",
-        message:
-          "Application not found",
+        message: "Application not found",
         reply_with: "",
         data: JSON.stringify(msg.data),
         // tmp_data: tempDataaa,
       };
       const res = await saveResponseData({ ...dataaObjj });
       if (res) {
-        bot.sendText(
-          msg.from,
-          `Application not found`
-        );
+        bot.sendText(msg.from, `Application not found`);
       }
     }
   }
@@ -343,4 +494,10 @@ module.exports = {
   getSlots,
   bookAppointment,
   allReadyBooked,
+  getName,
+  getNationality,
+  getIdType,
+  getIdNumber,
+  getEmail,
+  getPhoneNumber,
 };

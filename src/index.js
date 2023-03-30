@@ -8,6 +8,12 @@ const {
   getSlots,
   bookAppointment,
   allReadyBooked,
+  getName,
+  getNationality,
+  getIdType,
+  getIdNumber,
+  getEmail,
+  getPhoneNumber,
 } = require("./functions");
 
 const responseBot = async (app) => {
@@ -43,10 +49,6 @@ const responseBot = async (app) => {
             await deleteUser(msg.from);
             await getcategory(msg, userExist, bot);
           } else {
-            console.log(
-              userExist.tmp_data.selected_category,
-              "userExist.tmp_data.selected_categoryuserExist.tmp_data.selected_category"
-            );
             if (
               msg.type === "list_reply" &&
               msg.data.title.toLowerCase() === "visa"
@@ -55,23 +57,64 @@ const responseBot = async (app) => {
                 (msg.type === "list_reply" || msg.type === "text") &&
                 userExist.type === "select_category"
               ) {
-                console.log(userExist, "userExistuserExist==>");
                 await getApplicationId(msg, userExist, bot);
               }
-              if (
-                userExist.tmp_data.selected_category === "visa" &&
-                userExist.type === "Application_id"
-              ) {
-                await getDob(msg, userExist, bot);
-              }
-              if (
-                userExist.tmp_data.selected_category === "visa" &&
-                userExist.type === "DOB"
-              ) {
-                await getApplicationDetailAndcenter(msg, userExist, bot);
-              }
             } else {
-              console.log("here===>");
+              if (
+                (msg.type === "list_reply" || msg.type === "text") &&
+                userExist.type === "select_category"
+              ) {
+                console.log(userExist, "userExistuserExist==>");
+                await getName(msg, userExist, bot);
+              }
+            }
+            if (
+              userExist.tmp_data.selected_category === "visa" &&
+              userExist.type === "Application_id"
+            ) {
+              await getDob(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category === "visa" &&
+              userExist.type === "DOB"
+            ) {
+              await getApplicationDetailAndcenter(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Name"
+            ) {
+              await getNationality(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Nationality"
+            ) {
+              await getIdType(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Id_Type"
+            ) {
+              await getIdNumber(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Id_Number"
+            ) {
+              await getEmail(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Email"
+            ) {
+              await getPhoneNumber(msg, userExist, bot);
+            }
+            if (
+              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.type === "Phone_No"
+            ) {
+              await getApplicationDetailAndcenter(msg, userExist, bot);
             }
             if (msg.type === "list_reply" && userExist.type === "Center") {
               await getSlots(msg, userExist, bot);
