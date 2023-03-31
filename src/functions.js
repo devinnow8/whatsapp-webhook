@@ -149,12 +149,7 @@ const getIdType = async (msg, userExist, bot) => {
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
     let category_list = userExist.tmp_data.category_data
-    const filterd = category_list && category_list.filter((item)=>{
-      console.log(item.categoryID , userExist.tmp_data.selected_category_id,'item.categoryID === userExist.tmp_data.selected_category_id',item);
-      if(item.categoryID === userExist.tmp_data.selected_category_id){
-        return item.idTypes
-      }
-    })
+    const filterd = category_list && category_list.filter((item)=> item.categoryID === userExist.tmp_data.selected_category_id)
     console.log(filterd,'filterdfilterdfilte>>');
     let idList = [
       { id: 1, title: "International passport" },
@@ -165,7 +160,7 @@ const getIdType = async (msg, userExist, bot) => {
       msg.from,
       "Select",
       "This is a list of ID types. Please select one from the list.",
-      generateText("list_id_type", filterd)
+      generateText("list_id_type", filterd.idTypes)
     );
   }
 };
