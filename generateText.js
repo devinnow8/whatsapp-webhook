@@ -9,7 +9,7 @@ function generateText(type, data) {
       const dataArr =
         data.length > 0 &&
         data.map((item) => {
-          return { id: item.categoryID, title: item.value, id_type:item.idTypes };
+          return { id: item.categoryID, title: item.value };
         });
       return {
         Services: [...dataArr],

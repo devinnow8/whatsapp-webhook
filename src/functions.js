@@ -20,7 +20,7 @@ const getcategory = async (msg, userExist, bot) => {
     const data = await res.data;
     console.log(data,'datadatadata===>>>');
     if (data) {
-      let tempDataa = { ...userExist.tmp_data };
+      let tempDataa = { ...userExist.tmp_data, category_data: data };
       let dataObjj = {
         phone_number: msg.from,
         type: "select_category",
@@ -44,7 +44,6 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
-  console.log(msg,'msg==>>', userExist,'userExist===>>>>');
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: msg.data.title || userExist.tmp_data.selected_category,
@@ -148,6 +147,13 @@ const getIdType = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
+    let category_list = userExist.tmp_data.category_data
+    const filterd = category_list && category_list.filter((item)=>{
+      if(item.categoryID === userExist.tmp_data.selected_category_id){
+        return item.idTypes
+      }
+    })
+    console.log(filterd,'filterdfilterdfilte>>');
     let idList = [
       { id: 1, title: "International passport" },
       { id: 2, title: "Driving licence" },
@@ -157,7 +163,7 @@ const getIdType = async (msg, userExist, bot) => {
       msg.from,
       "Select",
       "This is a list of ID types. Please select one from the list.",
-      generateText("list_id_type", idList)
+      generateText("list_id_type", filterd)
     );
   }
 };
