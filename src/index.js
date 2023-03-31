@@ -49,7 +49,7 @@ const responseBot = async (app) => {
             await getcategory(msg, userExist, bot);
           } else {
             let service = msg.data.title.toLowerCase()
-            let selected_category = userExist.tmp_data.selected_category.toLowerCase()
+            let selected_category = userExist?.tmp_data?.selected_category?.toLowerCase()
             if (
               msg.type === "list_reply" &&
               service.includes("visa")
