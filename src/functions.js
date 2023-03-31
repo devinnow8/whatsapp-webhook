@@ -150,6 +150,7 @@ const getIdType = async (msg, userExist, bot) => {
   if (ressss) {
     let category_list = userExist.tmp_data.category_data
     const filterd = category_list && category_list.filter((item)=>{
+      console.log(item.categoryID , userExist.tmp_data.selected_category_id,'item.categoryID === userExist.tmp_data.selected_category_id',item);
       if(item.categoryID === userExist.tmp_data.selected_category_id){
         return item.idTypes
       }
