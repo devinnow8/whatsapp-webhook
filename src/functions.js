@@ -148,7 +148,7 @@ const getIdType = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    let selected_category = userExist?.tmp_data?.select_category?.toLowerCase()
+    let selected_category = userExist?.tmp_data?.selected_category?.toLowerCase()
     let nationality = msg?.data?.text?.toLowerCase()
     let category_list = userExist.tmp_data.category_data
     let id_list = []
