@@ -149,7 +149,7 @@ const getIdType = async (msg, userExist, bot) => {
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
     let category_list = userExist.tmp_data.category_data
-    const filterd = category_list && category_list.filter((item)=> item.categoryID === userExist.tmp_data.selected_category_id)
+    const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
     console.log(filterd,'filterdfilterdfilte>>');
     let idList = [
       { id: 1, title: "International passport" },
