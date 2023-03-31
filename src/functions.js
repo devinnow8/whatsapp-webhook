@@ -160,7 +160,7 @@ const getIdType = async (msg, userExist, bot) => {
       msg.from,
       "Select",
       "This is a list of ID types. Please select one from the list.",
-      generateText("list_id_type", filterd.idTypes)
+      generateText("list_id_type", filterd[0].idTypes)
     );
   }
 };
