@@ -46,7 +46,7 @@ const getApplicationId = async (msg, userExist, bot) => {
   let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: selected_category.includes('visa') ? 'visa' : selected_category,
+    selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
     selected_category_id:
       msg.data.id || userExist.tmp_data.selected_category_id,
   };
@@ -98,7 +98,7 @@ const getName = async (msg, userExist, bot) => {
   let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: selected_category.includes('visa') ? 'visa' : selected_category,
+    selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
     selected_category_id:
       msg.data.id || userExist.tmp_data.selected_category_id,
   };
@@ -171,7 +171,7 @@ const getIdType = async (msg, userExist, bot) => {
         },
       ]
     }
-    if(!selected_category.includes('bvn')){
+    if(!selected_category?.includes('bvn')){
       id_list = filterd[0].idTypes
     }
     await bot.sendList(
