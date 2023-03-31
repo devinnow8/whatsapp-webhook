@@ -95,9 +95,10 @@ const getDob = async (msg, userExist, bot) => {
 };
 
 const getName = async (msg, userExist, bot) => {
+  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: msg.data.title || userExist.tmp_data.selected_category,
+    selected_category: selected_category.includes('visa') ? 'visa' : selected_category,
     selected_category_id:
       msg.data.id || userExist.tmp_data.selected_category_id,
   };
