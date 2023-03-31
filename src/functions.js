@@ -148,16 +148,37 @@ const getIdType = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
+    let selected_category = userExist.tmp_data.select_category.toLowerCase()
+    const nigerianIdType = [
+      { name: "Nigerian Driving Licence", id: 1 },
+      { name: "Nigerian International Passport", id: 2 },
+      { name: "Nigerian National ID Card", id: 3 },
+    ];
     let category_list = userExist.tmp_data.category_data
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
     let idList = [
       { id: 1, title: "No id type" },
     ];
+    let id_list = []
+    if(userExist.tmp_data.nationality.toLowerCase() === "nigeria" && selected_category.includes('bvn')){
+      id_list = nigerianIdType
+    }
+    if(userExist.tmp_data.nationality.toLowerCase() !== "nigeria" && selected_category.includes('bvn')){
+      id_list = [
+        {
+          name: "International Passport",
+          id: 1,
+        },
+      ]
+    }
+    if(!selected_category.includes('bvn')){
+      id_list = filterd[0].idTypes
+    }
     await bot.sendList(
       msg.from,
       "Select",
       "This is a list of ID types. Please select one from the list.",
-      generateText("list_id_type", filterd.length > 0 ? filterd[0].idTypes : idList)
+      generateText("list_id_type", id_list)
     );
   }
 };
