@@ -160,10 +160,10 @@ const getIdType = async (msg, userExist, bot) => {
       { id: 1, title: "No id type" },
     ];
     let id_list = []
-    if(userExist?.tmp_data?.nationality?.toLowerCase() === "nigeria" && selected_category.includes('bvn')){
+    if(userExist?.tmp_data?.nationality?.toLowerCase() === "nigeria" && selected_category?.includes('bvn')){
       id_list = nigerianIdType
     }
-    if(userExist?.tmp_data?.nationality?.toLowerCase() !== "nigeria" && selected_category.includes('bvn')){
+    if(userExist?.tmp_data?.nationality?.toLowerCase() !== "nigeria" && selected_category?.includes('bvn')){
       id_list = [
         {
           name: "International Passport",
