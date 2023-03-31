@@ -148,7 +148,7 @@ const getIdType = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    let selected_category = userExist.tmp_data.select_category.toLowerCase()
+    let selected_category = userExist?.tmp_data?.select_category?.toLowerCase()
     const nigerianIdType = [
       { name: "Nigerian Driving Licence", id: 1 },
       { name: "Nigerian International Passport", id: 2 },
@@ -160,10 +160,10 @@ const getIdType = async (msg, userExist, bot) => {
       { id: 1, title: "No id type" },
     ];
     let id_list = []
-    if(userExist.tmp_data.nationality.toLowerCase() === "nigeria" && selected_category.includes('bvn')){
+    if(userExist?.tmp_data?.nationality?.toLowerCase() === "nigeria" && selected_category.includes('bvn')){
       id_list = nigerianIdType
     }
-    if(userExist.tmp_data.nationality.toLowerCase() !== "nigeria" && selected_category.includes('bvn')){
+    if(userExist?.tmp_data?.nationality?.toLowerCase() !== "nigeria" && selected_category.includes('bvn')){
       id_list = [
         {
           name: "International Passport",
@@ -259,7 +259,7 @@ const getPhoneNumber = async (msg, userExist, bot) => {
 const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
   let tempDataaaaa = {};
   let phoneValidat = false;
-  if (userExist.tmp_data.selected_category.toLowerCase() === "visa") {
+  if (userExist?.tmp_data?.selected_category?.toLowerCase() === "visa") {
     phoneValidat = true;
     tempDataaaaa = { ...userExist.tmp_data, dob: msg.data.text };
   } else {
@@ -272,7 +272,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
       type: "Center",
       message: msg.data.text,
       reply_with:
-        userExist.tmp_data.selected_category.toLowerCase() === "visa"
+        userExist?.tmp_data?.selected_category?.toLowerCase() === "visa"
           ? "dob"
           : "Phone_No",
       data: JSON.stringify(msg.data),
