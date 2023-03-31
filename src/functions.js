@@ -149,18 +149,17 @@ const getIdType = async (msg, userExist, bot) => {
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
     let selected_category = userExist?.tmp_data?.select_category?.toLowerCase()
+    let nationality = msg?.data?.text?.toLowerCase()
+    let category_list = userExist.tmp_data.category_data
+    let id_list = []
     const nigerianIdType = [
       { name: "Nigerian Driving Licence", id: 1 },
       { name: "Nigerian International Passport", id: 2 },
       { name: "Nigerian National ID Card", id: 3 },
     ];
-    let category_list = userExist.tmp_data.category_data
+    
+    console.log(nationality, selected_category,'nationality?.toLowerCase() === "nigeria" && selected_category?.includes("bvn")');
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
-    let idList = [
-      { id: 1, title: "No id type" },
-    ];
-    let id_list = []
-    let nationality = msg?.data?.text?.toLowerCase()
     if(nationality?.toLowerCase() === "nigeria" && selected_category?.includes("bvn")){
       id_list = nigerianIdType
     }
