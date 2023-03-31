@@ -32,7 +32,7 @@ function generateText(type, data) {
         data.map((item) => {
           return {
             id: item.id,
-            title: item.title,
+            title: item.name,
           };
         });
       return {
