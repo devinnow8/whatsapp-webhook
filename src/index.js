@@ -57,6 +57,7 @@ const responseBot = async (app) => {
                 (msg.type === "list_reply" || msg.type === "text") &&
                 userExist.type === "select_category"
               ) {
+                console.log(msg,'msg==>>  111' userExist,'userExist==>>>111' bot,'bot===>> 111');
                 await getApplicationId(msg, userExist, bot);
               }
             } else {
