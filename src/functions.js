@@ -44,7 +44,7 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
-  console.log(msg,'msg==>>' userExist,'userExist===>>>>');
+  console.log(msg,'msg==>>', userExist,'userExist===>>>>');
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: msg.data.title || userExist.tmp_data.selected_category,
