@@ -369,7 +369,8 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
         };
         const res = await saveResponseData({ ...dataaObjj });
         if (res) {
-          bot.sendText(msg.from, `Application not found`);
+          bot.sendText(msg.from, `Application not found. type hey `);
+          await deleteUser(msg.from);
         }
       }
     }
@@ -524,6 +525,7 @@ const allReadyBooked = async (msg, userExist, bot) => {
       msg.from,
       visaSequence[visaSequence.indexOf(userExist.type) + 1]
     );
+    await deleteUser(msg.from);
   }
 };
 
