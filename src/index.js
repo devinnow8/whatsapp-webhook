@@ -48,9 +48,10 @@ const responseBot = async (app) => {
             await deleteUser(msg.from);
             await getcategory(msg, userExist, bot);
           } else {
+            let service = msg.data.title.toLowerCase()
             if (
               msg.type === "list_reply" &&
-              msg.data.title.toLowerCase() === "visa"
+              service.includes("visa")
             ) {
               if (
                 (msg.type === "list_reply" || msg.type === "text") &&
@@ -67,43 +68,43 @@ const responseBot = async (app) => {
               }
             }
             if (
-              userExist.tmp_data.selected_category === "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Application_id"
             ) {
               await getDob(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category === "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "DOB"
             ) {
               await getApplicationDetailAndcenter(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Name"
             ) {
               await getNationality(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Nationality"
             ) {
               await getIdType(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Id_Type"
             ) {
               await getIdNumber(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Id_Number"
             ) {
               await getEmail(msg, userExist, bot);
             }
             if (
-              userExist.tmp_data.selected_category !== "visa" &&
+              userExist.tmp_data.selected_category.includes('visa') &&
               userExist.type === "Email"
             ) {
               await getPhoneNumber(msg, userExist, bot);

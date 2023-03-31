@@ -18,6 +18,7 @@ const getcategory = async (msg, userExist, bot) => {
   if (response) {
     const res = await axios.get(process.env.API_END_POINT + "/category-list");
     const data = await res.data;
+    console.log(data,'datadatadata===>>>');
     if (data) {
       let tempDataa = { ...userExist.tmp_data };
       let dataObjj = {
