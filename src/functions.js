@@ -158,7 +158,6 @@ const getIdType = async (msg, userExist, bot) => {
       { name: "Nigerian National ID Card", id: 3 },
     ];
     
-    console.log(nationality, selected_category,'nationality?.toLowerCase() === "nigeria" && selected_category?.includes("bvn")');
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
     if(nationality?.toLowerCase() === "nigeria" && selected_category?.includes("bvn")){
       id_list = nigerianIdType
@@ -174,6 +173,7 @@ const getIdType = async (msg, userExist, bot) => {
     if(!selected_category?.includes("bvn")){
       id_list = filterd[0].idTypes
     }
+    console.log(id_list,'id_listid_listid_list==>');
     await bot.sendList(
       msg.from,
       "Select",
