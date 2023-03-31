@@ -18,7 +18,6 @@ const getcategory = async (msg, userExist, bot) => {
   if (response) {
     const res = await axios.get(process.env.API_END_POINT + "/category-list");
     const data = await res.data;
-    console.log(data,'datadatadata===>>>');
     if (data) {
       let tempDataa = { ...userExist.tmp_data, category_data: data };
       let dataObjj = {
@@ -44,9 +43,10 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
+  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: msg.data.title || userExist.tmp_data.selected_category,
+    selected_category: selected_category.includes('visa') ? 'visa' : selected_category,,
     selected_category_id:
       msg.data.id || userExist.tmp_data.selected_category_id,
   };
@@ -150,17 +150,14 @@ const getIdType = async (msg, userExist, bot) => {
   if (ressss) {
     let category_list = userExist.tmp_data.category_data
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
-    console.log(filterd,'filterdfilterdfilte>>');
     let idList = [
-      { id: 1, title: "International passport" },
-      { id: 2, title: "Driving licence" },
-      { id: 3, title: "National id card" },
+      { id: 1, title: "No id type" },
     ];
     await bot.sendList(
       msg.from,
       "Select",
       "This is a list of ID types. Please select one from the list.",
-      generateText("list_id_type", filterd[0].idTypes)
+      generateText("list_id_type", filterd.length > 0 ? filterd[0].idTypes : idList)
     );
   }
 };
@@ -556,7 +553,6 @@ const ValidateEmail = (email) => {
 };
 const validatePhone = (phone) => {
   const regex = /^\+?[0-9](?:[- ]?[0-9]){6,15}$/;
-  console.log(phone, regex.test(phone), "regex.test(phone)");
   if (!regex.test(phone)) {
     return false;
   } else {
