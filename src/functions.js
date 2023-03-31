@@ -173,7 +173,6 @@ const getIdType = async (msg, userExist, bot) => {
     if(!selected_category?.includes("bvn")){
       id_list = filterd[0].idTypes
     }
-    console.log(id_list,'id_listid_listid_list==>');
     await bot.sendList(
       msg.from,
       "Select",
@@ -238,7 +237,7 @@ const getPhoneNumber = async (msg, userExist, bot) => {
     if (ressss) {
       await bot.sendText(
         msg.from,
-        "Please enter your Phone number in form of +91 9876543210."
+        "Please enter your Phone number in form of country code space number (+00 0000000000)."
       );
     }
   } else {
