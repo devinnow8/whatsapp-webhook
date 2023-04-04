@@ -438,14 +438,31 @@ const getSlots = async (msg, userExist, bot) => {
         let currentDate = moment().format('YYYY-MM-DD hh:mm A')
         const filterdData = data && data.filter((item) => item.type === "date");
         const dateData = filterdData && filterdData.filter((fil)=> fil.day +" "+ fil.fromTime > currentDate)
-        console.log(currentDate,'currentDate==>', dateData);
-        if (filterdData) {
+        if (filterdData && dateData) {
           await bot.sendList(
             msg.from,
             "Select",
             "This is a list of Date and time. Please select one from the list.",
-            generateText("list_date", filterdData)
+            generateText("list_date", dateData)
           );
+        }else{
+          await bot.sendText(
+            msg.from,
+            "No slot available please select another center"
+          );
+          let data_Obj = {
+            phone_number: msg.from,
+            type: "Center",
+            message: msg.data.text,
+            reply_with: "get details",
+            data: JSON.stringify(msg.data),
+            // tmp_data: temp_Data,
+          };
+          const res = await saveResponseData({ ...data_Obj });
+          if (res) {
+            await getCenterList(msg, bot);
+          }
+          
         }
       } else {
         let data_Obj = {
