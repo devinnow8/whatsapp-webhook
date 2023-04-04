@@ -434,7 +434,9 @@ const getSlots = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       if (data.length > 0) {
+        let currentDate = new Date()
         const filterdData = data && data.filter((item) => item.type === "date");
+        console.log(currentDate,'currentDate==>', filterdData);
         if (filterdData) {
           await bot.sendList(
             msg.from,
