@@ -60,12 +60,17 @@ const responseBot = async (app) => {
                 await getApplicationId(msg, userExist, bot);
               }
             } else {
-              if (
-                (msg.type === "list_reply" || msg.type === "text") &&
-                userExist.type === "select_category"
-              ) {
-                await getName(msg, userExist, bot);
+              if(userExist.tmp_data.selected_category === "visa" && userExist.type === "select_category"){
+                await getApplicationId(msg, userExist, bot);
+              }else{
+                if (
+                  (msg.type === "list_reply" || msg.type === "text") &&
+                  userExist.type === "select_category"
+                ) {
+                  await getName(msg, userExist, bot);
+                }
               }
+             
             }
             if (
               userExist.tmp_data.selected_category === "visa" &&
