@@ -408,7 +408,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
     if (ressss) {
       await bot.sendText(
         msg.from,
-        "Please enter your Phone number in form of +91 9876543210."
+        "Please enter your Phone number."
       );
     }
   }
