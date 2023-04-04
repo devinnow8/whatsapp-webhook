@@ -238,7 +238,7 @@ const getPhoneNumber = async (msg, userExist, bot) => {
     if (ressss) {
       await bot.sendText(
         msg.from,
-        "Please enter your Phone number in form of country code space number (+00 0000000000)."
+        "Please enter your Phone number."
       );
     }
   } else {
@@ -585,13 +585,14 @@ const getCenterList = async (msg, userExist, bot) => {
   try {
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
-    console.log(data, 'data center ===>' , userExist);
-    if (data) {
+    const filterdCenter = data && data.filter((item)=> item.country === userExist.tmp_data.country)
+    console.log(filterdCenter, 'data center ===>' , userExist);
+    if (filterdCenter) {
       await bot.sendList(
         msg.from,
         "Select",
         "This is a list of centers. Please select one from the list.",
-        generateText("center_list", data)
+        generateText("center_list", filterdCenter)
       );
     }
   } catch (err) {
