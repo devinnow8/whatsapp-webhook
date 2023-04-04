@@ -586,7 +586,8 @@ const getCenterList = async (msg, userExist, bot, country) => {
     console.log(msg,'msg>>');
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
-    const filterdCenter = data && data.filter((item)=> (item.country === userExist.tmp_data.country || item.country === userExist.tmp_data.nationality) || country)
+    let countryDb =  userExist.tmp_data.country ||  userExist.tmp_data.nationality
+    const filterdCenter = data && data.filter((item)=> item.country === countryDb || item.country === country)
     console.log(filterdCenter, 'data center ===>' , userExist, country);
     if (filterdCenter) {
       await bot.sendList(
