@@ -439,11 +439,9 @@ const getSlots = async (msg, userExist, bot) => {
         const filterdData = data && data.filter((item) => item.type === "date");
         const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=>{
           let date = fil.day
-          let time = fil?.fromTime !== undefined && fil?.fromTime?.split(" ")
-          console.log(time,'timetime==>', fil);
+          let time = fil?.fromTime !== null && fil?.fromTime?.split(" ")
+          console.log(time,'timetime==>', fil.fromTime, typeof fil.fromTime);
           let dateAndTime = date+" "+time[0]+time[1].toLowerCase()
-          // console.log(moment(dateAndTime),'moment datesssss',dateAndTime);
-          // console.log(moment(currentDate),'moment datesssss currentDate');
           console.log(dateAndTime > currentDate,'moment datesssss condition', dateAndTime , currentDate);
           return  dateAndTime > currentDate
         })
