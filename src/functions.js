@@ -2,6 +2,7 @@ const { saveResponseData, deleteUser } = require("./controllers/api");
 const { visaSequence } = require("./constant");
 const { generateText } = require("../generateText");
 const axios = require("axios");
+const moment = require('moment');
 
 const getcategory = async (msg, userExist, bot) => {
   let tempData = { ...userExist.tmp_data };
@@ -434,9 +435,13 @@ const getSlots = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       if (data.length > 0) {
-        let currentDate = new Date()
-        const filterdData = data && data.filter((item) => item.type === "date");
-        console.log(currentDate,'currentDate==>', filterdData);
+        let currentDate = moment().format('YYYY-MM-DD hh:mm a')
+        const filterdData = data && data.filter((item) =>{
+          let date = item.day +" "+ item.fromTime
+          console.log(date,'datedate==>');
+          return  item.type === "date"
+        });
+        console.log(currentDate,'currentDate==>');
         if (filterdData) {
           await bot.sendList(
             msg.from,
