@@ -356,7 +356,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           };
           const res = await saveResponseData({ ...data_Obj });
           if (res) {
-            await getCenterList(msg, bot);
+            await getCenterList(msg, userExist, bot);
           }
         } else {
           let tempDataaa = { ...userExist.tmp_data };
@@ -471,7 +471,7 @@ const getSlots = async (msg, userExist, bot) => {
           };
           const res = await saveResponseData({ ...data_Obj });
           if (res) {
-            await getCenterList(msg, bot);
+            await getCenterList(msg, userExist, bot);
           }
           
         }
@@ -486,7 +486,7 @@ const getSlots = async (msg, userExist, bot) => {
         };
         const response = await saveResponseData({ ...data_Obj });
         if (response) {
-          await getCenterList(msg, bot);
+          await getCenterList(msg, userExist, bot);
         }
       }
     } catch (err) {
@@ -581,10 +581,11 @@ const allReadyBooked = async (msg, userExist, bot) => {
   }
 };
 
-const getCenterList = async (msg, bot) => {
+const getCenterList = async (msg, userExist, bot) => {
   try {
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
+    console.log(data, 'data center ===>' , userExist);
     if (data) {
       await bot.sendList(
         msg.from,
