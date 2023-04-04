@@ -437,8 +437,8 @@ const getSlots = async (msg, userExist, bot) => {
       if (data.length > 0) {
         let currentDate = moment().format('YYYY-MM-DD hh:mm A')
         const filterdData = data && data.filter((item) => item.type === "date");
-        const dateData = filterdData && filterdData.filter((fil)=> fil.day +" "+ fil.fromTime > currentDate)
-        if (filterdData && dateData) {
+        const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=> fil.day +" "+ fil.fromTime > currentDate)
+        if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
             "Select",
