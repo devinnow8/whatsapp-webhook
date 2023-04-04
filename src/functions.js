@@ -356,7 +356,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
           };
           const res = await saveResponseData({ ...data_Obj });
           if (res) {
-            await getCenterList(msg, userExist, bot);
+            await getCenterList(msg, userExist, bot, country);
           }
         } else {
           let tempDataaa = { ...userExist.tmp_data };
@@ -471,7 +471,7 @@ const getSlots = async (msg, userExist, bot) => {
           };
           const res = await saveResponseData({ ...data_Obj });
           if (res) {
-            await getCenterList(msg, userExist, bot);
+            await getCenterList(msg, userExist, bot, '');
           }
           
         }
@@ -486,7 +486,7 @@ const getSlots = async (msg, userExist, bot) => {
         };
         const response = await saveResponseData({ ...data_Obj });
         if (response) {
-          await getCenterList(msg, userExist, bot);
+          await getCenterList(msg, userExist, bot ,'');
         }
       }
     } catch (err) {
@@ -581,11 +581,12 @@ const allReadyBooked = async (msg, userExist, bot) => {
   }
 };
 
-const getCenterList = async (msg, userExist, bot) => {
+const getCenterList = async (msg, userExist, bot, country) => {
   try {
+    console.log(msg,'msg>>');
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
-    const filterdCenter = data && data.filter((item)=> item.country === userExist.tmp_data.country || item.country === userExist.tmp_data.nationality)
+    const filterdCenter = data && data.filter((item)=> (item.country === userExist.tmp_data.country || item.country === userExist.tmp_data.nationality) || country)
     console.log(filterdCenter, 'data center ===>' , userExist);
     if (filterdCenter) {
       await bot.sendList(
