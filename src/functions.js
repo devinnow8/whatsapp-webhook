@@ -435,12 +435,15 @@ const getSlots = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       if (data.length > 0) {
-        let currentDate = moment().format('YYYY-MM-DD hh:mm A')
+        let currentDate = moment().format('YYYY-MM-DD h:mma')
         const filterdData = data && data.filter((item) => item.type === "date");
         const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=>{
-          console.log(moment(fil.day +" "+ fil.fromTime),'moment datesssss');
+          let date = fil.day
+          let time = fil.fromTime.split(" ")
+          let dateAndTime = date+" "+time[0]+time[1].toLowerCase()
+          console.log(moment(dateAndTime),'moment datesssss',dateAndTime);
           console.log(moment(currentDate),'moment datesssss currentDate');
-          console.log(moment(fil.day +" "+ fil.fromTime) > moment(currentDate),'moment datesssss condition');
+          console.log(moment(dateAndTime) > moment(currentDate),'moment datesssss condition');
           return  fil.day +" "+ fil.fromTime > currentDate
         })
         console.log(dateData,'dateDatadateData==>');
