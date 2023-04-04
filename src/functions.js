@@ -440,6 +440,7 @@ const getSlots = async (msg, userExist, bot) => {
         const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=>{
           let date = fil.day
           let time = fil?.fromTime?.split(" ")
+          console.log(time,'timetime==>');
           let dateAndTime = date+" "+time[0]+time[1].toLowerCase()
           // console.log(moment(dateAndTime),'moment datesssss',dateAndTime);
           // console.log(moment(currentDate),'moment datesssss currentDate');
