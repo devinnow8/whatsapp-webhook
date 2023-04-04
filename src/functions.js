@@ -440,8 +440,10 @@ const getSlots = async (msg, userExist, bot) => {
         const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=>{
           console.log(moment(fil.day +" "+ fil.fromTime),'moment datesssss');
           console.log(moment(currentDate),'moment datesssss currentDate');
+          console.log(moment(fil.day +" "+ fil.fromTime) > moment(currentDate),'moment datesssss condition');
           return  fil.day +" "+ fil.fromTime > currentDate
         })
+        console.log(dateData,'dateDatadateData==>');
         if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
