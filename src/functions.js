@@ -446,7 +446,7 @@ const getSlots = async (msg, userExist, bot) => {
           }
           return  dateAndTime > currentDate
         })
-        let allData = dateData && dateData.map( async(item)=>{
+        let allData = await dateData && dateData.map( async(item)=>{
           let slot = await getAvailableSlotList(item.day,msg.data.id)
           let slots = slot.Booked[item.fromTime]
     console.log(slots,'slotttttttt==>>>>');
