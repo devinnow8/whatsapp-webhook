@@ -570,8 +570,9 @@ const bookAppointment = async (msg, userExist, bot) => {
 
 const getAvailableSlotList = async (date, userExist) => {
   try{
-    const res = await axios.get(process.env.API_END_POINT + `/center/${userExist.tmp_data.center_id}/available-slots?date=${date}&day=${''}`);
+    const res = await axios.post(process.env.API_END_POINT + `/center/${userExist.tmp_data.center_id}/available-slots?date=${date}&day=${''}`,{});
     const data = await res.data;
+    console.log(data,'data slott ===>');
     return data
   } catch (err) {
     console.log(err,'err');
