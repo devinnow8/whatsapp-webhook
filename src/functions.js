@@ -449,8 +449,8 @@ const getSlots = async (msg, userExist, bot) => {
         let allData = dateData && dateData.map( async(item)=>{
           let slot = await getAvailableSlotList(item.day,msg.data.id)
           let slots = slot.Booked[item.fromTime]
-    console.log(slot,'slotttttttt==>>>>');
-    if(slots.length === item.numberOfAppointments){
+    console.log(slots,'slotttttttt==>>>>');
+    if(slots && slots.length === item.numberOfAppointments){
       return item
     }
         })
