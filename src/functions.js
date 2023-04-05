@@ -450,7 +450,7 @@ const getSlots = async (msg, userExist, bot) => {
           let slot = await getAvailableSlotList(item.day,msg.data.id)
           let slots = slot.Booked[item.fromTime]
     console.log(slots,'slotttttttt==>>>>');
-    if(!slots && slots.length !== item.numberOfAppointments){
+    if(slots && slots.length !== item.numberOfAppointments){
       return item
     }
         })
