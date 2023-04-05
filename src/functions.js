@@ -446,6 +446,15 @@ const getSlots = async (msg, userExist, bot) => {
           }
           return  dateAndTime > currentDate
         })
+        let allData = dateData && dateData.map( async(item)=>{
+          let slot = await getAvailableSlotList(item.day,userExist)
+          let slots = slot.Booked[item.fromTime]
+    console.log(slot,'slotttttttt==>>>>');
+    if(slots.length === item.numberOfAppointments){
+      return item
+    }
+        })
+        console.log(allData,'allDataallDataallData==>');
         if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
@@ -494,8 +503,6 @@ const getSlots = async (msg, userExist, bot) => {
 
 const bookAppointment = async (msg, userExist, bot) => {
   let dateAndTime = msg.data.title.split(" ");
-  let slot = await getAvailableSlotList(dateAndTime,userExist)
-  console.log(slot,'slotttttttt==>>>>');
   // let data_obj = {
   //   ...userExist.tmp_data,
   //   selected_date: dateAndTime[0],
@@ -561,9 +568,9 @@ const bookAppointment = async (msg, userExist, bot) => {
   // }
 };
 
-const getAvailableSlotList = async (dateAndTime, userExist) => {
+const getAvailableSlotList = async (date, userExist) => {
   try{
-    const res = await axios.get(process.env.API_END_POINT + `/center/${userExist.tmp_data.center_id}/available-slots?date=${dateAndTime[0]}&day=${''}`);
+    const res = await axios.get(process.env.API_END_POINT + `/center/${userExist.tmp_data.center_id}/available-slots?date=${date}&day=${''}`);
     const data = await res.data;
     return data
   } catch (err) {
