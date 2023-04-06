@@ -561,44 +561,43 @@ const bookAppointment = async (msg, userExist, bot) => {
         category: userExist.tmp_data.selected_category || "",
         country: userExist.tmp_data.country || "",
         service_type: userExist.tmp_data.service_type || "",
-        id_number: userExist.tmp_data.id_number || "",
+        id_number: userExist.tmp_data.Id_Number || "",
         currency: userExist.tmp_data.currency || "",
         id_type: userExist.tmp_data.id_type || "",
         dob: userExist.tmp_data.dob || "",
         email: userExist.tmp_data.email || "",
-        phone_number: userExist.tmp_data.phone || "",
+        phone_number: userExist.tmp_data.phone_number || "",
         price: userExist.tmp_data.price || "",
       },
     ];
-    console.log(apiObj,'apiObjapiObj==>', userExist,'userrr==>');
-    // const detailRes = await axios.post(
-    //   process.env.API_END_POINT +
-    //     `/center/${userExist.tmp_data.center_id}/appointment`,
-    //   apiObj
-    // );
-    // const data = await detailRes.data;
-    // if (data) {
-    //   let dataObjjjj = {
-    //     phone_number: msg.from,
-    //     type: "Booking_slip",
-    //     message: "Booking slip",
-    //     reply_with: "Booking_slip",
-    //     data: JSON.stringify(msg.data),
-    //     tmp_data: {
-    //       ...userExist.tmp_data,
-    //       Booking_slip: `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
-    //     },
-    //   };
-    //   const resss = await saveResponseData({ ...dataObjjjj });
-    //   if (resss) {
-    //     await deleteUser(msg.from);
-    //     bot.sendText(
-    //       msg.from,
-    //       `Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here: https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
-    //       { preview_url: true }
-    //     );
-    //   }
-    // }
+    const detailRes = await axios.post(
+      process.env.API_END_POINT +
+        `/center/${userExist.tmp_data.center_id}/appointment`,
+      apiObj
+    );
+    const data = await detailRes.data;
+    if (data) {
+      let dataObjjjj = {
+        phone_number: msg.from,
+        type: "Booking_slip",
+        message: "Booking slip",
+        reply_with: "Booking_slip",
+        data: JSON.stringify(msg.data),
+        tmp_data: {
+          ...userExist.tmp_data,
+          Booking_slip: `https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
+        },
+      };
+      const resss = await saveResponseData({ ...dataObjjjj });
+      if (resss) {
+        await deleteUser(msg.from);
+        bot.sendText(
+          msg.from,
+          `Thank you for booking the appointment. We have emailed you the appointment booking slip. For more details, click here: https://ois-appointment-user.web.app/reschedule-appointment/?appointmentId=${data.appointment_ids[0]}`,
+          { preview_url: true }
+        );
+      }
+    }
   }
 };
 
