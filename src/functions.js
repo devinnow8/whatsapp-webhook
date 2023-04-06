@@ -239,7 +239,7 @@ const getPhoneNumber = async (msg, userExist, bot) => {
     if (ressss) {
       await bot.sendText(
         msg.from,
-        "Please enter your Phone number."
+        "Please enter at least 6 digits phone number."
       );
     }
   } else {
@@ -409,7 +409,7 @@ const getApplicationDetailAndcenter = async (msg, userExist, bot) => {
     if (ressss) {
       await bot.sendText(
         msg.from,
-        "Please enter your Phone number."
+        "Please enter at least 6 digits phone number."
       );
     }
   }
