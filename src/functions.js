@@ -625,7 +625,7 @@ const getCenterList = async (msg, userExist, bot, country) => {
       await deleteUser(msg.from);
         bot.sendText(
           msg.from,
-          `No center avilable for ${countryDb ||country } country. please start again with write hey message`,
+          `No center available for ${countryDb ||country } country. please start again with write hey message`,
         );
     }
   } catch (err) {
