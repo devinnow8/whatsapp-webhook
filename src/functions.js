@@ -36,7 +36,7 @@ const getcategory = async (msg, userExist, bot) => {
           msg.from,
           "Select",
           "Hi, Welcome to OIS appointment booking system. Please select the category https://portal.immigration.gov.ng/visa/freshVisa",
-          {preview_url:true},
+          // {preview_url:true},
           generateText("list", data)
         );
       }
