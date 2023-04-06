@@ -435,6 +435,7 @@ const getSlots = async (msg, userExist, bot) => {
         process.env.API_END_POINT + `/center/${msg.data.id}/appointment-slot`
       );
       const data = await detailRes.data;
+      console.log(data,'slot data===>');
       if (data.length > 0) {
         let currentDate = moment().format('YYYY-MM-DD h:mma')
         const filterdData = data && data.filter((item) => item.type === "date");
