@@ -44,7 +44,10 @@ const responseBot = async (app) => {
         if (!userExist) {
           await getcategory(msg, userExist, bot);
         } else {
-          let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
+          if(msg.type === 'text' && msg.data.text.toLowerCase() === 'hey'){
+            await getcategory(msg, userExist, bot);
+          }else{
+            let hours = diff_hours(new Date(), new Date(userExist.updatedAt));
           if (hours > 0) {
             await deleteUser(msg.from);
             await getcategory(msg, userExist, bot);
@@ -131,6 +134,8 @@ const responseBot = async (app) => {
               await allReadyBooked(msg, userExist, bot);
             }
           }
+          }
+          
         }
       } catch (err) {
         console.log(err);
