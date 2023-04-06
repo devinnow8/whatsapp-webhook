@@ -26,6 +26,18 @@ function generateText(type, data) {
       return {
         Services: [...dataList],
       };
+      case "list_countries":
+        const dataCountries =
+        data.length > 0 &&
+        data.map((item) => {
+          return {
+            id: item.value,
+            title: item.label,
+          };
+        });
+      return {
+        Services: [...dataCountries],
+      };
     case "list_id_type":
       const List_id =
         data.length > 0 &&

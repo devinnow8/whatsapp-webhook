@@ -1,5 +1,5 @@
 const { saveResponseData, deleteUser } = require("./controllers/api");
-const { visaSequence } = require("./constant");
+const { visaSequence, countries } = require("./constant");
 const { generateText } = require("../generateText");
 const axios = require("axios");
 const moment = require('moment');
@@ -96,28 +96,47 @@ const getDob = async (msg, userExist, bot) => {
   }
 };
 
-const getName = async (msg, userExist, bot) => {
-  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
-  let tempDataaa = {
-    ...userExist.tmp_data,
-    selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
-    selected_category_id:
-      msg.data.id || userExist.tmp_data.selected_category_id,
-  };
-  let dataObjjj = {
-    phone_number: msg.from,
-    type: "Name",
-    message: "selected category",
-    reply_with: "selected category",
-    data: JSON.stringify(msg.data),
-    tmp_data: tempDataaa,
-  };
+const getName = async (msg, userExist, bot, isEdit = false) => {
+  let dataObjjj = {}
+  if(isEdit){
+    dataObjjj = {
+      phone_number: msg.from,
+      type: "Name",
+      message: "selected category",
+      reply_with: "selected category",
+      data: JSON.stringify(msg.data),
+    };
+
+  }else{
+    let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
+    let tempDataaa = {
+      ...userExist.tmp_data,
+      selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
+      selected_category_id:
+        msg.data.id || userExist.tmp_data.selected_category_id,
+    };
+    dataObjjj = {
+      phone_number: msg.from,
+      type: "Name",
+      message: "selected category",
+      reply_with: "selected category",
+      data: JSON.stringify(msg.data),
+      tmp_data: tempDataaa,
+    };
+  }
+ 
   const resss = await saveResponseData({ ...dataObjjj });
   if (resss) {
-    await bot.sendText(msg.from, "Please enter your Name.");
+    await bot.sendText(msg.from,  isEdit ? 'Please enter your name without number' :"Please enter your Name.");
   }
 };
 const getNationality = async (msg, userExist, bot) => {
+  var regex = /\d+/g;
+var string =  msg.data.text;
+var matches = string.match(regex);
+if(matches){
+  getName(msg, userExist, bot, isEdit = true)
+}else{
   let tempDataaaa = {
     ...userExist.tmp_data,
     name: msg.data.text,
@@ -132,18 +151,25 @@ const getNationality = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    await bot.sendText(msg.from, "Please enter your Nationality.");
+    // await bot.sendText(msg.from, "Please enter your Nationality.");
+    await bot.sendList(
+      msg.from,
+      "Select",
+      "This is a list of Nationality. Please select one from the list.",
+      generateText("list_countries", countries)
+    );
   }
+}
 };
 const getIdType = async (msg, userExist, bot) => {
   let tempDataaaa = {
     ...userExist.tmp_data,
-    nationality: msg.data.text,
+    nationality: msg.data.title,
   };
   let dataObjjjj = {
     phone_number: msg.from,
     type: "Id_Type",
-    message: msg.data.text,
+    message: msg.data.title,
     reply_with: "Id_Type",
     data: JSON.stringify(msg.data),
     tmp_data: tempDataaaa,
