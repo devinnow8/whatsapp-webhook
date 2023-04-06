@@ -39,7 +39,6 @@ const responseBot = async (app) => {
     // Listen to ALL incoming messages
     bot.on("message", async (msg) => {
       let userExist = await getResponseData(msg.from);
-      console.log(msg,'msgmsg==>');
       try {
         if (!userExist) {
           await getcategory(msg, userExist, bot);

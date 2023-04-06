@@ -435,7 +435,6 @@ const getSlots = async (msg, userExist, bot) => {
         process.env.API_END_POINT + `/center/${msg.data.id}/appointment-slot`
       );
       const data = await detailRes.data;
-      console.log(data,'slot data===>');
       if (data.length > 0) {
         let currentDate = moment().format('YYYY-MM-DD h:mma')
         const filterdData = data && data.filter((item) => item.type === "date");
@@ -486,6 +485,10 @@ const getSlots = async (msg, userExist, bot) => {
           
         }
       } else {
+        await bot.sendText(
+          msg.from,
+          "No slot available please select another center"
+        );
         let data_Obj = {
           phone_number: msg.from,
           type: "Center",
@@ -494,9 +497,9 @@ const getSlots = async (msg, userExist, bot) => {
           data: JSON.stringify(msg.data),
           // tmp_data: temp_Data,
         };
-        const response = await saveResponseData({ ...data_Obj });
-        if (response) {
-          await getCenterList(msg, userExist, bot ,'');
+        const res = await saveResponseData({ ...data_Obj });
+        if (res) {
+          await getCenterList(msg, userExist, bot, '');
         }
       }
     } catch (err) {
@@ -606,12 +609,10 @@ const allReadyBooked = async (msg, userExist, bot) => {
 
 const getCenterList = async (msg, userExist, bot, country) => {
   try {
-    console.log(msg,'msg>>');
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
     let countryDb =  userExist.tmp_data.country ||  userExist.tmp_data.nationality
     const filterdCenter = data && data.filter((item)=> item.country.toLowerCase() === countryDb.toLowerCase() || item.country.toLowerCase() === country.toLowerCase())
-    console.log(filterdCenter, 'data center ===>' , userExist, country);
     if (filterdCenter) {
       await bot.sendList(
         msg.from,
