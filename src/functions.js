@@ -614,13 +614,19 @@ const getCenterList = async (msg, userExist, bot, country) => {
     let countryDb =  userExist.tmp_data.country ||  userExist.tmp_data.nationality
     const filterdCenter = data && data.filter((item)=> item?.country?.toLowerCase() === countryDb?.toLowerCase() || item?.country?.toLowerCase() === country?.toLowerCase())
     console.log(filterdCenter,'datadatadata==>> center',userExist.tmp_data,'userExist.tmp_data',country);
-    if (filterdCenter) {
+    if (filterdCenter.length > 0) {
       await bot.sendList(
         msg.from,
         "Select",
         "This is a list of centers. Please select one from the list.",
         generateText("center_list", filterdCenter)
       );
+    }else{
+      await deleteUser(msg.from);
+        bot.sendText(
+          msg.from,
+          `No center avilable for ${countryDb ||country } country. please start again with write hey message`,
+        );
     }
   } catch (err) {
     console.log(err);
