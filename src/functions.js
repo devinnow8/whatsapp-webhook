@@ -447,17 +447,17 @@ const getSlots = async (msg, userExist, bot) => {
           }
           return  dateAndTime > currentDate
         })
-        let allData = await dateData && dateData.map( async(item)=>{
-          let slot = await getAvailableSlotList(item.day,msg.data.id)
-          let slots = slot.Booked[item.fromTime]
-    console.log(slots,'slotttttttt==>>>>');
-    if(slots !== undefined && slots.length !== item.numberOfAppointments){
-      return item
-    }else{
-      return item
-    }
-        })
-        console.log(allData,'allDataallDataallData==>');
+    //     let allData = await dateData && dateData.map( async(item)=>{
+    //       let slot = await getAvailableSlotList(item.day,msg.data.id)
+    //       let slots = slot.Booked[item.fromTime]
+    // console.log(slots,'slotttttttt==>>>>');
+    // if(slots !== undefined && slots.length !== item.numberOfAppointments){
+    //   return item
+    // }else{
+    //   return item
+    // }
+    //     })
+    //     console.log(allData,'allDataallDataallData==>');
         if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
@@ -571,18 +571,18 @@ const bookAppointment = async (msg, userExist, bot) => {
   }
 };
 
-const getAvailableSlotList = async (date, id) => {
-  try{
-    console.log(id,'userExistuserExist==>');
-    const res = await axios.get(process.env.API_END_POINT + `/center/${id}/available-slots?date=${date}&day=${''}`);
-    const data = await res.data;
-    console.log(data,'data slott ===>');
-    return data
-  } catch (err) {
-    console.log(err,'err');
-  }
+// const getAvailableSlotList = async (date, id) => {
+//   try{
+//     console.log(id,'userExistuserExist==>');
+//     const res = await axios.get(process.env.API_END_POINT + `/center/${id}/available-slots?date=${date}&day=${''}`);
+//     const data = await res.data;
+//     console.log(data,'data slott ===>');
+//     return data
+//   } catch (err) {
+//     console.log(err,'err');
+//   }
 
-}
+// }
 
 const allReadyBooked = async (msg, userExist, bot) => {
   let dataObjjj = {
