@@ -35,8 +35,7 @@ const getcategory = async (msg, userExist, bot) => {
         await bot.sendList(
           msg.from,
           "Select",
-          "Hi, Welcome to OIS appointment booking system. Please select the category https://portal.immigration.gov.ng/visa/freshVisa",
-          // {preview_url:true},
+          "Hi, Welcome to OIS appointment booking system. Please select the category",
           generateText("list", data)
         );
       }
@@ -66,8 +65,9 @@ const getApplicationId = async (msg, userExist, bot) => {
       msg.from,
       visaSequence[visaSequence.indexOf(userExist.type) + 1] ===
         "Application_id"
-        ? "Please enter your Application Id. If you have not filled the application yet, please click on the link attached."
-        : visaSequence[visaSequence.indexOf(userExist.type) + 1]
+        ? "Please enter your Application Id. If you have not filled the application yet, please click on the link attached. https://portal.immigration.gov.ng/visa/freshVisa"
+        : visaSequence[visaSequence.indexOf(userExist.type) + 1],
+        {preview_url: true}
     );
   }
 };
