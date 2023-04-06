@@ -667,7 +667,7 @@ const ValidateEmail = (email) => {
   }
 };
 const validatePhone = (phone) => {
-  const regex = /^\+?[0-9](?:[- ]?[0-9]){6,15}$/;
+  const regex = /^\+?[0-9](?:[- ]?[0-9]){5,15}$/;
   if (!regex.test(phone)) {
     return false;
   } else {
