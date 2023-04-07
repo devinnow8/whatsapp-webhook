@@ -641,14 +641,6 @@ const getCenterList = async (msg, userExist, bot, country) => {
     const filterdCenter = data && data.filter((item)=> item?.country?.toLowerCase() === countryDb?.toLowerCase() || item?.country?.toLowerCase() === country?.toLowerCase())
     console.log(filterdCenter,'datadatadata==>> center',userExist.tmp_data,'userExist.tmp_data',country);
     if (filterdCenter.length > 0) {
-      let slotData = filterdCenter && filterdCenter.map(async (center)=>{
-        const detailRes = await axios.get(
-          process.env.API_END_POINT + `/center/${center.centerId}/appointment-slot`
-        );
-        const data = await detailRes.data;
-        console.log(data,'datattttt===>>>>>>>>');
-      })
-
       await bot.sendList(
         msg.from,
         "Select",
