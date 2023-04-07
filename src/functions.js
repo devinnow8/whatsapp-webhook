@@ -185,7 +185,7 @@ if(matches){
       { index: 10, buttonText: 'View More', callbackData: 'view-more' }
     ];
     
-    client.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
+    bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
       buttonText: 'View More',
       buttonUrl: 'https://example.com',
       footerText: 'List Footer',
