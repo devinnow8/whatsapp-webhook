@@ -154,29 +154,43 @@ if(matches){
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    const firstTenItems = countries.slice(0, 10); // get the first 10 items
-console.log(firstTenItems,'firstTenItemsfirstTenItemsfirstTenItems==>>');
-const initialButtons = [
-  { index: 10, buttonText: 'View More', callbackData: 'view-more' }
-];
-// await bot.sendList(msg.from, 'Select',generateText("list_countries", firstTenItems) , 'List Description', {
-//   buttonText: 'View More',
-//   buttonUrl: 'https://example.com',
-//   footerText: 'List Footer',
-//   buttons: initialButtons
-// });
-    await bot.sendList(
-      msg.from,
-      "Select",
-      "This is a list of Nationality. Please select one from the list.",
-      generateText("list_countries", firstTenItems),
-      {
-        buttonText: 'View More',
-        buttonUrl: 'https://example.com',
-        footerText: 'List Footer',
-        buttons: initialButtons
-      }
-    );
+    // await bot.sendList(
+    //   msg.from,
+    //   "Select",
+    //   "This is a list of Nationality. Please select one from the list.",
+    //   generateText("list_countries", firstTenItems),
+    // );
+    const items = [
+      { title: 'Item 1', description: 'This is the first item.' },
+      { title: 'Item 2', description: 'This is the second item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      { title: 'Item 3', description: 'This is the third item.' },
+      // ... add more items as needed
+    ];
+    
+    const firstTenItems = items.slice(0, 10); // get the first 10 items
+    
+    const initialButtons = [
+      { index: 10, buttonText: 'View More', callbackData: 'view-more' }
+    ];
+    
+    client.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
+      buttonText: 'View More',
+      buttonUrl: 'https://example.com',
+      footerText: 'List Footer',
+      buttons: initialButtons
+    });
   }
 }
 };
