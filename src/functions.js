@@ -154,43 +154,43 @@ if(matches){
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    // await bot.sendList(
-    //   msg.from,
-    //   "Select",
-    //   "This is a list of Nationality. Please select one from the list.",
-    //   generateText("list_countries", firstTenItems),
-    // );
-    const items = [
-      { title: 'Item 1', description: 'This is the first item.' },
-      { title: 'Item 2', description: 'This is the second item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      { title: 'Item 3', description: 'This is the third item.' },
-      // ... add more items as needed
-    ];
+    await bot.sendList(
+      msg.from,
+      "Select",
+      "This is a list of Nationality. Please select one from the list.",
+      generateText("list_countries", countries),
+    );
+  //   const items = [
+  //     { title: 'Item 1', description: 'This is the first item.' },
+  //     { title: 'Item 2', description: 'This is the second item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     { title: 'Item 3', description: 'This is the third item.' },
+  //     // ... add more items as needed
+  //   ];
     
-    const firstTenItems = items.slice(0, 10); // get the first 10 items
+  //   const firstTenItems = items.slice(0, 10); // get the first 10 items
     
-    const initialButtons = [
-      { index: 10, buttonText: 'View More', callbackData: 'view-more' }
-    ];
+  //   const initialButtons = [
+  //     { index: 10, buttonText: 'View More', callbackData: 'view-more' }
+  //   ];
     
-    bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
-      buttonText: 'View More',
-      buttonUrl: 'https://example.com',
-      footerText: 'List Footer',
-      buttons: initialButtons
-    });
+  //  await bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
+  //     buttonText: 'View More',
+  //     buttonUrl: 'https://example.com',
+  //     footerText: 'List Footer',
+  //     buttons: initialButtons
+  //   });
   }
 }
 };
