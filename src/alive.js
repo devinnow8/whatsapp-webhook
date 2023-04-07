@@ -5,7 +5,7 @@ const keepAlive = () => {
   dotEnv.config();
   setInterval(() => {
     axios
-      .get(`${process.env.APP_URL}test`)
+      .get(`${process.env.APP_URL}/test`)
       .then(function (response) {
         // handle success
         console.log(response);

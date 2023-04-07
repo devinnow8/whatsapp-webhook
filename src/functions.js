@@ -155,7 +155,7 @@ if(matches){
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
     const firstTenItems = countries.slice(0, 10); // get the first 10 items
-
+console.log(firstTenItems,'firstTenItemsfirstTenItemsfirstTenItems==>>');
 const initialButtons = [
   { index: 10, buttonText: 'View More', callbackData: 'view-more' }
 ];
