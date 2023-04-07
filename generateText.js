@@ -44,7 +44,8 @@ function generateText(type, data) {
         data.map((item) => {
           return {
             id: item.id,
-            title: item.name,
+            // title: item.name,
+            description:item.name
           };
         });
       return {

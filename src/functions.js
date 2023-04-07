@@ -181,9 +181,9 @@ const getIdType = async (msg, userExist, bot) => {
     let category_list = userExist.tmp_data.category_data
     let id_list = []
     const nigerianIdType = [
-      { name: "Driving Licence", id: 1 },
-      { name: "International Passport", id: 2 },
-      { name: "National ID Card", id: 3 },
+      { name: "Nigerian Driving Licence", id: 1 },
+      { name: "Nigerian International Passport", id: 2 },
+      { name: "Nigerian National ID Card", id: 3 },
     ];
     
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
@@ -651,7 +651,7 @@ const getCenterList = async (msg, userExist, bot, country) => {
       await deleteUser(msg.from);
         bot.sendText(
           msg.from,
-          `No center available for ${countryDb ||country } country. please start again with write hey message`,
+          `We are sorry currently there is no center available for ${countryDb ||country }. Kindly, start agin from *Hey*`,
         );
     }
   } catch (err) {
