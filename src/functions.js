@@ -159,7 +159,7 @@ console.log(firstTenItems,'firstTenItemsfirstTenItemsfirstTenItems==>>');
 const initialButtons = [
   { index: 10, buttonText: 'View More', callbackData: 'view-more' }
 ];
-await bot.sendList(msg.from, 'Select', firstTenItems, 'List Description', {
+await bot.sendList(msg.from, 'Select',generateText("list_countries", firstTenItems) , 'List Description', {
   buttonText: 'View More',
   buttonUrl: 'https://example.com',
   footerText: 'List Footer',
