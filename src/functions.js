@@ -178,7 +178,7 @@ const getIdType = async (msg, userExist, bot) => {
   if (ressss) {
     console.log(userExist?.tmp_data,'userExist?.tmp_data===>',msg);
     let selected_category = userExist?.tmp_data?.selected_category?.toLowerCase()
-    let nationality = msg?.data?.text?.toLowerCase()
+    let nationality = msg?.data?.title?.toLowerCase()
     let category_list = userExist.tmp_data.category_data
     let id_list = []
     const nigerianIdType = [
