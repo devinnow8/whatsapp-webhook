@@ -4,6 +4,8 @@ const { generateText } = require("../generateText");
 const axios = require("axios");
 const moment = require('moment');
 
+const tmp_obj = {}
+
 const getcategory = async (msg, userExist, bot) => {
   let tempData = { ...userExist.tmp_data };
   let dataObj = {
@@ -20,6 +22,7 @@ const getcategory = async (msg, userExist, bot) => {
     const res = await axios.get(process.env.API_END_POINT + "/category-list");
     const data = await res.data;
     if (data) {
+      tmp_obj.category_data = data
       let tempDataa = { ...userExist.tmp_data, category_data: data };
       let dataObjj = {
         phone_number: msg.from,
@@ -44,6 +47,9 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
+  console.log(tmp_obj,'tmp===> 1');
+  tmp_obj.selected_category = selected_category?.includes('visa') ? 'visa' : selected_category
+  tmp_obj.selected_category_id = msg.data.id || userExist.tmp_data.selected_category_id
   let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
@@ -73,6 +79,7 @@ const getApplicationId = async (msg, userExist, bot) => {
 };
 
 const getDob = async (msg, userExist, bot) => {
+  console.log(tmp_obj,'tmp===>');
   let tempDataaaa = {
     ...userExist.tmp_data,
     application_id: msg.data.text,
