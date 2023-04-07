@@ -22,7 +22,6 @@ const getcategory = async (msg, userExist, bot) => {
     const res = await axios.get(process.env.API_END_POINT + "/category-list");
     const data = await res.data;
     if (data) {
-      tmp_obj.category_data = data
       let tempDataa = { ...userExist.tmp_data, category_data: data };
       let dataObjj = {
         phone_number: msg.from,
@@ -47,10 +46,7 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
-  console.log(tmp_obj,'tmp===> 1');
   let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
-  tmp_obj.selected_category = selected_category?.includes('visa') ? 'visa' : selected_category
-  tmp_obj.selected_category_id = msg.data.id || userExist.tmp_data.selected_category_id
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
@@ -158,13 +154,23 @@ if(matches){
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    // await bot.sendText(msg.from, "Please enter your Nationality.");
-    await bot.sendList(
-      msg.from,
-      "Select",
-      "This is a list of Nationality. Please select one from the list.",
-      generateText("list_countries", countries)
-    );
+    const firstTenItems = countries.slice(0, 10); // get the first 10 items
+
+const initialButtons = [
+  { index: 10, buttonText: 'View More', callbackData: 'view-more' }
+];
+await bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
+  buttonText: 'View More',
+  buttonUrl: 'https://example.com',
+  footerText: 'List Footer',
+  buttons: initialButtons
+});
+    // await bot.sendList(
+    //   msg.from,
+    //   "Select",
+    //   "This is a list of Nationality. Please select one from the list.",
+    //   generateText("list_countries", countries)
+    // );
   }
 }
 };
