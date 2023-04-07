@@ -159,18 +159,24 @@ console.log(firstTenItems,'firstTenItemsfirstTenItemsfirstTenItems==>>');
 const initialButtons = [
   { index: 10, buttonText: 'View More', callbackData: 'view-more' }
 ];
-await bot.sendList(msg.from, 'Select',generateText("list_countries", firstTenItems) , 'List Description', {
-  buttonText: 'View More',
-  buttonUrl: 'https://example.com',
-  footerText: 'List Footer',
-  buttons: initialButtons
-});
-    // await bot.sendList(
-    //   msg.from,
-    //   "Select",
-    //   "This is a list of Nationality. Please select one from the list.",
-    //   generateText("list_countries", countries)
-    // );
+// await bot.sendList(msg.from, 'Select',generateText("list_countries", firstTenItems) , 'List Description', {
+//   buttonText: 'View More',
+//   buttonUrl: 'https://example.com',
+//   footerText: 'List Footer',
+//   buttons: initialButtons
+// });
+    await bot.sendList(
+      msg.from,
+      "Select",
+      "This is a list of Nationality. Please select one from the list.",
+      generateText("list_countries", firstTenItems),
+      {
+        buttonText: 'View More',
+        buttonUrl: 'https://example.com',
+        footerText: 'List Footer',
+        buttons: initialButtons
+      }
+    );
   }
 }
 };
