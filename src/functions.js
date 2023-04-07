@@ -48,9 +48,9 @@ const getcategory = async (msg, userExist, bot) => {
 
 const getApplicationId = async (msg, userExist, bot) => {
   console.log(tmp_obj,'tmp===> 1');
+  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   tmp_obj.selected_category = selected_category?.includes('visa') ? 'visa' : selected_category
   tmp_obj.selected_category_id = msg.data.id || userExist.tmp_data.selected_category_id
-  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
   let tempDataaa = {
     ...userExist.tmp_data,
     selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
