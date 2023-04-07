@@ -182,8 +182,8 @@ const getIdType = async (msg, userExist, bot) => {
     let id_list = []
     const nigerianIdType = [
       { name: "Nigerian Driving Licence", id: 1 },
-      { name: "Nigerian International Passport", id: 2 },
-      { name: "Nigerian National ID Card", id: 3 },
+      { name: "Nigerian InternationalP.", id: 2 },
+      { name: "Nigerian National ID Ca..", id: 3 },
     ];
     
     const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
