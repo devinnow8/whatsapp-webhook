@@ -168,8 +168,8 @@ const initialButtons = [
     await bot.sendList(
       msg.from,
       "Select",
-      "This is a list of Nationality. Please select one from the list.",
       generateText("list_countries", firstTenItems),
+      "This is a list of Nationality. Please select one from the list.",
       {
         buttonText: 'View More',
         buttonUrl: 'https://example.com',
