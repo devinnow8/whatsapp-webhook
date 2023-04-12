@@ -49,6 +49,13 @@ const responseBot = async (app) => {
           if (msg.type === "text" && userExist.type === "Id_Type") {
             await bot.sendText(msg.from, "Please select IdType.");
           }
+          if (
+            msg.type !== "text" &&
+            userExist.tmp_data.selected_category !== "visa" &&
+            userExist.type === "Id_Number"
+          ) {
+            await bot.sendText(msg.from, "Please enter Id number.");
+          }
           if (msg.type === "text" && msg.data.text.toLowerCase() === "hey") {
             await getcategory(msg, userExist, bot);
           } else {
@@ -113,6 +120,7 @@ const responseBot = async (app) => {
                 await getIdNumber(msg, userExist, bot);
               }
               if (
+                msg.type === "text" &&
                 userExist.tmp_data.selected_category !== "visa" &&
                 userExist.type === "Id_Number"
               ) {
