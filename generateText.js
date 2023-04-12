@@ -26,8 +26,8 @@ function generateText(type, data) {
       return {
         Services: [...dataList],
       };
-      case "list_countries":
-        const dataCountries =
+    case "list_countries":
+      const dataCountries =
         data.length > 0 &&
         data.map((item) => {
           return {
@@ -42,10 +42,12 @@ function generateText(type, data) {
       const List_id =
         data.length > 0 &&
         data.map((item) => {
-          return {
-            id: item.id,
-            title: item.name,
-          };
+          if (item.name.length < 24) {
+            return {
+              id: item.id,
+              title: item.name,
+            };
+          }
         });
       return {
         Services: [...List_id],

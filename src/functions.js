@@ -258,6 +258,7 @@ const getIdType = async (msg, userExist, bot) => {
     if (!selected_category?.includes("bvn")) {
       id_list = filterd[0].idTypes;
     }
+    console.log(id_list, "id_listid_listid_list==>");
     await bot.sendList(
       msg.from,
       "Select",
