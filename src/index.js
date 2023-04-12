@@ -43,7 +43,6 @@ const responseBot = async (app) => {
         if (!userExist) {
           await getcategory(msg, userExist, bot);
         } else {
-          console.log(msg, "msgmsg==////", userExist);
           if (msg.type === "text" && userExist.type === "Nationality") {
             await bot.sendText(msg.from, "Please select Nationality.");
           }

@@ -43,7 +43,6 @@ function generateText(type, data) {
         data.length > 0 &&
         data.map((item) => {
           let name = add3Dots(item.name, 21);
-          console.log(name, "namename=>");
           if (name) {
             return {
               id: item.id,
