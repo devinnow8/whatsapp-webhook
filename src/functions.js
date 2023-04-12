@@ -2,12 +2,12 @@ const { saveResponseData, deleteUser } = require("./controllers/api");
 const { visaSequence, countries } = require("./constant");
 const { generateText } = require("../generateText");
 const axios = require("axios");
-const moment = require('moment');
+const moment = require("moment");
 
-const tmp_obj = {}
+const tmp_obj = {};
 
 const getcategory = async (msg, userExist, bot) => {
-  let tempData = { ...userExist.tmp_data };
+  // let tempData = { ...userExist.tmp_data };
   let dataObj = {
     phone_number: msg.from,
     type: "Welcome_Message",
@@ -15,7 +15,7 @@ const getcategory = async (msg, userExist, bot) => {
     reply_with:
       "Hi, Welcome to OIS appointment booking system. Please select the category",
     data: JSON.stringify(msg.data),
-    tmp_data: tempData,
+    tmp_data: {},
   };
   const response = await saveResponseData({ ...dataObj });
   if (response) {
@@ -46,10 +46,14 @@ const getcategory = async (msg, userExist, bot) => {
 };
 
 const getApplicationId = async (msg, userExist, bot) => {
-  let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
+  let selected_category =
+    msg?.data?.title?.toLowerCase() ||
+    userExist?.tmp_data?.selected_category?.toLowerCase();
   let tempDataaa = {
     ...userExist.tmp_data,
-    selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
+    selected_category: selected_category?.includes("visa")
+      ? "visa"
+      : selected_category,
     selected_category_id:
       msg.data.id || userExist.tmp_data.selected_category_id,
   };
@@ -69,13 +73,13 @@ const getApplicationId = async (msg, userExist, bot) => {
         "Application_id"
         ? "Please enter your Application Id. If you have not filled the application yet, please click on the link attached. https://portal.immigration.gov.ng/visa/freshVisa"
         : visaSequence[visaSequence.indexOf(userExist.type) + 1],
-        {preview_url: true}
+      { preview_url: true }
     );
   }
 };
 
 const getDob = async (msg, userExist, bot) => {
-  console.log(tmp_obj,'tmp===>');
+  console.log(tmp_obj, "tmp===>");
   let tempDataaaa = {
     ...userExist.tmp_data,
     application_id: msg.data.text,
@@ -100,8 +104,8 @@ const getDob = async (msg, userExist, bot) => {
 };
 
 const getName = async (msg, userExist, bot, isEdit = false) => {
-  let dataObjjj = {}
-  if(isEdit){
+  let dataObjjj = {};
+  if (isEdit) {
     dataObjjj = {
       phone_number: msg.from,
       type: "Name",
@@ -109,12 +113,15 @@ const getName = async (msg, userExist, bot, isEdit = false) => {
       reply_with: "selected category",
       data: JSON.stringify(msg.data),
     };
-
-  }else{
-    let selected_category = msg?.data?.title?.toLowerCase() || userExist?.tmp_data?.selected_category?.toLowerCase()
+  } else {
+    let selected_category =
+      msg?.data?.title?.toLowerCase() ||
+      userExist?.tmp_data?.selected_category?.toLowerCase();
     let tempDataaa = {
       ...userExist.tmp_data,
-      selected_category: selected_category?.includes('visa') ? 'visa' : selected_category,
+      selected_category: selected_category?.includes("visa")
+        ? "visa"
+        : selected_category,
       selected_category_id:
         msg.data.id || userExist.tmp_data.selected_category_id,
     };
@@ -127,72 +134,77 @@ const getName = async (msg, userExist, bot, isEdit = false) => {
       tmp_data: tempDataaa,
     };
   }
- 
+
   const resss = await saveResponseData({ ...dataObjjj });
   if (resss) {
-    await bot.sendText(msg.from,  isEdit ? 'Please enter your name without number' :"Please enter your Name.");
+    await bot.sendText(
+      msg.from,
+      isEdit
+        ? "Please enter your name without number"
+        : "Please enter your Name."
+    );
   }
 };
 const getNationality = async (msg, userExist, bot) => {
   var regex = /\d+/g;
-var string =  msg.data.text;
-var matches = string.match(regex);
-if(matches){
-  getName(msg, userExist, bot, isEdit = true)
-}else{
-  let tempDataaaa = {
-    ...userExist.tmp_data,
-    name: msg.data.text,
-  };
-  let dataObjjjj = {
-    phone_number: msg.from,
-    type: "Nationality",
-    message: msg.data.text,
-    reply_with: "Nationality",
-    data: JSON.stringify(msg.data),
-    tmp_data: tempDataaaa,
-  };
-  const ressss = await saveResponseData({ ...dataObjjjj });
-  if (ressss) {
-    await bot.sendList(
-      msg.from,
-      "Select",
-      "This is a list of Nationality. Please select one from the list.",
-      generateText("list_countries", countries),
-    );
-  //   const items = [
-  //     { title: 'Item 1', description: 'This is the first item.' },
-  //     { title: 'Item 2', description: 'This is the second item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     { title: 'Item 3', description: 'This is the third item.' },
-  //     // ... add more items as needed
-  //   ];
-    
-  //   const firstTenItems = items.slice(0, 10); // get the first 10 items
-    
-  //   const initialButtons = [
-  //     { index: 10, buttonText: 'View More', callbackData: 'view-more' }
-  //   ];
-    
-  //  await bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
-  //     buttonText: 'View More',
-  //     buttonUrl: 'https://example.com',
-  //     footerText: 'List Footer',
-  //     buttons: initialButtons
-  //   });
+  var string = msg.data.text;
+  var matches = string.match(regex);
+  if (matches) {
+    getName(msg, userExist, bot, (isEdit = true));
+  } else {
+    let tempDataaaa = {
+      ...userExist.tmp_data,
+      name: msg.data.text,
+    };
+    let dataObjjjj = {
+      phone_number: msg.from,
+      type: "Nationality",
+      message: msg.data.text,
+      reply_with: "Nationality",
+      data: JSON.stringify(msg.data),
+      tmp_data: tempDataaaa,
+    };
+    const ressss = await saveResponseData({ ...dataObjjjj });
+    if (ressss) {
+      await bot.sendList(
+        msg.from,
+        "Select",
+        "This is a list of Nationality. Please select one from the list.",
+        generateText("list_countries", countries)
+      );
+      //   const items = [
+      //     { title: 'Item 1', description: 'This is the first item.' },
+      //     { title: 'Item 2', description: 'This is the second item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     { title: 'Item 3', description: 'This is the third item.' },
+      //     // ... add more items as needed
+      //   ];
+
+      //   const firstTenItems = items.slice(0, 10); // get the first 10 items
+
+      //   const initialButtons = [
+      //     { index: 10, buttonText: 'View More', callbackData: 'view-more' }
+      //   ];
+
+      //  await bot.sendList('1234567890@c.us', 'List Title', firstTenItems, 'List Description', {
+      //     buttonText: 'View More',
+      //     buttonUrl: 'https://example.com',
+      //     footerText: 'List Footer',
+      //     buttons: initialButtons
+      //   });
+    }
   }
-}
 };
 const getIdType = async (msg, userExist, bot) => {
   let tempDataaaa = {
@@ -209,30 +221,42 @@ const getIdType = async (msg, userExist, bot) => {
   };
   const ressss = await saveResponseData({ ...dataObjjjj });
   if (ressss) {
-    let selected_category = userExist?.tmp_data?.selected_category?.toLowerCase()
-    let nationality = msg?.data?.title?.toLowerCase()
-    let category_list = userExist.tmp_data.category_data
-    let id_list = []
+    let selected_category =
+      userExist?.tmp_data?.selected_category?.toLowerCase();
+    let nationality = msg?.data?.title?.toLowerCase();
+    let category_list = userExist.tmp_data.category_data;
+    let id_list = [];
     const nigerianIdType = [
       { name: "Driving Licence", id: 1 },
       { name: "International Passport", id: 2 },
       { name: "National ID Card", id: 3 },
     ];
-    
-    const filterd = await category_list && category_list.filter((item)=> item.categoryID === Number(userExist.tmp_data.selected_category_id))
-    if(nationality?.toLowerCase() === "nigeria" && selected_category?.includes("bvn")){
-      id_list = nigerianIdType
+
+    const filterd =
+      (await category_list) &&
+      category_list.filter(
+        (item) =>
+          item.categoryID === Number(userExist.tmp_data.selected_category_id)
+      );
+    if (
+      nationality?.toLowerCase() === "nigeria" &&
+      selected_category?.includes("bvn")
+    ) {
+      id_list = nigerianIdType;
     }
-    if(nationality?.toLowerCase() !== "nigeria" && selected_category?.includes("bvn")){
+    if (
+      nationality?.toLowerCase() !== "nigeria" &&
+      selected_category?.includes("bvn")
+    ) {
       id_list = [
         {
           name: "International Passport",
           id: 1,
         },
-      ]
+      ];
     }
-    if(!selected_category?.includes("bvn")){
-      id_list = filterd[0].idTypes
+    if (!selected_category?.includes("bvn")) {
+      id_list = filterd[0].idTypes;
     }
     await bot.sendList(
       msg.from,
@@ -495,28 +519,31 @@ const getSlots = async (msg, userExist, bot) => {
       );
       const data = await detailRes.data;
       if (data.length > 0) {
-        let currentDate = moment().format('YYYY-MM-DD h:mma')
+        let currentDate = moment().format("YYYY-MM-DD h:mma");
         const filterdData = data && data.filter((item) => item.type === "date");
-        const dateData = filterdData && filterdData.length > 0 && filterdData.filter((fil)=>{
-          let date = fil.day
-          let time = fil?.fromTime !== null && fil?.fromTime?.split(" ")
-          let dateAndTime = ''
-          if(time){
-            dateAndTime = date+" "+time[0]+time[1].toLowerCase()
-          }
-          return  dateAndTime > currentDate
-        })
-    //     let allData = await dateData && dateData.map( async(item)=>{
-    //       let slot = await getAvailableSlotList(item.day,msg.data.id)
-    //       let slots = slot.Booked[item.fromTime]
-    // console.log(slots,'slotttttttt==>>>>');
-    // if(slots !== undefined && slots.length !== item.numberOfAppointments){
-    //   return item
-    // }else{
-    //   return item
-    // }
-    //     })
-    //     console.log(allData,'allDataallDataallData==>');
+        const dateData =
+          filterdData &&
+          filterdData.length > 0 &&
+          filterdData.filter((fil) => {
+            let date = fil.day;
+            let time = fil?.fromTime !== null && fil?.fromTime?.split(" ");
+            let dateAndTime = "";
+            if (time) {
+              dateAndTime = date + " " + time[0] + time[1].toLowerCase();
+            }
+            return dateAndTime > currentDate;
+          });
+        //     let allData = await dateData && dateData.map( async(item)=>{
+        //       let slot = await getAvailableSlotList(item.day,msg.data.id)
+        //       let slots = slot.Booked[item.fromTime]
+        // console.log(slots,'slotttttttt==>>>>');
+        // if(slots !== undefined && slots.length !== item.numberOfAppointments){
+        //   return item
+        // }else{
+        //   return item
+        // }
+        //     })
+        //     console.log(allData,'allDataallDataallData==>');
         if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
@@ -524,7 +551,7 @@ const getSlots = async (msg, userExist, bot) => {
             "This is a list of Date and time. Please select one from the list.",
             generateText("list_date", dateData)
           );
-        }else{
+        } else {
           await bot.sendText(
             msg.from,
             "No slot available please select another center"
@@ -539,9 +566,8 @@ const getSlots = async (msg, userExist, bot) => {
           };
           const res = await saveResponseData({ ...data_Obj });
           if (res) {
-            await getCenterList(msg, userExist, bot, '');
+            await getCenterList(msg, userExist, bot, "");
           }
-          
         }
       } else {
         await bot.sendText(
@@ -558,7 +584,7 @@ const getSlots = async (msg, userExist, bot) => {
         };
         const res = await saveResponseData({ ...data_Obj });
         if (res) {
-          await getCenterList(msg, userExist, bot, '');
+          await getCenterList(msg, userExist, bot, "");
         }
       }
     } catch (err) {
@@ -670,9 +696,22 @@ const getCenterList = async (msg, userExist, bot, country) => {
   try {
     const res = await axios.get(process.env.API_END_POINT + "/center-list");
     const data = await res.data;
-    let countryDb =  userExist.tmp_data.country ||  userExist.tmp_data.nationality
-    const filterdCenter = data && data.filter((item)=> item?.country?.toLowerCase() === countryDb?.toLowerCase() || item?.country?.toLowerCase() === country?.toLowerCase())
-    console.log(filterdCenter,'datadatadata==>> center',userExist.tmp_data,'userExist.tmp_data',country);
+    let countryDb =
+      userExist.tmp_data.country || userExist.tmp_data.nationality;
+    const filterdCenter =
+      data &&
+      data.filter(
+        (item) =>
+          item?.country?.toLowerCase() === countryDb?.toLowerCase() ||
+          item?.country?.toLowerCase() === country?.toLowerCase()
+      );
+    console.log(
+      filterdCenter,
+      "datadatadata==>> center",
+      userExist.tmp_data,
+      "userExist.tmp_data",
+      country
+    );
     if (filterdCenter.length > 0) {
       await bot.sendList(
         msg.from,
@@ -680,12 +719,14 @@ const getCenterList = async (msg, userExist, bot, country) => {
         "This is a list of centers. Please select one from the list.",
         generateText("center_list", filterdCenter)
       );
-    }else{
+    } else {
       await deleteUser(msg.from);
-        bot.sendText(
-          msg.from,
-          `We are sorry currently there is no center available for ${countryDb ||country }. Kindly, start agin from *Hey*`,
-        );
+      bot.sendText(
+        msg.from,
+        `We are sorry currently there is no center available for ${
+          countryDb || country
+        }. Kindly, start agin from *Hey*`
+      );
     }
   } catch (err) {
     console.log(err);
