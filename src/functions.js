@@ -79,7 +79,6 @@ const getApplicationId = async (msg, userExist, bot) => {
 };
 
 const getDob = async (msg, userExist, bot) => {
-  console.log(tmp_obj, "tmp===>");
   let tempDataaaa = {
     ...userExist.tmp_data,
     application_id: msg.data.text,
@@ -258,7 +257,6 @@ const getIdType = async (msg, userExist, bot) => {
     if (!selected_category?.includes("bvn")) {
       id_list = filterd[0].idTypes;
     }
-    console.log(id_list, "id_listid_listid_list==>");
     await bot.sendList(
       msg.from,
       "Select",
@@ -534,17 +532,6 @@ const getSlots = async (msg, userExist, bot) => {
             }
             return dateAndTime > currentDate;
           });
-        //     let allData = await dateData && dateData.map( async(item)=>{
-        //       let slot = await getAvailableSlotList(item.day,msg.data.id)
-        //       let slots = slot.Booked[item.fromTime]
-        // console.log(slots,'slotttttttt==>>>>');
-        // if(slots !== undefined && slots.length !== item.numberOfAppointments){
-        //   return item
-        // }else{
-        //   return item
-        // }
-        //     })
-        //     console.log(allData,'allDataallDataallData==>');
         if (dateData.length > 0) {
           await bot.sendList(
             msg.from,
@@ -661,19 +648,6 @@ const bookAppointment = async (msg, userExist, bot) => {
   }
 };
 
-// const getAvailableSlotList = async (date, id) => {
-//   try{
-//     console.log(id,'userExistuserExist==>');
-//     const res = await axios.get(process.env.API_END_POINT + `/center/${id}/available-slots?date=${date}&day=${''}`);
-//     const data = await res.data;
-//     console.log(data,'data slott ===>');
-//     return data
-//   } catch (err) {
-//     console.log(err,'err');
-//   }
-
-// }
-
 const allReadyBooked = async (msg, userExist, bot) => {
   let dataObjjj = {
     phone_number: msg.from,
@@ -706,13 +680,6 @@ const getCenterList = async (msg, userExist, bot, country) => {
           item?.country?.toLowerCase() === countryDb?.toLowerCase() ||
           item?.country?.toLowerCase() === country?.toLowerCase()
       );
-    console.log(
-      filterdCenter,
-      "datadatadata==>> center",
-      userExist.tmp_data,
-      "userExist.tmp_data",
-      country
-    );
     if (filterdCenter.length > 0) {
       await bot.sendList(
         msg.from,
