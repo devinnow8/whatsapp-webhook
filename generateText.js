@@ -42,10 +42,12 @@ function generateText(type, data) {
       const List_id =
         data.length > 0 &&
         data.map((item) => {
-          if (item.name.length < 24) {
+          let name = add3Dots(item.name, 21);
+          console.log(name, "namename=>");
+          if (name) {
             return {
               id: item.id,
-              title: item.name,
+              title: name,
             };
           }
         });
@@ -76,4 +78,13 @@ function generateText(type, data) {
   }
 }
 
+const add3Dots = (string, limit) => {
+  var dots = "...";
+  if (string.length > limit) {
+    // you can also use substr instead of substring
+    string = string.substring(0, limit) + dots;
+  }
+
+  return string;
+};
 module.exports = { generateText };
