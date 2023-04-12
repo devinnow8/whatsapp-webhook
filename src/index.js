@@ -100,12 +100,14 @@ const responseBot = async (app) => {
                 await getNationality(msg, userExist, bot);
               }
               if (
+                msg.type !== "text" &&
                 userExist.tmp_data.selected_category !== "visa" &&
                 userExist.type === "Nationality"
               ) {
                 await getIdType(msg, userExist, bot);
               }
               if (
+                msg.type !== "text" &&
                 userExist.tmp_data.selected_category !== "visa" &&
                 userExist.type === "Id_Type"
               ) {
