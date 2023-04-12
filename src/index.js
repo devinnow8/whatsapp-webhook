@@ -44,6 +44,9 @@ const responseBot = async (app) => {
           await getcategory(msg, userExist, bot);
         } else {
           console.log(msg, "msgmsg==////", userExist);
+          if (msg.type === "text" && userExist.type === "Nationality") {
+            await getNationality(msg, userExist, bot);
+          }
           if (msg.type === "text" && msg.data.text.toLowerCase() === "hey") {
             await getcategory(msg, userExist, bot);
           } else {
